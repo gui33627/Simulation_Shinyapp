@@ -1,0 +1,250 @@
+---
+title: "CI_simulation"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r,echo=FALSE}
+require(shiny)
+require(shinyjs)
+require(tidyverse)
+```
+
+## Random Variable and Probability Distributions
+
+![](./img/population.png)
+
+Suppose you're playing a game of drawing balls with numbers labeled from 1 to infinite from a urn. When a ball is drawn at random, the “random variable” is what is written on this ball. The probability of getting each possible number from the random variable is its distribution. Distributions are about the population. In this game, the probability distribution corresponds to the urn with a potentially infinite number of balls inside. 
+
+You can think about a regular (deterministic) function like a box. For example, for $f(x) = x^2$, *every time* you give the function the value 2, and it will give you back 4. However, Random variables are random functions. Each time you apply the function it gives you a different number.
+
+There are generally two types of random variables, either discrete or continuous.
+- Discrete random variables can only take on a countable number of values (possibly infinite, but oftentimes finite).
+> Example: binary data (i.e., 0 or 1), count data, Likert scales (on a scale of 1 to 5).
+
+Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).
+> Example: most measurements with reasonable resolution (say, e.g., weight or GPA);
+
+Areas of application of probability distributions include:
+- Distributions of data (for example, heights of men, incomes of women, political party preference).
+- Distributions of error terms in regression models, $\epsilon$ in the $y = a + bx + \epsilon$.
+> Probabilistic distributions are used in regression modeling to help us characterize the variation that remains after predicting the average, a + bx.
+
+
+
+```{r, echo=FALSE}
+causal_1 <- "A randomized experiment is performed within a survey. 1000 people are contacted. Half the people contacted are promised a $5 incentive to participate, and half are not promised an incentive. In one assignment of 1000 people to incentive or non-incentive groups, the result is a 50% response rate among the treated group and 40% response rate among the control group. If we randomly re-assign the 1000 people to the two groups, the response rate of each group changes. Therefore, in each re-assignment of the 1000 people, the response rate difference between two groups changes. "
+
+shinyApp(
+  ui = shinyUI(fluidPage(
+    useShinyjs(), 
+    actionButton("button", "Example in causal inference - Click Here"),
+    hidden(
+      div(id='text_div',
+        textOutput("text")
+        )
+    )
+  )
+  ),
+  server = function(input, output, session){
+    observeEvent(input$button, {
+      toggle('text_div')
+      output$text <- renderText(causal_1)
+    })
+
+  }
+)
+```
+
+
+# Page 2
+## Normal Distribution
+
+```{r, echo=FALSE}
+# shinyApp(
+#   ui = shinyUI(
+fluidPage(
+  tags$div(
+    sliderInput('normal_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
+    numericInput(inputId = "select_normal_mean", "Mean:", 0),
+    numericInput(inputId = "select_normal_sd", "Standard Deviation:", 1, max = 100)
+  ),
+  plotOutput('normal'),
+  tags$div(
+    useShinyjs(),
+    actionButton("show_code_normal", "Show me the R code of generating the distribution"),
+    hidden(
+      div(id='code_div_normal',
+          verbatimTextOutput("code_normal")
+      )
+    )
+  ))
+# ),
+# server = function(input, output, session){
+
+output$normal <- renderPlot({
+  tmp <- rnorm(n = input$normal_size, mean = input$select_normal_mean, sd = input$select_normal_sd)
+  hist(tmp)
+})
+observeEvent(input$show_code_normal, {
+  toggle('code_div_normal')
+  output$code_normal <- renderText({
+    paste0('rnorm(n = ', input$normal_size, ', mean = ', input$select_normal_mean, ', sd = ', input$select_normal_sd, ')')
+  })
+  
+}
+)
+# }
+# )
+```
+
+## Binomial Distribution
+```{r, echo=FALSE}
+inputPanel(
+  sliderInput('binom_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
+  numericInput(inputId = "select_binom_size", "number of trials:", value = 10, min = 1),
+  numericInput(inputId = "select_binom_prob", "probability of success on each trial:", value = 0.5, min = 0, max = 1, step = 0.1)
+)
+
+renderPlot({
+  tmp <- rbinom(n = input$binom_size, size = input$select_binom_size, prob = input$select_binom_prob)
+  hist(tmp)
+  })
+```
+
+## Poisson Distribution
+
+$p(x) = \lambda^x e^{\frac{-\lambda}{x!}}$
+
+
+```{r, echo=FALSE}
+inputPanel(
+  sliderInput('pois_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
+  numericInput(inputId = "select_pois_lambda", "Mean", value = 5, min = 0)
+)
+
+renderPlot({
+  tmp <- rpois(n = input$pois_size, lambda = input$select_pois_lambda)
+  hist(tmp)
+  })
+```
+
+
+# Page 3
+## Sampling Distribution
+The sampling distribution is the set of possible datasets that could have been observed if the data collection process had been re-done, along with the probabilities of these possible values. 
+
+The simplest example of a sampling distribution is the pure random sampling model: if the data are a simple random sample of size n from a population of size N, then the sampling distribution is the set of all samples of size n, all with equal probabilities.
+
+The normal distribution, binomial distribution, and poisson distribution with specified parameters on the previous page are all sampling distributions for the samples of sizes of your choice.
+
+> Say there are 10,000 NYU grad students and we randomly select 1000 students. Here we have population size of 10,000 and sample size of 1000. How many samples of size “n” are possible out of a population of size “N”? That's 10000 choose 1000, ${1000 \choose100}$, and the number is so large that even R only returns Inf.
+
+```{r}
+choose(10000,1000)
+```
+
+
+The next simplest example is pure measurement error: if observations $y_i$, i = 1,. . . , n, are generated from the model $y_i = a + bx_i + \epsilon_i$ , with fixed coefficients a and b, pre-specified values of the predictor $x_i$ , and a specified distribution for the errors $\epsilon_i$ (for example, normal with mean 0 and standard deviation $\sigma$), then the sampling distribution is the set of possible datasets obtained from these values of $x_i$ , drawing new errors $\epsilon_i$ from their assigned distribution.
+
+```{r, echo=FALSE}
+fluidRow(
+  p("One continuous predictor: y = b0 + b1x + eps"),
+  numericInput(inputId = "select_b0", "Intercept (b0):", 1),
+  numericInput(inputId = "select_b1", "Coefficient on X (b1):", 0.5),
+  numericInput(inputId = "select_sigma", "Residual Std Dev (sigma):", 1),
+   sliderInput(inputId = "sample_size",label = "Select Sample Size",
+    min = 10, max = 1000, value = 250, step = 10),
+  plotOutput('regression'))
+
+output$regression <- renderPlot({
+  x <- seq(from = 1, to = 10, length.out = input$sample_size)
+  y <- input$select_b0 + input$select_b1*x + rnorm(length(x), 0,input$select_sigma)
+  df <- data.frame(x, y)
+  ggplot(df, aes(x = x, y = y)) + geom_point() + geom_smooth(method='lm', formula= y~x,se = F) + theme_bw()
+})
+
+```
+
+
+
+In practice, we will not know the sampling distribution; we can only estimate it, as it depends on aspects of the population, not merely on the observed data. In the pure random sampling model, the sampling distribution depends on all N datapoints. For the measurement-error model, the sampling distribution depends on the parameters a, b, and $\sigma$, which in general are not known, and will be estimated from the data. 
+
+
+
+## Dependence
+### Recognizing Conditional Probabilities
+- “A blood test indicates the presence of a disease 95% of the time the disease is actually present”
+
+> Translation: “P(test indicates disease | has disease)=0.95”
+
+- “Males who have a circulation problem are twice as likely to be smokers as those who do not have a circulation problem.”
+
+> Translation: “P(smoker | circulation problem)=2 P(smoker | no circulation problem)”
+
+If the the probability of an event A is different from the conditional probability of A given a second event B, That is, $P(A|B) \neq P(A)$. Then we say that A and B are dependent. Another way to think about this is: knowing that B has occurred gives us different information about the probability of A also occurring than we have not knowing anything about B.
+- Examples of dependent events:
+
+> A: Wearing sunscreen and B: Eating ice cream 
+
+> A: Midterm score and B: Pass the course or not
+
+* Note that dependent events are not necessarily causally related.
+
+```{r, echo=FALSE}
+shinyApp(
+  ui = shinyUI(fluidPage(
+    useShinyjs(), 
+    actionButton("show_code_sunscreen", "Show me the R code for the sunscreen example"),
+    hidden(
+      div(id='code_div_sunscreen',
+        verbatimTextOutput("code_sunscreen")
+        )
+    ),
+    actionButton("show_code_midterm", "Show me the R code for the midterm example"),
+    hidden(
+      div(id='code_div_midterm',
+        verbatimTextOutput("code_midterm")
+        )
+    )
+  )
+  ),
+  server = function(input, output, session){
+    observeEvent(input$show_code_sunscreen, {
+      toggle('code_div_sunscreen')
+      output$code_sunscreen <- renderText( 
+        paste0('sunscreen <- rbinom(10, size = 1, prob = 0.6)', '\n',
+'ice_cream <- rbinom(10, size = 1, prob = (sunscreen + 0.1)*0.8)'))
+    })
+    observeEvent(input$show_code_midterm, {
+      toggle('code_div_midterm')
+      output$code_midterm <- renderText(
+        paste0('midterm <- runif(10, min = 10, max = 95)','\n',
+'p <- exp(midterm*0.01)/(1+exp(midterm*0.01))', '\n',
+'final <- rbinom(10, size = 1, prob = p)')
+      )
+    })
+
+  }
+)
+```
+
+What happens if knowing B gives us no new information about A? Independent events are events that do not affect each other
+
+> A: It is Monday and B: It is raining outside
+
+> A: I eat oatmeal for breakfast and B: I am wearing jeans.
+
+## Simulation
+
+Simulation of random variables is important in applied statistics for several reasons. 
+First, we use probability models to mimic variation in the world, and the tools of simulation can help us better understand how this variation plays out. 
+
+Second, we can use simulation to approximate the sampling distribution of data and propagate this to the sampling distribution of statistical estimates and procedures. 
+
+Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts. Throughout
