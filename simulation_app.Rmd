@@ -15,6 +15,23 @@ require(shinyjs)
 require(tidyverse)
 ```
 
+## Introduction
+
+Welcome to the simulation app! This app is intended for students who have some basic statistics knowledge and little to no knowledge of causal inference (R knowledge is optional). Throughout your simulation journey, we will cover several different topics using a hypothetical real-world example that will hopefully build your intuition and knowledge about the joys of simulation. One key thing to remember is that as you go through this app, you will have access to two very important hats: the _researcher_ hat, and the _omniscient_ hat. The _researcher_ hat is one you wear daily - you are in the real world, and have normal human limitations. However, every once in a while, you will get to wear the _omniscient_ hat, where you will transcend your feeble human mind and become an all-knowing and powerful being. These two hats are very important when we are simulating, and will come into play quite often throughout our journey. Ready? Okay, let's get started.
+
+### Motivating Example
+In New York State, there are a series of exams that high school students must take and pass in order to graduate. These are known as the Regents exams, and they cover a wide variety of topics such as Algebra, Global History, English, and Earth Science. Generally, the Global History regents is considered to be one of the most difficult, primarily due to the sheer amount of memorization students need to do (it is a traumatizing memory for this author). Students must score a 65 or higher to pass, but may re-take these exams as many times as necessary until they achieve their desired score.
+
+You are an educational researcher tasked by the principal of a local high school to determine whether or not a new afterschool pilot program is effective in improving students' Global History regenets scores. The high school has secured the participation of 100 students (out of 2,000), and you now turn to face your daunting task. 
+
+
+### Where do we start?
+Since this is a hypothetical example, we physically don't have the data. However, you have those two hats! Let's start with the _researcher_ hat, since you already have it on. 
+You have a sample of 100 students, and must now randomly assign them into treatment and control groups. The treatment group will go through the new afterschool program, and the control group will receive normal tutoring. 
+
+**HEIDI NOTE: At this point, I think we can either transition to the next section as shown below, or motivate a little more if necessary.**
+
+
 ## Random Variable and Probability Distributions
 
 ![](./img/population.png)
