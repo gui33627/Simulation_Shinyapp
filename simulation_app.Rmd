@@ -15,7 +15,7 @@ require(shinyjs)
 require(tidyverse)
 ```
 
-## Introduction
+# 1. Introduction
 
 Welcome to the simulation app! This app is intended for students who have some basic statistics knowledge and little to no knowledge of causal inference (R knowledge is optional). Throughout your simulation journey, we will cover several different topics using a hypothetical real-world example that will hopefully build your intuition and knowledge about the joys of simulation. One key thing to remember is that as you go through this app, you will have access to two very important hats: the _researcher_ hat, and the _omniscient_ hat. The _researcher_ hat is one you wear daily - you are in the real world, and have normal human limitations. However, every once in a while, you will get to wear the _omniscient_ hat, where you will transcend your feeble human mind and become an all-knowing and powerful being. These two hats are very important when we are simulating, and will come into play quite often throughout our journey. Ready? Okay, let's get started.
 
@@ -31,8 +31,9 @@ You have a sample of 100 students, and must now randomly assign them into treatm
 
 **HEIDI NOTE: At this point, I think we can either transition to the next section as shown below, or motivate a little more if necessary.**
 
+# 2. What is  probability
 
-## Random Variable and Probability Distributions
+## 2.1 Random Variable and Probability Distributions
 
 ![](./img/population.png)
 
@@ -41,7 +42,14 @@ Suppose you're drawing students with pre-treatment scores possibly from 0 to 100
 You can think about a regular (deterministic) function like a box. For example, for $f(x) = x^2$, *every time* you give the function the value 2, and it will give you back 4. However, Random variables are random functions. Each time you apply the function it gives you a different number.
 
 
-## draw one student & draw 100 students
+## Discrete and continuous random variable
+
+There are generally two types of random variables, either continuous or discrete.
+
+- *Continuous random variables* can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).
+
+> Example: pre-treament score of a student randomly drawn, or the mean of pre-treament scores of 100 students randomly drawn
+
 
 ```{r, echo=FALSE}
 students <- c('James','Robert', 'John',
@@ -71,21 +79,20 @@ df <- reactiveValues(score = c(0,0,0))
 
 observeEvent(input$draw_hundred_student, {
   df$score <- rnorm(100,60,10)
-  output$hundred_students_scores <- renderPlot(hist(df$score))
+  output$hundred_students_scores <- renderPlot({
+    hist(df$score)
+    abline(v = mean(df$score), col = 'blue')
+    })
 })
 ```
 
+- *Discrete random variables* can only take on a countable number of values (possibly infinite, but oftentimes finite).
 
-
-There are generally two types of random variables, either discrete or continuous.
-
-1. Discrete random variables can only take on a countable number of values (possibly infinite, but oftentimes finite).
-
-> Treatments randomly assigned to students (i.e., generate a binary variable of 0 or 1 to students)
+> Treatments randomly assigned to a student (i.e., a binary variable of 0 or 1) or the proportion of 1 in the traetments randomly assigned to 100 students 
 
 ```{r, echo=FALSE}
 fluidPage(
-  actionButton("one_student_treatment", "Draw a student"),
+  actionButton("one_student_treatment", "Assign a student"),
   textOutput('one_student_treatment_plot')
 )
 observeEvent(input$one_student_treatment, {
@@ -97,7 +104,7 @@ observeEvent(input$one_student_treatment, {
 
 ```{r, echo=FALSE}
 fluidPage(
-  actionButton("hundred_student_treatment", "Draw 100 students"),
+  actionButton("hundred_student_treatment", "Assign 100 students"),
   plotOutput('hundred_students_treatment_plot')
 )
 
@@ -110,13 +117,9 @@ observeEvent(input$hundred_student_treatment, {
 ```
 
 
-2. Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).
-> Example: most measurements with reasonable resolution (say, e.g., weight or GPA);
 
-Areas of application of probability distributions include:
-- Distributions of data (for example, heights of men, incomes of women, political party preference).
-- Distributions of error terms in regression models, $\epsilon$ in the $y = a + bx + \epsilon$.
-> Probabilistic distributions are used in regression modeling to help us characterize the variation that remains after predicting the average, a + bx.
+
+
 
 
 
