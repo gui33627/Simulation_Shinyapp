@@ -22,7 +22,7 @@ Welcome to the simulation app! This app is intended for students who have some b
 ### Motivating Example
 In New York State, there are a series of exams that high school students must take and pass in order to graduate. These are known as the Regents exams, and they cover a wide variety of topics such as Algebra, Global History, English, and Earth Science. Generally, the Global History regents is considered to be one of the most difficult, primarily due to the sheer amount of memorization students need to do (it is a traumatizing memory for this author). Students must score a 65 or higher to pass, but may re-take these exams as many times as necessary until they achieve their desired score.
 
-You are an educational researcher tasked by the principal of a local high school to determine whether or not a new afterschool pilot program is effective in improving students' Global History regenets scores. The high school has secured the participation of 100 students (out of 2,000), and you now turn to face your daunting task. 
+You are an educational researcher tasked by the principal of a local high school to determine whether or not a new afterschool pilot program is effective in improving students' Global History regents scores. The high school has secured the participation of 100 students (out of 2,000), and you now turn to face your daunting task. 
 
 
 ### Where do we start?
@@ -37,7 +37,7 @@ You have a sample of 100 students, and must now randomly assign them into treatm
 
 ![](./img/population.png)
 
-Suppose you're drawing students with pre-treatment scores possibly from 0 to 100 from high schools in New York state. When a student is drawn at random, the “random variable” is what is the pre-treatment of the student. The probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution corresponds to New York state with a potentially infinite number of students inside. 
+Suppose you're drawing students with pre-treatment scores possibly from 0 to 100 from high schools in New York state. When a student is drawn at random, the “random variable” is what is the pre-treatment score of the student. The probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution corresponds to New York state with a potentially infinite number of students inside. 
 
 You can think about a regular (deterministic) function like a box. For example, for $f(x) = x^2$, *every time* you give the function the value 2, and it will give you back 4. However, Random variables are random functions. Each time you apply the function it gives you a different number.
 
