@@ -36,15 +36,81 @@ You have a sample of 100 students, and must now randomly assign them into treatm
 
 ![](./img/population.png)
 
-Suppose you're playing a game of drawing balls with numbers labeled from 1 to infinite from a urn. When a ball is drawn at random, the “random variable” is what is written on this ball. The probability of getting each possible number from the random variable is its distribution. Distributions are about the population. In this game, the probability distribution corresponds to the urn with a potentially infinite number of balls inside. 
+Suppose you're drawing students with pre-treatment scores possibly from 0 to 100 from high schools in New York state. When a student is drawn at random, the “random variable” is what is the pre-treatment of the student. The probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution corresponds to New York state with a potentially infinite number of students inside. 
 
 You can think about a regular (deterministic) function like a box. For example, for $f(x) = x^2$, *every time* you give the function the value 2, and it will give you back 4. However, Random variables are random functions. Each time you apply the function it gives you a different number.
 
-There are generally two types of random variables, either discrete or continuous.
-- Discrete random variables can only take on a countable number of values (possibly infinite, but oftentimes finite).
-> Example: binary data (i.e., 0 or 1), count data, Likert scales (on a scale of 1 to 5).
 
-Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).
+## draw one student & draw 100 students
+
+```{r, echo=FALSE}
+students <- c('James','Robert', 'John',
+'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
+'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
+'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
+'Susan', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Betty', 'Margaret', 'Sandra', 'Ashley',
+'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Deborah')
+fluidPage(
+  actionButton("draw_a_student", "Draw a student"),
+  textOutput('one_student_score')
+)
+observeEvent(input$draw_a_student, {
+  score <- round(rnorm(1,60,15),2)
+  student <- sample(students, size = 1)
+  output$one_student_score <- renderText(paste0(student, ': ', score))
+})
+```
+
+```{r, echo=FALSE}
+fluidPage(
+actionButton("draw_hundred_student", "Draw 100 students"),
+plotOutput('hundred_students_scores')
+)
+
+df <- reactiveValues(score = c(0,0,0))
+
+observeEvent(input$draw_hundred_student, {
+  df$score <- rnorm(100,60,10)
+  output$hundred_students_scores <- renderPlot(hist(df$score))
+})
+```
+
+
+
+There are generally two types of random variables, either discrete or continuous.
+
+1. Discrete random variables can only take on a countable number of values (possibly infinite, but oftentimes finite).
+
+> Treatments randomly assigned to students (i.e., generate a binary variable of 0 or 1 to students)
+
+```{r, echo=FALSE}
+fluidPage(
+  actionButton("one_student_treatment", "Draw a student"),
+  textOutput('one_student_treatment_plot')
+)
+observeEvent(input$one_student_treatment, {
+  treatment <- rbinom(1,size = 1, prob = 0.5)
+  student <- sample(students, size = 1)
+  output$one_student_treatment_plot <- renderText(paste0(student, ': ', treatment))
+})
+```
+
+```{r, echo=FALSE}
+fluidPage(
+  actionButton("hundred_student_treatment", "Draw 100 students"),
+  plotOutput('hundred_students_treatment_plot')
+)
+
+df <- reactiveValues(treatment = c(0,0,0))
+
+observeEvent(input$hundred_student_treatment, {
+  df$treatment <- rbinom(100, size = 1, prob = 0.5)
+  output$hundred_students_treatment_plot <- renderPlot(hist(df$treatment))
+})
+```
+
+
+2. Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).
 > Example: most measurements with reasonable resolution (say, e.g., weight or GPA);
 
 Areas of application of probability distributions include:
