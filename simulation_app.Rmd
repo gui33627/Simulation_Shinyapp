@@ -31,20 +31,51 @@ You have a sample of 100 students, and must now randomly assign them into treatm
 
 **HEIDI NOTE: At this point, I think we can either transition to the next section as shown below, or motivate a little more if necessary.**
 
-# 2. What is  probability
+# 2. What is probability
 
 ## 2.1 Random Variable and Probability Distributions
 
 ![](./img/population.png)
 
-Suppose you're drawing students with pre-treatment scores possibly from 0 to 100 from high schools in New York state. When a student is drawn at random, the “random variable” is what is the pre-treatment score of the student. The probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution corresponds to New York state with a potentially infinite number of students inside. 
+Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call her Maggie) is drawn at random, the corresponding “random variable” is Maggie's pre-treatment score. If we repeat this process for Maggie, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
 
-You can think about a regular (deterministic) function like a box. For example, for $f(x) = x^2$, *every time* you give the function the value 2, and it will give you back 4. However, Random variables are random functions. Each time you apply the function it gives you a different number.
+You can think about a regular (deterministic) function like a box. For example, for $f(x) = x^2$, *every time* you give the function the value 2, and it will give you back 4. However, random variables are random functions that map the sample space (different students) into the real line (test score values between 0 and 100). Each time you apply the function it gives you a different number.
 
 
 ## Discrete and continuous random variable
 
-There are generally two types of random variables, either continuous or discrete.
+There are generally two types of random variables: _discrete_ and _continuous_.
+
+- *Discrete random variables* can only take on a countable number of values (possibly infinite, but oftentimes finite). These are things like the number of Heads in two fair coin tosses, or the number of students assigned to a treatment condition.
+
+> Treatments randomly assigned to a student (i.e., a binary variable of 0 or 1) or the proportion of 1 in the traetments randomly assigned to 100 students 
+
+```{r, echo=FALSE}
+fluidPage(
+  actionButton("one_student_treatment", "Assign a student"),
+  textOutput('one_student_treatment_plot')
+)
+observeEvent(input$one_student_treatment, {
+  treatment <- rbinom(1,size = 1, prob = 0.5)
+  student <- sample(students, size = 1)
+  output$one_student_treatment_plot <- renderText(paste0(student, ': ', treatment))
+})
+```
+
+```{r, echo=FALSE}
+fluidPage(
+  actionButton("hundred_student_treatment", "Assign 100 students"),
+  plotOutput('hundred_students_treatment_plot')
+)
+
+df <- reactiveValues(treatment = c(0,0,0))
+
+observeEvent(input$hundred_student_treatment, {
+  df$treatment <- rbinom(100, size = 1, prob = 0.5)
+  output$hundred_students_treatment_plot <- renderPlot(hist(df$treatment))
+})
+```
+
 
 - *Continuous random variables* can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).
 
@@ -86,35 +117,6 @@ observeEvent(input$draw_hundred_student, {
 })
 ```
 
-- *Discrete random variables* can only take on a countable number of values (possibly infinite, but oftentimes finite).
-
-> Treatments randomly assigned to a student (i.e., a binary variable of 0 or 1) or the proportion of 1 in the traetments randomly assigned to 100 students 
-
-```{r, echo=FALSE}
-fluidPage(
-  actionButton("one_student_treatment", "Assign a student"),
-  textOutput('one_student_treatment_plot')
-)
-observeEvent(input$one_student_treatment, {
-  treatment <- rbinom(1,size = 1, prob = 0.5)
-  student <- sample(students, size = 1)
-  output$one_student_treatment_plot <- renderText(paste0(student, ': ', treatment))
-})
-```
-
-```{r, echo=FALSE}
-fluidPage(
-  actionButton("hundred_student_treatment", "Assign 100 students"),
-  plotOutput('hundred_students_treatment_plot')
-)
-
-df <- reactiveValues(treatment = c(0,0,0))
-
-observeEvent(input$hundred_student_treatment, {
-  df$treatment <- rbinom(100, size = 1, prob = 0.5)
-  output$hundred_students_treatment_plot <- renderPlot(hist(df$treatment))
-})
-```
 
 
 
