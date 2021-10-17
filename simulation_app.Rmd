@@ -39,12 +39,12 @@ You have a sample of 100 students, and must now randomly assign them into treatm
 
 Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call her Maggie) is drawn at random, the corresponding “random variable” is Maggie's pre-treatment score. If we repeat this process for Maggie, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
 
-You can think about a regular (deterministic) function like a box. For example, for $f(x) = x^2$, *every time* you give the function the value 2, and it will give you back 4. However, random variables are random functions that map the sample space (different students) into the real line (test score values between 0 and 100). Each time you apply the function it gives you a different number.
+You can think about any regular (deterministic) function like a box. For example, for the function $f(x) = x^2$, *every time* you give the function the value 2, it will *always* give you back 4. However, random variables are random functions that map the sample space (different students) into the real line (test score values between 0 and 100). This means that each time you apply the function it will give you a different number.
 
 
 ## Discrete and continuous random variable
 
-There are generally two types of random variables: _discrete_ and _continuous_.
+There are two main types of random variables: _discrete_ and _continuous_.
 
 - *Discrete random variables* can only take on a countable number of values (possibly infinite, but oftentimes finite). These are things like the number of Heads in two fair coin tosses, or the number of students assigned to a treatment condition.
 
@@ -205,7 +205,7 @@ renderPlot({
   })
 ```
 
-## Poisson Distribution
+## Poisson Distribution - **KEEP FOR NOW BUT CONSIDER REMOVING FOR ACTUAL LAUNCH - HC**
 
 $p(x) = \lambda^x e^{\frac{-\lambda}{x!}}$
 
@@ -331,8 +331,32 @@ What happens if knowing B gives us no new information about A? Independent event
 ## Simulation
 
 Simulation of random variables is important in applied statistics for several reasons. 
-First, we use probability models to mimic variation in the world, and the tools of simulation can help us better understand how this variation plays out. 
+First, we use several probability models to mimic variation in the world, and the tools of simulation can help us better understand how this variation plays out. 
 
 Second, we can use simulation to approximate the sampling distribution of data and propagate this to the sampling distribution of statistical estimates and procedures. 
 
-Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts. Throughout
+Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts. 
+
+In this final section, we will use what we learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that _omniscient_ hat? It's time to put it on.
+
+As with any simulation study, we need to first establish our **Data Generating Process (DGP)**. This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. For the purposes of this study, we will use what we learned in previous sections to walk through our DGP. 
+
+### DGP
+
+#### 1. Treatment Assignment
+We already know how to generate treatment assignments from [section 2] using the Binomial distribution. The probability of assignment will be _0.5_.:
+[RSHINY/CODE]
+
+#### 2. Generating pre-treatment test scores
+We also know that we can use the Normal distribution from [section 2] to generate our pre-treatment test scores. Remember: these are the original test scores of all the students prior to any of them attending the afterschool program.
+[RSHINY/CODE]
+
+#### 3. Generating outcome test scores based on treatment assignment
+Here we start to make good use of our omniscient hat. As omniscient beings, we know that the treatment effect (or \tau) is **5**. That is, we know that the post-treatment test scores of students who went through the afterschool program is on average **5** points higher than the students who did not. To generate these outcome scores, we would simulate a _dependency_ based on the treatment assignment variable from above:
+[RSHINY/CODE showing Y0 and Y1 based on treatment assignment]
+
+### Calculating the Average Treatment Effect (ATE)
+Note that we use "calculating" instead of "estimating". This is intentional, and is meant to illustrate the difference in process when you are wearing the omniscient hat versus the researcher hat. Specifically, as a researcher, you are always _estimating_ the ATE (or any other estimand) because we will never know the truth (in this case, that the treatment effect is 5). But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect. [<--**NEEDS WORK - HC**] 
+
+Once we have simulated all the data necessary from our DGP, we can finally move on to calculating our estimand of interest:
+[RSHINY/CODE showing ATE]
