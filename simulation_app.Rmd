@@ -19,17 +19,50 @@ require(tidyverse)
 
 Welcome to the simulation app! This app is intended for students who have some basic statistics knowledge and little to no knowledge of causal inference (R knowledge is optional). Throughout your simulation journey, we will cover several different topics using a hypothetical real-world example that will hopefully build your intuition and knowledge about the joys of simulation. One key thing to remember is that as you go through this app, you will have access to two very important hats: the _researcher_ hat, and the _omniscient_ hat. The _researcher_ hat is one you wear daily - you are in the real world, and have normal human limitations. However, every once in a while, you will get to wear the _omniscient_ hat, where you will transcend your feeble human mind and become an all-knowing and powerful being. These two hats are very important when we are simulating, and will come into play quite often throughout our journey. Ready? Okay, let's get started.
 
-### Motivating Example
+### Hypothetical real-world example
 In New York State, there are a series of exams that high school students must take and pass in order to graduate. These are known as the Regents exams, and they cover a wide variety of topics such as Algebra, Global History, English, and Earth Science. Generally, the Global History regents is considered to be one of the most difficult, primarily due to the sheer amount of memorization students need to do (it is a traumatizing memory for this author). Students must score a 65 or higher to pass, but may re-take these exams as many times as necessary until they achieve their desired score.
 
-You are an educational researcher tasked by the principal of a local high school to determine whether or not a new afterschool pilot program is effective in improving students' Global History regents scores. The high school has secured the participation of 100 students (out of 2,000), and you now turn to face your daunting task. 
+You are an educational researcher tasked by the principal of a local high school to determine whether or not a new afterschool pilot program is effective in improving students' Global History regents scores. The high school has secured the participation of 100 students who failed the exam once (out of 2,000), and you now turn to face your daunting task. 
 
 
 ### Where do we start?
 Since this is a hypothetical example, we physically don't have the data. However, you have those two hats! Let's start with the _researcher_ hat, since you already have it on. 
-You have a sample of 100 students, and must now randomly assign them into treatment and control groups. The treatment group will go through the new afterschool program, and the control group will receive normal tutoring. 
+You have a sample of 100 students, and must now randomly assign them into treatment and control groups. The treatment group will go through the new afterschool program, and the control group will receive normal tutoring. You will record their previous test scores as the pre-treatment test scores and their test scores after the program as the outcomes.
+
+
+### What is simulation?
+Wearing the _researcher_ hat, you cannot know what the post-program test scores of the students in the treatment group in the absence of the pilot program would be. However, as researchers, you shall use simulation to reproduce "a parallel universe" that imitates the actual events and gives you an insights of "what ifs". The simulation can generate as many new results as you need, and it represents the characterstics of the model you defined.
+
+For example, when you are randomly assigning students to receive the treatment, your model would pick 50 students randomly, thus each simulation will pick 50 students randomly.
+
+> Example: The possible combinations of students who would receive the treatment
+> All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Susan, Jessica, Sarah, Karen, Nancy, Lisa, Betty, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Deborah
+
+
+```{r, echo=FALSE}
+students <- c('James','Robert', 'John',
+'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
+'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
+'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
+'Susan', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Betty', 'Margaret', 'Sandra', 'Ashley',
+'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Deborah')
+fluidPage(
+  actionButton("draw_50_student", "Draw 50 students for treatment"),
+  textOutput('student_list')
+)
+###not enough names yet, so 25 for now
+observeEvent(input$draw_50_student, {
+  studentlist <- sample(students, size = 25)
+  output$student_list <- renderText(paste0(studentlist))
+})
+```
+
+Simulation, in industry, science, and education, a research or teaching technique that reproduces actual events and processes under test conditions. Developing a simulation is often a highly complex mathematical process. Initially a set of rules, relationships, and operating procedures are specified, along with other variables. The interaction of these phenomena create new situations, even new rules, which further evolve as the simulation proceeds. Simulation implements range from paper-and-pencil and board-game reproductions of situations to complex computer-aided interactive systems.
+
+A simulation imitates the operation of real world processes or systems with the use of models. The model represents the key behaviours and characteristics of the selected process or system while the simulation represents how the model evolves under different conditions over time.
 
 **HEIDI NOTE: At this point, I think we can either transition to the next section as shown below, or motivate a little more if necessary.**
+**Vera NOTE: responding to Heidi's comment: as discussed in our story board, we shall consider introduce the concept of simulation here, since we technically already start to simulate in the next session. And we probably need to explain some terms before we use them in the following session(pre-treatment,outcome,etc).**
 
 # 2. What is probability
 
@@ -37,9 +70,11 @@ You have a sample of 100 students, and must now randomly assign them into treatm
 
 ![](./img/population.png)
 
-Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call her Maggie) is drawn at random, the corresponding “random variable” is Maggie's pre-treatment score. If we repeat this process for Maggie, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
+Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call them Ming) is drawn at random, the corresponding “random variable” is Ming's pre-treatment score. If we repeat this process for Ming, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
 
 You can think about any regular (deterministic) function like a box. For example, for the function $f(x) = x^2$, *every time* you give the function the value 2, it will *always* give you back 4. However, random variables are random functions that map the sample space (different students) into the real line (test score values between 0 and 100). This means that each time you apply the function it will give you a different number.
+
+**Vera NOTE: Just edit the example to be a bit more gender-neutral.**
 
 
 ## Discrete and continuous random variable
