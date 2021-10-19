@@ -9,10 +9,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r,echo=FALSE}
+```{r,echo=FALSE, message=FALSE}
 require(shiny)
 require(shinyjs)
 require(tidyverse)
+theme_set(theme_bw())
 ```
 
 # 1. Introduction
@@ -153,40 +154,45 @@ observeEvent(input$draw_hundred_student, {
 ```
 
 
+## Mean and standard deviation of a probability distribution
 
+A probability distribution of a random variable $Z$ takes on some range of values (pre-treatment regents test scores between 0 and 100 of students from high schools in New York state). The mean of this distribution is the average of all these scores or, equivalently, the score that would be obtained on average from a random sample from the distribution. The mean is also called the expectation or expected value and is written as $E(Z)$ or $\mu_Z$ . For example, the plot below shows the (approximate) distribution of the pre-treatment regents test scores of students from high schools in New York state. The mean of this distribution is 60: this is the average score of all the high school students in New York and it is also the average score we would expect to see from sampling one student at random.
 
+The variance of the distribution of $Z$ is $E((Z − \mu_Z )^2)$, that is, the mean of the squared difference from the mean. To understand this expression, first consider the special case in which $Z$ takes on only a single score In that case, this single value is the mean, so $Z − \mu_Z = 0$ for all $Z$ in the distribution, and the variance is 0. To the extent that the distribution has variation, so that sampled scores from high school in New York State can be different, this will show up as values of $Z$ that are higher and lower than $\mu_Z$, and the variance of $Z$ is nonzero.
 
-
-
-
+The standard deviation is the square root of the variance. We typically work with the standard deviation rather than the variance because it is on the original scale of the distribution. In the plot below, the standard deviation of students' scores is 10: that is, if you randomly sample a student from the population, observe their score z, and compute (z − 60)^2, then the average value you will get is 100; this is the variance, and the standard deviation is $\sqrt(100) = 10$. 
 
 ```{r, echo=FALSE}
-causal_1 <- "A randomized experiment is performed within a survey. 1000 people are contacted. Half the people contacted are promised a $5 incentive to participate, and half are not promised an incentive. In one assignment of 1000 people to incentive or non-incentive groups, the result is a 50% response rate among the treated group and 40% response rate among the control group. If we randomly re-assign the 1000 people to the two groups, the response rate of each group changes. Therefore, in each re-assignment of the 1000 people, the response rate difference between two groups changes. "
-
-shinyApp(
-  ui = shinyUI(fluidPage(
-    useShinyjs(), 
-    actionButton("button", "Example in causal inference - Click Here"),
-    hidden(
-      div(id='text_div',
-        textOutput("text")
-        )
-    )
-  )
-  ),
-  server = function(input, output, session){
-    observeEvent(input$button, {
-      toggle('text_div')
-      output$text <- renderText(causal_1)
-    })
-
-  }
+fluidPage(
+actionButton("draw_sample", "Draw students"),
+plotOutput('mean_var')
 )
+
+
+df <- reactiveValues(data = c())
+
+observeEvent(input$draw_sample, {
+  df$data <- rnorm(10000,60,10)
+  output$mean_var <- renderPlot({
+    tmp <- data.frame(data = df$data)
+    mean <- paste0('Mean: ', round(mean(tmp$data),1))
+    sd <- paste0('Standard Deviation: ', round(sd(tmp$data),1))
+    ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), 
+                 bins = 30, alpha = 0.5) + 
+      geom_vline(xintercept = mean(tmp$data)) +
+      annotate("text",x=90,y=0.035,label=as.character(mean), fontface = "italic", size = 6) +
+      annotate("text",x=90,y=0.032,label=as.character(sd), fontface = "italic", size = 6) 
+    })
+})
 ```
+
 
 
 # Page 2
 ## Normal Distribution
+
+In addition to the distribution of data, probabilistic distributions are also commonly used in regression modeling to help us characterize the variation that remains after predicting the average --- the error term $\epsilon$ in the expression $y = a + bx + \epsilon$. These distributions allow us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.
+
 
 ```{r, echo=FALSE}
 # shinyApp(
@@ -226,18 +232,38 @@ observeEvent(input$show_code_normal, {
 # )
 ```
 
+
+
 ## Binomial Distribution
 ```{r, echo=FALSE}
-inputPanel(
-  sliderInput('binom_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
-  numericInput(inputId = "select_binom_size", "number of trials:", value = 10, min = 1),
-  numericInput(inputId = "select_binom_prob", "probability of success on each trial:", value = 0.5, min = 0, max = 1, step = 0.1)
-)
+fluidPage(
+  tags$div(
+    sliderInput('binom_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
+    numericInput(inputId = "select_binom_size", "number of trials:", value = 10, min = 1),
+    numericInput(inputId = "select_binom_prob", "probability of success on each trial:", value = 0.5, min = 0, max = 1, step = 0.1)),
+    plotOutput('binomial'),
+    tags$div(
+      useShinyjs(),
+      actionButton("show_code_binomial", "Show me the R code of generating the distribution"),
+      hidden(
+        div(id='code_div_binomial',
+            verbatimTextOutput("code_binomial")
+        )
+      )
+    ))
 
-renderPlot({
+output$binomial <- renderPlot({
   tmp <- rbinom(n = input$binom_size, size = input$select_binom_size, prob = input$select_binom_prob)
   hist(tmp)
   })
+observeEvent(input$show_code_binomial, {
+  toggle('code_div_binomial')
+  output$code_binomial <- renderText({
+    paste0('rbinom(n = ', input$binom_size, ', size = ', input$select_binom_size, ', porb = ', input$select_binom_prob, ')')
+  })
+  
+}
+)
 ```
 
 ## Poisson Distribution - **KEEP FOR NOW BUT CONSIDER REMOVING FOR ACTUAL LAUNCH - HC**
