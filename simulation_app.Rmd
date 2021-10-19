@@ -108,7 +108,10 @@ df <- reactiveValues(treatment = c(0,0,0))
 
 observeEvent(input$hundred_student_treatment, {
   df$treatment <- rbinom(100, size = 1, prob = 0.5)
-  output$hundred_students_treatment_plot <- renderPlot(hist(df$treatment))
+  output$hundred_students_treatment_plot <- renderPlot({
+    tmp <- data.frame(treatment = df$treatment)
+    ggplot() + geom_histogram(data = tmp, aes(x = treatment, y = ..density..), bins = 30, alpha = 0.5) 
+    })
 })
 ```
 
@@ -147,8 +150,9 @@ df <- reactiveValues(score = c(0,0,0))
 observeEvent(input$draw_hundred_student, {
   df$score <- rnorm(100,60,10)
   output$hundred_students_scores <- renderPlot({
-    hist(df$score)
-    abline(v = mean(df$score), col = 'blue')
+    tmp <- data.frame(score = df$score)
+    ggplot() + geom_histogram(data = tmp, aes(x = score, y = ..density..), bins = 30, alpha = 0.5) + 
+      geom_vline(xintercept = mean(tmp$score), color = 'blue') 
     })
 })
 ```
@@ -217,8 +221,8 @@ fluidPage(
 # server = function(input, output, session){
 
 output$normal <- renderPlot({
-  tmp <- rnorm(n = input$normal_size, mean = input$select_normal_mean, sd = input$select_normal_sd)
-  hist(tmp)
+  tmp <- data.frame(data = rnorm(n = input$normal_size, mean = input$select_normal_mean, sd = input$select_normal_sd))
+  ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), bins = 30, alpha = 0.5)
 })
 observeEvent(input$show_code_normal, {
   toggle('code_div_normal')
@@ -253,8 +257,8 @@ fluidPage(
     ))
 
 output$binomial <- renderPlot({
-  tmp <- rbinom(n = input$binom_size, size = input$select_binom_size, prob = input$select_binom_prob)
-  hist(tmp)
+  tmp <- data.frame(data = rbinom(n = input$binom_size, size = input$select_binom_size, prob = input$select_binom_prob))
+  ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), bins = 30, alpha = 0.5)
   })
 observeEvent(input$show_code_binomial, {
   toggle('code_div_binomial')
