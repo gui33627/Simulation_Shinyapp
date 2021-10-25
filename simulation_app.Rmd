@@ -29,7 +29,7 @@ Let's say you are a budding educational researcher who wants to understand how a
 ### Where do we start?
 Since this is a hypothetical example, we physically don't have any data. And as such, you can do one of two things to answer your research question: travel back in time, or simulate. 
 If you decide to go with option one, let me know - I have some scores I want settled with some people in my past. 
-More than likely however, you will need to _simulate your data_ to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this life-long question.
+More than likely however, you will need to _simulate your data_ to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this burning question of yours.
 
 
 ### What is simulation?
