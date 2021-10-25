@@ -75,7 +75,7 @@ Since the only limitation of simulation is computational, it can generate as man
 
 ## 2.1 Random Variable and Probability Distributions
 
-![](./img/population.png)
+![](./www/population.png)
 
 Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call them Ming) is drawn at random, the corresponding “random variable” is Ming's pre-treatment score. If we repeat this process for Ming, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
 
