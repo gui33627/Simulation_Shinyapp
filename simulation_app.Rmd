@@ -45,7 +45,7 @@ Moreover, since the only limitation of simulation is computational, it can gener
 For example, when you are randomly assigning students to receive the treatment, your model would pick 50 students randomly, thus each simulation will pick 50 students randomly.
 
 > Example: The possible combinations of students who would receive the treatment
-> All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, Nancy, Lisa, Lee, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Deborah
+> All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, Nancy, Lisa, Lee, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Hee-jung
 
 
 ```{r, echo=FALSE}
@@ -53,8 +53,8 @@ students <- c('James','Robert', 'John',
 'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
 'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
 'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
-'Susan', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Betty', 'Margaret', 'Sandra', 'Ashley',
-'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Deborah')
+'Yeri', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Lee', 'Margaret', 'Sandra', 'Ashley',
+'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Hee-jung')
 fluidPage(
   actionButton("draw_50_student", "Draw 50 students for treatment"),
   textOutput('student_list')
