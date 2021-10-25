@@ -71,7 +71,7 @@ observeEvent(input$draw_50_student, {
 Since the only limitation of simulation is computational, it can generate as many new results as you need, and represents the characterstics of the model(s) you defined. Now that you have a taste of what simulation looks like in its simplest form, let's take a short step back to really understand the underlying models and their distributional properties, since these really make up the core of your simulation study. 
 
 
-# 2. What is probability
+# 2. What is probability?
 
 ## 2.1 Random Variable and Probability Distributions
 
@@ -88,9 +88,9 @@ You can think about any regular (deterministic) function like a box. For example
 
 There are two main types of random variables: _discrete_ and _continuous_.
 
-- *Discrete random variables* can only take on a countable number of values (possibly infinite, but oftentimes finite). These are things like the number of Heads in two fair coin tosses, or the number of students assigned to a treatment condition.
+- *Discrete random variables* can only take on a countable number of values (possibly infinite, but oftentimes finite). These are things like the number of Heads in two fair coin tosses, or the number of students assigned to a treatment condition (hint for later).
 
-> Treatments randomly assigned to a student (i.e., a binary variable of 0 or 1) or the proportion of 1 in the traetments randomly assigned to 100 students 
+> Treatments randomly assigned to a student (i.e., a binary variable of 0 or 1) or the proportion of 1 in the treatments randomly assigned to 100 students 
 
 ```{r, echo=FALSE}
 fluidPage(
@@ -199,7 +199,11 @@ observeEvent(input$draw_sample, {
 
 
 # Page 2
+
 ## Normal Distribution
+
+Probably one of the most famous distributions in all of statistics is the _Normal distribution_. This is a distribution of a  continuous random variable, and is often used in simulation and teaching because it has very nice properties. 
+**HC NOTE: Expand a little more to bring to simulating students' test scores**
 
 In addition to the distribution of data, probabilistic distributions are also commonly used in regression modeling to help us characterize the variation that remains after predicting the average --- the error term $\epsilon$ in the expression $y = a + bx + \epsilon$. These distributions allow us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.
 
@@ -243,12 +247,16 @@ observeEvent(input$show_code_normal, {
 ```
 
 
-
 ## Binomial Distribution
+
+We've discussed discrete random variables as taking on a countable number of values. A famous distribution of discrete random variables that is often used as models for data is called the _Binomial distribution_. This distribution has two parameters, $n$ and $p$, where $n$ is the number is "trials", and $p$ is the probability of "success". 
+
+For example, let's say we flip a fair coin 100 times ("trials"), and count the number of Heads ("success"). The random variable $X$ is the number of Heads we observe, and the distribution of this random variable (Binomial) is shown here as an example.
+
 ```{r, echo=FALSE}
 fluidPage(
   tags$div(
-    sliderInput('binom_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
+    sliderInput('binom_size', label = "Sample Size", min = 10, max = 5000, value = 50, step = 1),
     numericInput(inputId = "select_binom_size", "number of trials:", value = 10, min = 1),
     numericInput(inputId = "select_binom_prob", "probability of success on each trial:", value = 0.5, min = 0, max = 1, step = 0.1)),
     plotOutput('binomial'),
@@ -274,6 +282,13 @@ observeEvent(input$show_code_binomial, {
   
 }
 )
+```
+
+Now let's take this idea and apply it to our example. After we have generated the sample of 100 students and their respective test scores, we need a way to randomly assign 50 of them to the treatment group and 50 of them to the control group. The binomial distribution provides an excellent model to generate this "treatment assignment". 
+
+```{r random_assign, echo=FALSE}
+# SIMULATION EXAMPLE
+  
 ```
 
 ## Poisson Distribution - **KEEP FOR NOW BUT CONSIDER REMOVING FOR ACTUAL LAUNCH - HC**
