@@ -291,7 +291,7 @@ Now let's take this idea and apply it to our example. After we have generated th
   
 ```
 
-## Poisson Distribution - **KEEP FOR NOW BUT CONSIDER REMOVING FOR ACTUAL LAUNCH - HC**
+## Poisson Distribution - **HC NOTE: Keep for now to introduce covariates, depending on time and deadlines**
 
 $p(x) = \lambda^x e^{\frac{-\lambda}{x!}}$
 
