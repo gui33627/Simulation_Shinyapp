@@ -3,6 +3,7 @@
 
 library(shiny)
 library(ggplot2)
+library(shinyjs)
 theme_set(theme_bw())
 
 ui <- fluidPage(
@@ -97,14 +98,90 @@ ui <- fluidPage(
                this is the variance, and the standard deviation is $sqrt(100) = 10$."),
              actionButton("draw_sample", "Draw students"),
              plotOutput('mean_var')),
-    tabPanel("Normal Distribution"),
-    tabPanel("Binomial Distribution"),
+    tabPanel("Normal Distribution",
+             p("Probably one of the most famous distributions in all of statistics is the _Normal distribution_. This is a distribution of a  continuous random variable, and is often used in simulation and teaching because it has very nice properties."),
+             p('In addition to the distribution of data, probabilistic distributions are also commonly used in regression modeling to help us characterize the variation that remains after predicting the average --- 
+               the error term $epsilon$ in the expression $y = a + bx + epsilon$. These distributions allow us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.'),
+             tags$div(
+               sliderInput('normal_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
+               numericInput(inputId = "select_normal_mean", "Mean:", 0),
+               numericInput(inputId = "select_normal_sd", "Standard Deviation:", 1, max = 100)
+             ),
+             plotOutput('normal'),
+             br(),
+             tags$div(
+               useShinyjs(),
+               actionButton("show_code_normal", "Show me the R code of generating the distribution"),
+               hidden(
+                 div(id='code_div_normal',
+                     verbatimTextOutput("code_normal")
+                 )
+               )
+             ),
+             br()),
+    tabPanel("Binomial Distribution",
+             p("We've discussed discrete random variables as taking on a countable number of values. A famous distribution of discrete random variables that is often used as models for data is called the _Binomial distribution_. 
+               This distribution has two parameters, $n$ and $p$, where $n$ is the number is 'trials', and $p$ is the probability of 'success'. "),
+             p("For example, let's say we flip a fair coin 100 times ('trials'), and count the number of Heads ('success'). The random variable $X$ is the number of Heads we observe, and the distribution of this random variable (Binomial) is shown here as an example."),
+             tags$div(
+               sliderInput('binom_size', label = "Sample Size", min = 10, max = 5000, value = 50, step = 1),
+               numericInput(inputId = "select_binom_size", "number of trials:", value = 10, min = 1),
+               numericInput(inputId = "select_binom_prob", "probability of success on each trial:", value = 0.5, min = 0, max = 1, step = 0.1)),
+             plotOutput('binomial'),
+             tags$div(
+               useShinyjs(),
+               actionButton("show_code_binomial", "Show me the R code of generating the distribution"),
+               hidden(
+                 div(id='code_div_binomial',
+                     verbatimTextOutput("code_binomial")
+                 )
+               )
+             ),
+             p("Now let's take this idea and apply it to our example. 
+               After we have generated the sample of 100 students and their respective test scores, 
+               we need a way to randomly assign 50 of them to the treatment group and 50 of them to the control group. The binomial distribution provides an excellent model to generate this 'treatment assignment'. ")),
     
     "Sampling Distribution",
-    tabPanel("Component 5"),
+    tabPanel("What is Sampling Distribution?",
+             p("The sampling distribution is the set of possible datasets that could have been observed if the data collection process had been re-done, along with the probabilities of these possible values."),
+             p("The simplest example of a sampling distribution is the pure random sampling model: if the data are a simple random sample of size n from a population of size N, then the sampling distribution is the set of all samples of size n, all with equal probabilities."),
+             p("The normal distribution, binomial distribution, and poisson distribution with specified parameters on the previous page are all sampling distributions for the samples of sizes of your choice."),
+             p("Say there are 10,000 NYU grad students and we randomly select 1000 students. Here we have population size of 10,000 and sample size of 1000. How many samples of size “n” are possible out of a population of size “N”? That's 10000 choose 1000, ${1000 choose100}$, and the number is so large that even R only returns Inf."),
+             code("choose(10000,1000)"),
+             verbatimTextOutput('sampling_distr'),
+             p("The next simplest example is pure measurement error: if observations $y_i$, i = 1,. . . , n, are generated from the model $y_i = a + bx_i + epsilon_i$ , with fixed coefficients a and b, pre-specified values of the predictor $x_i$ , and a specified distribution for the errors $epsilon_i$ 
+               (for example, normal with mean 0 and standard deviation $sigma$), then the sampling distribution is the set of possible datasets obtained from these values of $x_i$ , drawing new errors $epsilon_i$ from their assigned distribution."),
+             br(),
+             p("One continuous predictor: y = b0 + b1x + eps"),
+             numericInput(inputId = "select_b0", "Intercept (b0):", 1),
+             numericInput(inputId = "select_b1", "Coefficient on X (b1):", 0.5),
+             numericInput(inputId = "select_sigma", "Residual Std Dev (sigma):", 1),
+             sliderInput(inputId = "sample_size",label = "Select Sample Size",
+                         min = 10, max = 1000, value = 250, step = 10),
+             plotOutput('regression'),
+             p("In practice, we will not know the sampling distribution; we can only estimate it, as it depends on aspects of the population, not merely on the observed data. In the pure random sampling model, the sampling distribution depends on all N datapoints. For the measurement-error model, 
+               the sampling distribution depends on the parameters a, b, and $sigma$, which in general are not known, and will be estimated from the data.")),
     "Simulation",
-    tabPanel("Data Generation Process (DGP)"),
-    tabPanel("Average Treatment Effect (ATE)")
+    tabPanel("Why simulation?",
+             p("Simulation of random variables is important in applied statistics for several reasons. 
+First, we use several probability models to mimic variation in the world, and the tools of simulation can help us better understand how this variation plays out.
+               Second, we can use simulation to approximate the sampling distribution of data and propagate this to the sampling distribution of statistical estimates and procedures.
+               Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts."),
+             p("In this final section, we will use what we learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that _omniscient_ hat? It's time to put it on."),
+             p("As with any simulation study, we need to first establish our **Data Generating Process (DGP)**. This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. For the purposes of this study, we will use what we learned in previous sections to walk through our DGP.")),
+    tabPanel("Data Generation Process (DGP)",
+             h3('Treatment Assignment'),
+             p("We already know how to generate treatment assignments from [section 2] using the Binomial distribution. The probability of assignment will be _0.5_."),
+             h3("Generating pre-treatment test scores"),
+             p("We also know that we can use the Normal distribution from [section 2] to generate our pre-treatment test scores. Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
+             h3('Generating outcome test scores based on treatment assignment'),
+             p("Here we start to make good use of our omniscient hat. As omniscient beings, we know that the treatment effect (or \tau) is **5**. That is, we know that the post-treatment test scores of students who went through the afterschool program is on average **5** points higher than the students who did not. To generate these outcome scores, we would simulate a _dependency_ based on the treatment assignment variable from above:"),
+             h3('Calculating the Average Treatment Effect (ATE)'),
+             p('Note that we use "calculating" instead of "estimating". This is intentional, and is meant to illustrate the difference in process when you are wearing the omniscient hat versus the researcher hat. Specifically, as a researcher, you are always _estimating_ the ATE (or any other estimand) because we will never know the truth (in this case, that the treatment effect is 5). But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.'),
+             br()
+             ),
+    tabPanel("Average Treatment Effect (ATE)",
+             p('Once we have simulated all the data necessary from our DGP, we can finally move on to calculating our estimand of interest:'))
   )
 )
 
@@ -166,6 +243,39 @@ server <- function(input, output, session) {
         annotate("text",x=90,y=0.035,label=as.character(mean), fontface = "italic", size = 6) +
         annotate("text",x=90,y=0.032,label=as.character(sd), fontface = "italic", size = 6) 
     })
+  })
+  
+  output$normal <- renderPlot({
+    tmp <- data.frame(data = rnorm(n = input$normal_size, mean = input$select_normal_mean, sd = input$select_normal_sd))
+    ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), bins = 30, alpha = 0.5)
+  })
+  observeEvent(input$show_code_normal, {
+    toggle('code_div_normal')
+    output$code_normal <- renderText({
+      paste0('rnorm(n = ', input$normal_size, ', mean = ', input$select_normal_mean, ', sd = ', input$select_normal_sd, ')')
+    })
+    
+  })
+  
+  output$binomial <- renderPlot({
+    tmp <- data.frame(data = rbinom(n = input$binom_size, size = input$select_binom_size, prob = input$select_binom_prob))
+    ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), bins = 30, alpha = 0.5)
+  })
+  observeEvent(input$show_code_binomial, {
+    toggle('code_div_binomial')
+    output$code_binomial <- renderText({
+      paste0('rbinom(n = ', input$binom_size, ', size = ', input$select_binom_size, ', porb = ', input$select_binom_prob, ')')
+    })
+    
+  })
+  
+  output$sampling_distr <- renderText(choose(10000,1000))
+  
+  output$regression <- renderPlot({
+    x <- seq(from = 1, to = 10, length.out = input$sample_size)
+    y <- input$select_b0 + input$select_b1*x + rnorm(length(x), 0,input$select_sigma)
+    df <- data.frame(x, y)
+    ggplot(df, aes(x = x, y = y)) + geom_point() + geom_smooth(method='lm', formula= y~x,se = F) + theme_bw()
   })
   
 }

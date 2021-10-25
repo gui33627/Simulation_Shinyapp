@@ -280,8 +280,7 @@ observeEvent(input$show_code_binomial, {
     paste0('rbinom(n = ', input$binom_size, ', size = ', input$select_binom_size, ', porb = ', input$select_binom_prob, ')')
   })
   
-}
-)
+})
 ```
 
 Now let's take this idea and apply it to our example. After we have generated the sample of 100 students and their respective test scores, we need a way to randomly assign 50 of them to the treatment group and 50 of them to the control group. The binomial distribution provides an excellent model to generate this "treatment assignment". 
