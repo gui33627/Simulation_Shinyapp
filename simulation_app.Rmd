@@ -31,14 +31,14 @@ Since this is a hypothetical example, we physically don't have any data. And as 
 If you decide to go with option one, let me know - I have some scores I want settled with some people in my past. 
 More than likely however, you will need to _simulate your data_ to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this burning question of yours.
 
+*Vera's note- we may edit this part a bit? I think when we talk about "travel back in time", we are still implying we use simulation to create counterfatuals. But we would really emphasize that we use simulation to to create hypothetical datasets.*        
+*Edit?: There is no real data collected for a hypothetical example. You need to come up with some data mimicking the real-world scenario, so that you shall study it and learn lessons that shall inform real-world problems. In other words, you will need to _simulate your data_ to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this burning question of yours.*
 
 ### What is simulation?
-Simulation in broad terms, is a research or teaching technique that reproduces actual events and processes under test conditions. It is often used in industry, science, and education, and developing one is often a highly complex mathematical process. Initially a set of rules, relationships, and operating procedures are specified, along with other variables. The interaction of these phenomena create new situations, even new rules, which further evolve as the simulation proceeds. Simulation implementations range from paper-and-pencil and board-game reproductions of situations to complex computer-aided interactive systems.
+Simulation is often used as a research or teaching technique that creates processes or datasets representing actual conditions. Simulation operation follows previously-characterized models or mathematical processes. As the researcher, you have the power to pick the model that will render the phenomenon you want to study. You need to deliberately consider the model that will represent the event of interest, as it determines what the data are and how they get generated. All of this is called the _Data Generating Process_, and will be discussed in detail later in this app. 
 
-A simulation imitates the operation of real world processes or systems with the use of models. The model represents the key behaviours and characteristics of the selected process or system, while the simulation represents how the model evolves under different conditions over time. Simulating your data also means you have the power to determine what the data are and how they get generated. All of this is called the _Data Generating Process_, and will be discussed in detail later in this app. 
-
-Let's contextualize the broader definition of simulation to our hypothetical example, and put the _omniscient_ hat on, since it feels good to know everything.
-With this powerful hat, you know that you have a sample of 100 fake students (that you will generate), who must be randomly assigned (by some model you will specify) into treatment and control groups. "Treatment" in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, and those in the control group will receive normal tutoring. You will also be generating all of these students' "pre-treatment" test scores (again, through models), as well as their "post-treatment" test scores, otherwise known as the _outcomes_. These are fairly self-explanatory: **pre-treatment** test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and **post-treatment** test scores are the scores of the 100 sample students after the treatment period. The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called _potential outcomes_. 
+You have a sample of 100 fake students (that you will generate), who must be randomly assigned (by some model you will specify) into treatment and control groups. "Treatment" in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, and those in the control group will receive normal tutoring. You will also be generating all of these students' "pre-treatment" test scores (again, through models), as well as their "post-treatment" test scores, otherwise known as the _outcomes_. These are fairly self-explanatory: **pre-treatment** test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and **post-treatment** test scores are the scores of the 100 sample students after the treatment period.         
+Let's put the _omniscient_ hat on, since it feels good to know everything. With this powerful hat, you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called _potential outcomes_. 
 
 For comparison, let's switch to the _researcher_ hat for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the treatment group students would be _if they hadn't received the treatment_ (unless you can time travel, which again, let me know). The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of "parallel universe" where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference.
 
@@ -47,7 +47,7 @@ For now, understand that simulation starts all the way at the beginning: who is 
 This is an example of how a model (that you specify) would randomly select 50 students to be put into the treatment group. When you are randomly assigning students to receive the treatment, your model picks 50 students randomly. Thus, everytime your model runs, each simulation will result in a different group of 50 students. Try it for yourself!
 
 > Example: The possible combinations of students who would receive the treatment
-> All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, Nancy, Lisa, Lee, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Hee-jung
+> All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, Nancy, Lisa, Lee, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Hee-jung,
 
 
 ```{r, echo=FALSE}
@@ -66,10 +66,13 @@ observeEvent(input$draw_50_student, {
   studentlist <- sample(students, size = 25)
   output$student_list <- renderText(paste0(studentlist))
 })
+
+
+
 ```
-
+    
+    
 Since the only limitation of simulation is computational, it can generate as many new results as you need, and represents the characterstics of the model(s) you defined. Now that you have a taste of what simulation looks like in its simplest form, let's take a short step back to really understand the underlying models and their distributional properties, since these really make up the core of your simulation study. 
-
 
 # 2. What is probability?
 
@@ -80,8 +83,6 @@ Since the only limitation of simulation is computational, it can generate as man
 Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call them Ming) is drawn at random, the corresponding “random variable” is Ming's pre-treatment score. If we repeat this process for Ming, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
 
 You can think about any regular (deterministic) function like a box. For example, for the function $f(x) = x^2$, *every time* you give the function the value 2, it will *always* give you back 4. However, random variables are random functions that map the sample space (different students) into the real line (test score values between 0 and 100). This means that each time you apply the function it will give you a different number.
-
-**Vera NOTE: Just edit the example to be a bit more gender-neutral.**
 
 
 ## Discrete and continuous random variable
