@@ -31,8 +31,8 @@ Since this is a hypothetical example, we physically don't have any data. And as 
 If you decide to go with option one, let me know - I have some scores I want settled with some people in my past. 
 More than likely however, you will need to _simulate your data_ to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this burning question of yours.
 
-*Vera's note- we may edit this part a bit? I think when we talk about "travel back in time", we are still implying we use simulation to create counterfatuals. But we would really emphasize that we use simulation to to create hypothetical datasets.*        
-*Edit?: There is no real data collected for a hypothetical example. You need to come up with some data mimicking the real-world scenario, so that you shall study it and learn lessons that shall inform real-world problems. In other words, you will need to _simulate your data_ to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this burning question of yours.*
+**Vera's note- we may edit this part a bit? I think when we talk about "travel back in time", we are still implying we use simulation to create counterfatuals. But we would really emphasize that we use simulation to to create hypothetical datasets.**        
+**Edit?: There is no real data collected for a hypothetical example. You need to come up with some data mimicking the real-world scenario, so that you shall study it and learn lessons that shall inform real-world problems. In other words, you will need to _simulate your data_ to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this burning question of yours.**
 
 ### What is simulation?
 Simulation is often used as a research or teaching technique that creates processes or datasets representing actual conditions. Simulation operation follows previously-characterized models or mathematical processes. As the researcher, you have the power to pick the model that will render the phenomenon you want to study. You need to deliberately consider the model that will represent the event of interest, as it determines what the data are and how they get generated. All of this is called the _Data Generating Process_, and will be discussed in detail later in this app. 
@@ -84,10 +84,13 @@ Since the only limitation of simulation is computational, it can generate as man
 
 ![](./www/population.png)
 
-Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call them Ming) is drawn at random, the corresponding “random variable” is Ming's pre-treatment score. If we repeat this process for Ming, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
+Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. When a student (let's call them Ming) is drawn at random, you will also know Ming's pre-treatment score. A student's pre-treatment score is a random variable in your study. A random variable has its value assigned by a rule to any possible outcomes, at random. The set of all possible outcomes is also called the sample space.        
+
+If we repeat this process for Ming, the probability of getting each possible score from the random variable is its distribution. Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, such as the probability of a test score equaling 15, 65, 100, and so on.
 
 You can think about any regular (deterministic) function like a box. For example, for the function $f(x) = x^2$, *every time* you give the function the value 2, it will *always* give you back 4. However, random variables are random functions that map the sample space (different students) into the real line (test score values between 0 and 100). This means that each time you apply the function it will give you a different number.
 
+**Vera's note- expand on some terms.Also, love the graph, and maybe we need to credit it?**
 
 ## Discrete and continuous random variable
 
@@ -121,7 +124,9 @@ observeEvent(input$hundred_student_treatment, {
   df$treatment <- rbinom(100, size = 1, prob = 0.5)
   output$hundred_students_treatment_plot <- renderPlot({
     tmp <- data.frame(treatment = df$treatment)
-    ggplot() + geom_histogram(data = tmp, aes(x = treatment, y = ..density..), bins = 30, alpha = 0.5) 
+    #hist doesn't make much sense here
+    tmp$treatment<-ifelse(tmp$treatment=="0","control","treatment")
+    ggplot(data = tmp,aes(x=treatment)) + geom_bar() 
     })
 })
 ```
@@ -129,16 +134,11 @@ observeEvent(input$hundred_student_treatment, {
 
 - *Continuous random variables* can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).
 
-> Example: pre-treament score of a student randomly drawn, or the mean of pre-treament scores of 100 students randomly drawn
+> Example: pre-treament score of a student randomly drawn, and the blue line represents the mean of pre-treament scores of 100 students randomly drawn
 
 
 ```{r, echo=FALSE}
-students <- c('James','Robert', 'John',
-'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
-'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
-'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
-'Susan', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Betty', 'Margaret', 'Sandra', 'Ashley',
-'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Deborah')
+students <- students
 fluidPage(
   actionButton("draw_a_student", "Draw a student"),
   textOutput('one_student_score')
@@ -201,14 +201,17 @@ observeEvent(input$draw_sample, {
 })
 ```
 
-
+**Vera's note- let's edit this section a bit? It may be a little bit more technical than necessary for the purpose of our app**
 
 # Page 2
 
 ## Normal Distribution
 
-Probably one of the most famous distributions in all of statistics is the _Normal distribution_. This is a distribution of a  continuous random variable, and is often used in simulation and teaching because it has very nice properties. 
+Probably one of the most famous distributions in all of statistics is the _Normal distribution_. This is a distribution of a  continuous random variable, and is often used in simulation and teaching because it approximates to many natural events. The normal distribution is also called bell-shaped distribution, because it is symmetric and unimodal, resembling a bell. Its symmetric and unimodal properties is convenient for us to study the distribution of the values. Such as student's test scores, many variables from empirical studies have a center peak value its mean, and the probability of other possible values diminish gradually 
+as they further away from the center.       
+
 **HC NOTE: Expand a little more to bring to simulating students' test scores**
+**Vera's NOTE: while expanding on Normal Distribution, I start to question that if students' test scores a good example for it?**
 
 In addition to the distribution of data, probabilistic distributions are also commonly used in regression modeling to help us characterize the variation that remains after predicting the average --- the error term $\epsilon$ in the expression $y = a + bx + \epsilon$. These distributions allow us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.
 
