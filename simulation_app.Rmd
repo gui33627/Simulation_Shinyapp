@@ -47,31 +47,35 @@ For now, understand that simulation starts all the way at the beginning: who is 
 This is an example of how a model (that you specify) would randomly select 50 students to be put into the treatment group. When you are randomly assigning students to receive the treatment, your model picks 50 students randomly. Thus, everytime your model runs, each simulation will result in a different group of 50 students. Try it for yourself!
 
 > Example: The possible combinations of students who would receive the treatment
-> All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, Nancy, Lisa, Lee, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Hee-jung,
+
+> All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, Nancy, Lisa, Lee, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Hee-jung,Yichen,Aarav, Mohammed,Sofía, Olivia, Lucas, Ben, Emma, Mia, Chloé, Gabriel, Raphaël, Santiago, Francisco, Leonor, Leon, Maria, Himari, Nathaniel, Jacob, Dalisay, Analyn,Nur, Yuxuan, Ahmad, Megan, Charlotte, Xinyi, Jack, Alex, Giulia,Andrea, Chiara, Marco, Hannah, Samantha, Nathan, Simon, Camila, Juan, Afiq,Nurul, Haruto, Ren, Akari, Salomé, Oliver, Aadya, Saanvi, Yinuo.
 
 
 ```{r, echo=FALSE}
 students <- c('James','Robert', 'John',
-'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
-'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
-'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
-'Yeri', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Lee', 'Margaret', 'Sandra', 'Ashley',
-'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Hee-jung')
+              'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
+              'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
+              'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
+              'Yeri', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Lee', 'Margaret', 'Sandra', 'Ashley',
+              'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Hee-jung',
+              'Yichen','Aarav', 'Mohammed',
+              'Sofía', 'Olivia', 'Lucas', 'Ben', 'Emma', 'Mia', 'Chloé', 'Gabriel', 'Raphaël', 
+              'Santiago', 'Francisco', 'Leonor', 'Leon', 'Maria', 'Himari', 'Nathaniel', 'Jacob', 'Dalisay', 'Analyn', 
+              'Nur', 'Yuxuan', 'Ahmad', 'Megan', 'Charlotte', 'Xinyi', 'Jack', 'Alex', 'Giulia',
+              'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
+              'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo')
 fluidPage(
   actionButton("draw_50_student", "Draw 50 students for treatment"),
   textOutput('student_list')
 )
-###not enough names yet, so 25 for now
 observeEvent(input$draw_50_student, {
-  studentlist <- sample(students, size = 25)
+  studentlist <- sample(students, size = 50)
   output$student_list <- renderText(paste0(studentlist))
 })
 
-
-
 ```
-    
-    
+      
+           
 Since the only limitation of simulation is computational, it can generate as many new results as you need, and represents the characterstics of the model(s) you defined. Now that you have a taste of what simulation looks like in its simplest form, let's take a short step back to really understand the underlying models and their distributional properties, since these really make up the core of your simulation study. 
 
 # 2. What is probability?
