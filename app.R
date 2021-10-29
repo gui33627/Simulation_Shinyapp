@@ -12,7 +12,7 @@ ui <- fluidPage(
     "Introduction",
     tabPanel('Get Started!',
              h3('Welcome to the simulation app!'),
-             p("This app is intended show how to simulate hypothetical samples in ordr to test if different causal inference methods are unbiased and efficient."),
+             p("This app is intended show you how to simulate hypothetical samples in ordr to test if different causal inference methods are unbiased and efficient."),
              p("Throughout your simulation journey, we will cover several different topics using a hypothetical real-world example that will hopefully build your intuition and knowledge about the joys of simulation. 
                One key thing to remember is that as you go through this app, you will have access to two very important hats: the ", tags$em("researcher hat"), " and ", tags$em("omniscient hat"), ". 
                The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world, and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), " where you will transcend your feeble human mind and become an all-knowing and powerful being. 
@@ -20,7 +20,7 @@ ui <- fluidPage(
              p("Ready? Okay, let's get started.")),
     tabPanel("Hypothetical Example", 
       tags$div(
-      p('In order to make the leanrning process easy and fun, we make up the following hypothetical example that linking concepts throughout the app.'),
+      p('In order to make the leanrning process easy and fun, we make up the following hypothetical example that links concepts throughout the app.'),
       br(),
       p('In New York State, there are a series of exams that high school students must take and pass in order to graduate. 
         These are known as the Regents exams, and they cover a wide variety of topics such as Algebra, Global History, English, and Earth Science.
@@ -58,9 +58,11 @@ ui <- fluidPage(
              
              br(),
              h4('Example: Which students in your sample participate in the afterschool program?'),
-             p("This is an example of how a model (that you specify) would randomly select 50 students to be put into the treatment group. 
-               When you are randomly assigning students to receive the treatment, your model picks 50 students randomly. 
-               Thus, everytime your model runs, each simulation will result in a different group of 50 students. Try it for yourself!"),
+             p("Click the button below to randomly select 50 students into the treatment group. 
+                If you click again, you will select a different group of 50 students who participate in the program. 
+                Each of your click generates a simulated sample of students. If you click many times, you can generate many simulated samples. 
+                By combining all these samples or all possible senarios, we are able to know the population trend.
+                Try it for yourself!"),
              br(),
              p('All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, 
                Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, 
@@ -72,86 +74,54 @@ ui <- fluidPage(
              actionButton("draw_50_student", "Draw 50 students for treatment"),
              textOutput('student_list'),
              br(),
-             p("Since the only limitation of simulation is computational, it can generate as many new results as you need, and represents the characterstics of the model(s) you defined. Now that you have a taste of what simulation looks like in its simplest form, let's take a short step back to really understand the underlying models and their distributional properties, since these really make up the core of your simulation study.")),
+             p("Since the only limitation of simulation is computational, it can generate as many new results as you need, 
+               and represents the characterstics of the model(s) you defined. 
+               Now that you have a taste of what simulation looks like in its simplest form, 
+               let's take a short step back to really understand the underlying models and their distributional properties, 
+               since these really make up the core of your simulation study.")),
     
     
-    "What is probability?",
-    tabPanel("Random Variable and Probability Distributions",
-             img(src = "population.png", height = 400, width = 700),
-             p("Suppose you're drawing students with pre-treatment regents test scores between 0 and 100 from high schools in New York state. 
-               When a student (let's call them Ming) is drawn at random, the corresponding “random variable” is Ming's pre-treatment score. 
-               If we repeat this process for Ming, the probability of getting each possible score from the random variable is its distribution. 
-               Distributions are about the population. In this example, the probability distribution of the random variable (pre-treatment test scores) specifies the probabilities of all possible outcomes, 
-               such as the probability of a test score equaling 15, 65, 100, and so on."),
-             p("You can think about any regular (deterministic) function like a box. For example, for the function f(x) = x^2, ", tags$em("every time"), " you give the function the value 2, it will ", tags$em("always"), " give you back 4. 
-                However, random variables are random functions that map the sample space (different students) into the real line (test score values between 0 and 100). 
-               This means that each time you apply the function it will give you a different number.")),
-    
-    tabPanel("Discrete and continuous random variable",
-             p('There are two main types of random variables: ', tags$strong("discrete"), ' and ', tags$strong("continuous"), '.'),
+    "Probability Distribution",
+    tabPanel("Discrete Random Variable and Distribution",
+             # img(src = "population.png", height = 400, width = 700),
+             p("After we have simulated a sample of 100 students, in order to generate which students participate in the program, we need a data generator governed by probability distribution. 
+               Probablity distrbution refers to what type of distribution we're using in the data generating process."),
              br(),
-             p(tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite). 
-               These are things like the number of Heads in two fair coin tosses, or the number of students assigned to a treatment condition (hint for later).'),
-             p('In our example of afterschool program for the Global History regents exam, a discrete random variable is the treatments randomly assigned to a student, whhich can only take two values, treated or control. or the proportion of 1 in the treatments randomly assigned to 100 students.'),
+             p('In our example of afterschool program for the Global History regents exam, 
+               when we randomly assign a student to either participating in the program or not participating, or in another word, treatment group or control group. 
+               Since the randomly assignment only has two possible values and each assignment is independent of each other, we get a Bernoulli distribution. '),
+             p('There is only one parameter in Bernoulli distribution, probability p, and the random variable, a student in treatment or control group in our example, 
+               takes the value 1 (treatment group) with probability p and the value 0 with probability (1-p).'),
+             sliderInput(inputId = "bernoulli_prob",
+                         label = "Select the probability of in the treatment group (p):",
+                         min = 0, max = 1, value = 0.5, step = 0.1),
              actionButton("one_student_treatment", "Assign a student"),
+             br(),
              textOutput('one_student_treatment_plot'),
-             actionButton("hundred_student_treatment", "Assign 100 students"),
-             plotOutput('hundred_students_treatment_plot'),
+             
+             tags$div(
              br(),
-             p(tags$strong('Continuous random variables'), ' can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).'),
-             p('Example: pre-treament score of a student randomly drawn, or the mean of pre-treament scores of 100 students randomly drawn'),
-             actionButton("draw_a_student", "Draw a student"),
-             textOutput('one_student_score'),
-             actionButton("draw_hundred_student", "Draw 100 students"),
-             plotOutput('hundred_students_scores')),
-    
-    tabPanel("Mean and Variance",
-             p('A probability distribution of a random variable Z takes on some range of values (pre-treatment regents test scores between 0 and 100 of students from high schools in New York state). 
-               The mean of this distribution is the average of all these scores or, equivalently, the score that would be obtained on average from a random sample from the distribution. 
-               The mean is also called the expectation or expected value and is written as E(Z) or mu_Z. 
-               For example, the plot below shows the (approximate) distribution of the pre-treatment regents test scores of students from high schools in New York state. 
-               The mean of this distribution is 60: this is the average score of all the high school students in New York and it is also the average score we would expect to see from sampling one student at random.'),
-             p('The variance of the distribution of Z is E((Z − mu_Z )^2), that is, the mean of the squared difference from the mean. 
-               To understand this expression, first consider the special case in which Z takes on only a single score In that case, this single value is the mean, 
-               so Z − mu_Z = 0 for all Z in the distribution, and the variance is 0. To the extent that the distribution has variation, 
-               so that sampled scores from high school in New York State can be different, this will show up as values of Z that are higher and lower than mu_Z, 
-               and the variance of Z is nonzero.'),
-             p("The standard deviation is the square root of the variance. We typically work with the standard deviation rather than the variance because it is on the original scale of the distribution. 
-               In the plot below, the standard deviation of students' scores is 10: that is, if you randomly sample a student from the population, observe their score z, and compute (z − 60)^2, then the average value you will get is 100; 
-               this is the variance, and the standard deviation is sqrt(100) = 10."),
-             actionButton("draw_sample", "Draw students"),
-             plotOutput('mean_var')),
-    tabPanel("Normal Distribution",
-             p("Probably one of the most famous distributions in all of statistics is the _Normal distribution_. This is a distribution of a  continuous random variable, and is often used in simulation and teaching because it has very nice properties."),
-             p('In addition to the distribution of data, probabilistic distributions are also commonly used in regression modeling to help us characterize the variation that remains after predicting the average --- 
-               the error term epsilon in the expression y = a + bx + epsilon. These distributions allow us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.'),
-             tags$div(
-               sliderInput('normal_size', label = "Sampel Size", min = 10, max = 5000, value = 50, step = 1),
-               numericInput(inputId = "select_normal_mean", "Mean:", 0),
-               numericInput(inputId = "select_normal_sd", "Standard Deviation:", 1, max = 100)
-             ),
-             plotOutput('normal'),
+             p('If the probability of in the treatment group is 0.5, then a student has equal chance of being assigned to participate in the afterschool program and not in the program.
+               However, if you try setting the probability of in the treatment group be 1, every student will get into treatment group when you click "Assign a student". 
+               By each clicking, you simulate a new treatment for a student.'),
+             br(),br(),br(),
+             p("If we randomly assignment treatments to 100 students and suppose we only care about how many students out of the 100 are in the treatment group 
+               and don't need to know the treatment of each of them, we can use a binomial distribution to generate the data."),
+             p("The Bernoulli process is in nature a sequence of independent Bernoulli trials. 
+               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, and the probability of success in each Bernoulli trials, p. 
+               Another simple example of Binomial distribution is that suppose we flip a fair coin 100 times ('trials'), and count the number of Heads ('success'). 
+               Here the random variable is the number of Heads we observe."),
+             sliderInput(inputId = "select_n_binomial",
+                         label = "Select the number of treatment assignments (n):",
+                         min = 1, max = 100, value = 100, step = 1),
+             sliderInput(inputId = "select_p_binomial",
+                         label = "Select the probability of in the treatment group in one assignmnet (p):",
+                         min = 0, max = 1, value = 0.5, step = 0.1),
+             actionButton("hundred_student_treatment", "Assign students"),
+             textOutput('hundreds_student_treatment_result'),
+             # plotOutput('hundred_students_treatment_plot'),
+             tableOutput('hundreds_student_treatment_result_table'),
              br(),
-             tags$div(
-               useShinyjs(),
-               actionButton("show_code_normal", "Show me the R code of generating the distribution"),
-               hidden(
-                 div(id='code_div_normal',
-                     verbatimTextOutput("code_normal")
-                 )
-               )
-             ),
-             br()),
-    tabPanel("Binomial Distribution",
-             p("We've discussed discrete random variables as taking on a countable number of values. A famous distribution of discrete random variables that is often used as models for data is called the _Binomial distribution_. 
-               This distribution has two parameters, n and p, where n is the number is 'trials', and p is the probability of 'success'. "),
-             p("For example, let's say we flip a fair coin 100 times ('trials'), and count the number of Heads ('success'). 
-               The random variable X is the number of Heads we observe, and the distribution of this random variable (Binomial) is shown here as an example."),
-             tags$div(
-               sliderInput('binom_size', label = "Sample Size", min = 10, max = 5000, value = 50, step = 1),
-               numericInput(inputId = "select_binom_size", "number of trials:", value = 10, min = 1),
-               numericInput(inputId = "select_binom_prob", "probability of success on each trial:", value = 0.5, min = 0, max = 1, step = 0.1)),
-             plotOutput('binomial'),
              tags$div(
                useShinyjs(),
                actionButton("show_code_binomial", "Show me the R code of generating the distribution"),
@@ -161,53 +131,192 @@ ui <- fluidPage(
                  )
                )
              ),
-             p("Now let's take this idea and apply it to our example. 
-               After we have generated the sample of 100 students and their respective test scores, 
-               we need a way to randomly assign 50 of them to the treatment group and 50 of them to the control group. The binomial distribution provides an excellent model to generate this 'treatment assignment'. ")),
+             p('To summarize above,', tags$strong('discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.'),
+             br(),  br(),  
+             br())),
+    tabPanel("Continuous Random Variable and Distribution",
+             p('Besides the treatment assignment for each of the students in your sample, 
+               we also need to generate the scores for students before the afterschool program begins. 
+               By specifying a mean and standard deviation of the scores of all students in New York State, 
+               we can simulate the pre-treatment scores for the students in our sample by a normal distribution. 
+               We can view the pre-treatment score of a student as a random variable, X, possibly taking any value between 0 and 100.'),
+             p('The mean of the distribution is the average score of all the high school students in New York and 
+                it is also the average score we would expect to see from sampling one student at random. 
+                The mean is also called the expectation or expected value and is written as E(X) or mu_X.'),
+             p('The variance of the distribution of X is E((X − mu_X )^2), that is, the mean of the squared difference from the mean. 
+               To understand this expression, first consider the special case in which X takes on only a single score. In that case, this single value is the same as the mean, 
+               so X − mu_X = 0 for all X in the distribution, and the variance is 0. 
+               As the sampled scores for student from high school in New York State can be different, this will show up as values of X that are higher and lower than mu_X, 
+               and the variance of the distribution of X is nonzero. The standard deviation is the square root of the variance. 
+               Suppose the mean and variance of the distribution are 60 and 100 repectively. Then it means that if you randomly sample a student from the population, 
+               observe their score x, and compute (x − 60)^2, the average value you will get is 100, and the standard deviation is sqrt(100) = 10. 
+               We typically work with the standard deviation rather than the variance because it is on the original scale of the distribution. '),
+             
+             sliderInput(inputId = "select_mean_normal",
+                         label = "Select the expectation of the pre-treatment score (E(X)):",
+                         min = 20, max = 80, value = 60, step = 1),
+             sliderInput(inputId = "select_sd_normal",
+                         label = "Select the standard deviation of the pre-treatment score:",
+                         min = 0, max = 10, value = 5, step = 1),
+             
+             actionButton("draw_hundred_student", "Draw 100 students"),
+             br(),
+             textOutput('hundred_student_score_print'),
+             br(),
+             plotOutput('hundred_students_scores'),
+             br(),
+             
+             tags$div(
+               useShinyjs(),
+               actionButton("show_code_normal", "Show me the R code of generating the distribution"),
+               hidden(
+                 div(id='code_div_normal',
+                     verbatimTextOutput("code_normal")
+                 )
+               )
+             ),
+             
+             textOutput('normal_mean_var'),
+             br(),
+             
+             p('In addition to the distribution of data, normal distributions is also commonly used in regression modeling to help us characterize the variation that remains after predicting the average ---
+               the error term epsilon in the expression y = a + bx + epsilon. The distributions allows us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.'),
+             br(),
+             p("To wrap up, we've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
+               Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')),
     
+             
     "Sampling Distribution",
     tabPanel("What is Sampling Distribution?",
-             p("The sampling distribution is the set of possible datasets that could have been observed if the data collection process had been re-done, along with the probabilities of these possible values."),
-             p("The simplest example of a sampling distribution is the pure random sampling model: if the data are a simple random sample of size n from a population of size N, then the sampling distribution is the set of all samples of size n, all with equal probabilities."),
-             p("The normal distribution, binomial distribution, and poisson distribution with specified parameters on the previous page are all sampling distributions for the samples of sizes of your choice."),
-             p("Say there are 10,000 NYU grad students and we randomly select 1000 students. Here we have population size of 10,000 and sample size of 1000. How many samples of size “n” are possible out of a population of size “N”? That's 10000 choose 1000, ${1000 choose100}$, and the number is so large that even R only returns Inf."),
-             code("choose(10000,1000)"),
-             verbatimTextOutput('sampling_distr'),
-             p("The next simplest example is pure measurement error: if observations $y_i$, i = 1,. . . , n, are generated from the model $y_i = a + bx_i + epsilon_i$ , with fixed coefficients a and b, pre-specified values of the predictor $x_i$ , and a specified distribution for the errors $epsilon_i$ 
-               (for example, normal with mean 0 and standard deviation $sigma$), then the sampling distribution is the set of possible datasets obtained from these values of $x_i$ , drawing new errors $epsilon_i$ from their assigned distribution."),
+             p('Suppose you simulated many samples consisting of 100 students drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-treatment score in New York State.
+             A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true population mean. 
+             The sampling distribution of sample mean is the set of possible sample means estimated from all samples of size 100 that could have been observed if the data simulation process had been re-done, along with the probabilities of these possible values.'),
+             p("However, the combinations of 100 students from all students in New York State is an exaodinary large number, and can even exceed the computation capacity of your computer. 
+               For example, say there are 100,000 high school students in New York State and we randomly select 100 students. Here we have population size of 100,000 and sample size of 100. 
+               How many samples of size 100 are possible out of a population of size 100,000? That's 100,000 choose 100, ${100,000 choose100}$, and the number is so large that even R only returns Inf."),
              br(),
-             p("One continuous predictor: y = b0 + b1x + eps"),
-             numericInput(inputId = "select_b0", "Intercept (b0):", 1),
-             numericInput(inputId = "select_b1", "Coefficient on X (b1):", 0.5),
-             numericInput(inputId = "select_sigma", "Residual Std Dev (sigma):", 1),
-             sliderInput(inputId = "sample_size",label = "Select Sample Size",
-                         min = 10, max = 1000, value = 250, step = 10),
-             plotOutput('regression'),
-             p("In practice, we will not know the sampling distribution; we can only estimate it, as it depends on aspects of the population, not merely on the observed data. In the pure random sampling model, the sampling distribution depends on all N datapoints. For the measurement-error model, 
-               the sampling distribution depends on the parameters a, b, and $sigma$, which in general are not known, and will be estimated from the data.")),
+             code("choose(100000,100)"),
+             br(),
+             verbatimTextOutput('sampling_distr'),
+             p('Therefore, we usually use a large number of samples to get an approximate sampling distribution of statistics. 
+               For example, below you can simulate a sampling distribution of sample mean by choosing the number of samples, and the population mean and standard deviation of the pre-treatement score.'),
+             sliderInput(inputId = "select_n_sampling_distribution",
+                         label = "Select the number of samples to generate the sampling distribution:",
+                         min = 1000, max = 10000, value = 5000, step = 10),
+             
+             sliderInput(inputId = "select_mean_normal_sampling",
+                         label = "Select the expectation of the pre-treatment score (E(X)):",
+                         min = 20, max = 80, value = 60, step = 1),
+             sliderInput(inputId = "select_sd_normal_sampling",
+                         label = "Select the standard deviation of the pre-treatment score:",
+                         min = 0, max = 10, value = 5, step = 1),
+             actionButton("generate_sampling_distribution", "Generate the Sampling Distribution"),
+             plotOutput('sampling_distribution_normal'),
+             
+             ## TODO: possibly talk about the mean and sd of sampling distribution
+             
+             p('If we are interested in the proportion of students who got into the treatment group, 
+                we can also generate a sampling distribution for it by calculating the proportions for each of the many 100 students samples. 
+                A proportion is a special case of an average in which the data are 1’s and 0’s (in the afterschool program/not in the afterschool program).'),
+             tags$div(
+               sliderInput('select_n_bernoulli_sampling', label = "Select the number of Bernoulli trials", min = 1000, max = 10000, value = 5000, step = 10),
+               sliderInput('select_prob_bernoulli_sampling', label = "Select the probability of success in each Bernoulli trial", min = 0, max = 1, value = 0.5, step = 0.1),
+               plotOutput('sampling_distribution_bernoulli')),
+             
+             p('You may notice that the sampling distributions are all bell-curve no matter which distribution the statistics are originally calculated from. 
+               This is actually summarized as a theorem called "Central Limit Theorem". Suppose that a sample is obtained containing many observations, 
+               each observation being randomly generated in a way that does not depend on the values of the other observations, 
+               and that the arithmetic mean of the observed values is computed. If this procedure is performed many times, 
+               the central limit theorem says that the probability distribution of the average will closely approximate a normal distribution. ')
+             
+             # p("One continuous predictor: y = b0 + b1x + eps"),
+             # numericInput(inputId = "select_b0", "Intercept (b0):", 1),
+             # numericInput(inputId = "select_b1", "Coefficient on X (b1):", 0.5),
+             # numericInput(inputId = "select_sigma", "Residual Std Dev (sigma):", 1),
+             # sliderInput(inputId = "sample_size",label = "Select Sample Size",
+             #             min = 10, max = 1000, value = 250, step = 10),
+             # plotOutput('regression'),
+             # p("In practice, we will not know the sampling distribution; we can only estimate it, as it depends on aspects of the population, not merely on the observed data. In the pure random sampling model, the sampling distribution depends on all N datapoints. For the measurement-error model, 
+             #   the sampling distribution depends on the parameters a, b, and $sigma$, which in general are not known, and will be estimated from the data."),
+             # 
+             # p("The simplest example of a sampling distribution is the pure random sampling model: if the data are a simple random sample of size n from a population of size N, then the sampling distribution is the set of all samples of size n, all with equal probabilities."),
+             # p("The normal distribution, binomial distribution, and poisson distribution with specified parameters on the previous page are all sampling distributions for the samples of sizes of your choice."),
+             # p("The next simplest example is pure measurement error: if observations $y_i$, i = 1,. . . , n, are generated from the model $y_i = a + bx_i + epsilon_i$ , with fixed coefficients a and b, pre-specified values of the predictor $x_i$ , and a specified distribution for the errors $epsilon_i$ 
+             #   (for example, normal with mean 0 and standard deviation $sigma$), then the sampling distribution is the set of possible datasets obtained from these values of $x_i$ , 
+             #   drawing new errors $epsilon_i$ from their assigned distribution.")
+            ),
     "Simulation",
-    tabPanel("Why simulation?",
-             p("Simulation of random variables is important in applied statistics for several reasons. 
-First, we use several probability models to mimic variation in the world, and the tools of simulation can help us better understand how this variation plays out.
-               Second, we can use simulation to approximate the sampling distribution of data and propagate this to the sampling distribution of statistical estimates and procedures.
-               Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts."),
-             p("In this final section, we will use what we learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that _omniscient_ hat? It's time to put it on."),
-             p("As with any simulation study, we need to first establish our **Data Generating Process (DGP)**. This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. For the purposes of this study, we will use what we learned in previous sections to walk through our DGP.")),
     tabPanel("Data Generation Process (DGP)",
+             p("In this final section, we will use what we learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: 
+               Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that omniscient hat? It's time to put it on."),
+             p("As with any simulation study, we need to first establish our **Data Generating Process (DGP)**. 
+               This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. 
+               For the purposes of this study, we will use what we learned in previous sections to walk through our DGP."),
              h3('Treatment Assignment'),
-             p("We already know how to generate treatment assignments from [section 2] using the Binomial distribution. The probability of assignment will be _0.5_."),
-             h3("Generating pre-treatment test scores"),
-             p("We also know that we can use the Normal distribution from [section 2] to generate our pre-treatment test scores. Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
-             h3('Generating outcome test scores based on treatment assignment'),
-             p("Here we start to make good use of our omniscient hat. As omniscient beings, we know that the treatment effect (or \tau) is **5**. That is, we know that the post-treatment test scores of students who went through the afterschool program is on average **5** points higher than the students who did not. To generate these outcome scores, we would simulate a _dependency_ based on the treatment assignment variable from above:"),
-             h3('Calculating the Average Treatment Effect (ATE)'),
-             p('Note that we use "calculating" instead of "estimating". This is intentional, and is meant to illustrate the difference in process when you are wearing the omniscient hat versus the researcher hat. Specifically, as a researcher, you are always _estimating_ the ATE (or any other estimand) because we will never know the truth (in this case, that the treatment effect is 5). But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.'),
-             br()
+             p("We already know how to simulate treatment assignments from [section 2] using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
+             verbatimTextOutput('simulation_treatment_code'),
+             textOutput('simulation_treatment'),
+             h3("Pre-treatment test scores"),
+             p("We also know that we can use the Normal distribution from [section 2] to simulate our pre-treatment test scores. 
+               Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
+             verbatimTextOutput('simulation_prescore_code'),
+             textOutput('simulation_prescore'),
+             
+             h3('Outcome test scores based on treatment assignment'),
+             p("As omniscient beings, we know that the treatment effect (or \tau) is **5**. 
+               That is, we know that the post-treatment test scores of students who went through the afterschool program is on average **5** points higher than the students who did not. 
+               To generate these outcome scores, we would simulate a _dependency_ based on the treatment assignment variable from above:"),
+             verbatimTextOutput('simulation_postscore_code'),
+             textOutput('simulation_postscore')
+          
              ),
     tabPanel("Average Treatment Effect (ATE)",
-             p('Once we have simulated all the data necessary from our DGP, we can finally move on to calculating our estimand of interest:'))
-  )
-)
+            p('Once we have simulated all the data necessary from our DGP, we can move on to estimate the aveargae treatment effect of the afterschool program using different causal inference methods 
+               when we wear researcher hat in reality and compare them to the true average treatment effect which we know can calculate only if we wear a omnicient hat. 
+               Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
+               This is intentional because as a researcher, you will never know the truth (in this case, that the treatment effect is 5) and thus you are always estimating the ATE (or any other estimand). 
+               But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.'),
+            br(),
+            h3('Calculate the true SATE'),
+            verbatimTextOutput('simulation_sate_code'),
+            textOutput('simulation_sate'),
+            h3('Use a difference in mean outcomes to estimate SATE.'),
+            verbatimTextOutput('simulation_mean_diff_code'),
+            textOutput('simulation_mean_diff'),
+            h3('Use Linear Regression to estimate SATE'),
+            verbatimTextOutput('simulation_reg_code'),
+            textOutput('simulation_reg'),
+             
+             
+#              p("Simulation of random variables is important in applied statistics for several reasons. 
+# First, we use several probability models to mimic variation in the world, and the tools of simulation can help us better understand how this variation plays out.
+#                Second, we can use simulation to approximate the sampling distribution of data and propagate this to the sampling distribution of statistical estimates and procedures.
+#                Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts.")
+),
+    tabPanel("Estimator Comparisons",
+             p('Now we will further explore the properties of these two different approaches to estimating our ATEs by simulation.
+               For now we will only consider the variability in estimates that would manifest as a result of the randomness in who is assigned to receive the treatment (this is sometimes referred to as “randomization based inference”). 
+               Since we are wearing omniscient hat we can see how the observed outcomes and estimates would change across a distribution of possible treatment assignments. 
+               We simulate this by repeatedly drawing a new vector of treatment assignments and then for each new dataset calculating estimates using our two estimators above.'),
+             verbatimTextOutput('mean_diff_reg_compare'),
+             plotOutput('mean_diff_compare'),
+             plotOutput('reg_compare'),
+             verbatimTextOutput('mean_diff_biasedness_code'),
+             textOutput('mean_diff_biasedness'),
+             
+             verbatimTextOutput('reg_biasedness_code'),
+             textOutput('reg_biasedness'),
+             verbatimTextOutput('mean_diff_efficiency_code'),
+             textOutput('mean_diff_efficiency'),
+             
+             verbatimTextOutput('reg_efficiency_code'),
+             textOutput('reg_efficiency')
+          
+             
+             ), # use sampling distribution to compare unbiasedness and efficiency
+    tabPanel("Exercise")
+))
 
 server <- function(input, output, session) {
   students <- c('James','Robert', 'John',
@@ -223,90 +332,267 @@ server <- function(input, output, session) {
                 'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
                 'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo')
   observeEvent(input$draw_50_student, {
-    studentlist <- sample(students, size = 25)
-    output$student_list <- renderText(paste0(studentlist))
+    studentlist <- sample(students, size = 50)
+    output$student_list <- renderText(toString(studentlist))
   })
   
   observeEvent(input$one_student_treatment, {
-    treatment <- rbinom(1,size = 1, prob = 0.5)
+    treatment <- rbinom(1,size = 1, prob = input$bernoulli_prob)
     student <- sample(students, size = 1)
     output$one_student_treatment_plot <- renderText(paste0(student, ': ', treatment))
   })
   
-  df <- reactiveValues(treatment = c(0,0,0))
+  df <- reactiveValues(treatment = c(), score = c())
   
   observeEvent(input$hundred_student_treatment, {
-    df$treatment <- rbinom(100, size = 1, prob = 0.5)
-    output$hundred_students_treatment_plot <- renderPlot({
-      tmp <- data.frame(treatment = df$treatment)
-      ggplot() + geom_histogram(data = tmp, aes(x = treatment, y = ..density..), bins = 30, alpha = 0.5) 
-    })
+   
+    df$treatment <- rbinom(1, size = input$select_n_binomial, prob = input$select_p_binomial)
+    # df$treatment <- rbinom(sample_size, size = 1, prob = input$select_p_binomial)
+    # text <- c()
+    # for (i in 1:sample_size) {
+    #   text <- c(text, paste0(students[i], ': ', df$treatment[i]))
+    # }
+    # print(text)
+    # output$hundreds_student_treatment_result <- renderText(toString(text))
+    
+    # output$hundred_students_treatment_plot <- renderPlot({
+    #   tmp <- data.frame(treatment = df$treatment)
+    #   ggplot() + geom_histogram(data = tmp, aes(x = treatment, y = ..density..), bins = 30, alpha = 0.5) 
+    # })
+    table <- data.frame(Group = c(as.integer(1),as.integer(0)), Frequence = c(as.integer(df$treatment), as.integer(input$select_n_binomial - df$treatment)))
+    output$hundreds_student_treatment_result_table <- renderTable(table)
   })
   
-  observeEvent(input$draw_a_student, {
-    score <- round(rnorm(1,60,15),2)
-    student <- sample(students, size = 1)
-    output$one_student_score <- renderText(paste0(student, ': ', score))
-  })
   
   observeEvent(input$draw_hundred_student, {
-    df$score <- rnorm(100,60,10)
+    df$score <- rnorm(100,input$select_mean_normal,input$select_sd_normal)
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(df$score[i])))
+    }
+    output$hundred_student_score_print <- renderText(toString(text))
+    
     output$hundred_students_scores <- renderPlot({
       tmp <- data.frame(score = df$score)
+      mean <- paste0('Sample Mean: ', round(mean(tmp$score),1))
+      sd <- paste0('Sample Sd: ', round(sd(tmp$score),1))
       ggplot() + geom_histogram(data = tmp, aes(x = score, y = ..density..), bins = 30, alpha = 0.5) + 
-        geom_vline(xintercept = mean(tmp$score), color = 'blue') 
+        geom_vline(xintercept = mean(tmp$score), color = 'blue') +
+        annotate("text",x=input$select_mean_normal + 10,y=0.095,label= mean, fontface = "italic", size = 5) +
+        annotate("text",x=input$select_mean_normal + 10,y=0.085,label= sd, fontface = "italic", size = 5) 
     })
   })
   
-  
-  df1 <- reactiveValues(data = c())
-  
-  observeEvent(input$draw_sample, {
-    df1$data <- rnorm(10000,60,10)
-    output$mean_var <- renderPlot({
-      tmp <- data.frame(data = df1$data)
-      mean <- paste0('Mean: ', round(mean(tmp$data),1))
-      sd <- paste0('Standard Deviation: ', round(sd(tmp$data),1))
-      ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), 
-                                bins = 30, alpha = 0.5) + 
-        geom_vline(xintercept = mean(tmp$data)) +
-        annotate("text",x=90,y=0.035,label=as.character(mean), fontface = "italic", size = 6) +
-        annotate("text",x=90,y=0.032,label=as.character(sd), fontface = "italic", size = 6) 
-    })
+  output$normal_mean_var <- renderText({
+    tmp <- data.frame(score = df$score)
+    mean <- round(mean(tmp$score),1)
+    sd <- round(sd(tmp$score),1)
+    
+    text <- paste0("The plot above shows the distribution of the pre-treatment test scores of students in out 100 students sample. 
+    When you wear omnicient hat, you specify and hence know the true expectation and standard deviation of the pre-treatment score of all students in New York State. 
+    However, in reality we only have a sample of 100 students and can only estimate the expectation by the sample mean of the 100 pre-treatment scores and estimate the standard deviation by the sample standard deviation of the 100 pre-treatment scores.
+    The sample mean score of the 100 students is ", mean, ", and the sample standard deviation of students' scores is ", sd, ".")
+    
   })
-  
-  output$normal <- renderPlot({
-    tmp <- data.frame(data = rnorm(n = input$normal_size, mean = input$select_normal_mean, sd = input$select_normal_sd))
-    ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), bins = 30, alpha = 0.5)
-  })
+
   observeEvent(input$show_code_normal, {
     toggle('code_div_normal')
     output$code_normal <- renderText({
-      paste0('rnorm(n = ', input$normal_size, ', mean = ', input$select_normal_mean, ', sd = ', input$select_normal_sd, ')')
+      paste0('rnorm(n = 100, mean = ', input$select_mean_normal, ', sd = ', input$select_sd_normal, ')')
     })
     
   })
   
-  output$binomial <- renderPlot({
-    tmp <- data.frame(data = rbinom(n = input$binom_size, size = input$select_binom_size, prob = input$select_binom_prob))
-    ggplot() + geom_histogram(data = tmp, aes(x = data, y = ..density..), bins = 30, alpha = 0.5)
-  })
   observeEvent(input$show_code_binomial, {
     toggle('code_div_binomial')
     output$code_binomial <- renderText({
-      paste0('rbinom(n = ', input$binom_size, ', size = ', input$select_binom_size, ', porb = ', input$select_binom_prob, ')')
+      paste0('# n specifies the number of Binomial distribution \n# size defines how many Bernoulli trails in a Binomial distribution \n# prob prescribes the probability of success in one Bernoulli trial \nrbinom(n = 1, size = ', input$select_n_binomial, ', porb = ', input$select_p_binomial, ')')
     })
     
   })
   
-  output$sampling_distr <- renderText(choose(10000,1000))
+  output$sampling_distr <- renderText(choose(100000,100))
   
-  output$regression <- renderPlot({
-    x <- seq(from = 1, to = 10, length.out = input$sample_size)
-    y <- input$select_b0 + input$select_b1*x + rnorm(length(x), 0,input$select_sigma)
-    df <- data.frame(x, y)
-    ggplot(df, aes(x = x, y = y)) + geom_point() + geom_smooth(method='lm', formula= y~x,se = F) + theme_bw()
+  
+  observeEvent(input$generate_sampling_distribution, {
+    output$sampling_distribution_normal <- renderPlot({
+      
+      all_means <- data.frame(data = rep(NA, input$select_n_sampling_distribution))
+      for (i in 1:input$select_n_sampling_distribution) {
+        sample <- rnorm(n = 100, mean = input$select_mean_normal_sampling, sd = input$select_sd_normal_sampling)
+        tmp <- mean(sample)
+        all_means$data[i] <- tmp
+      }
+      ggplot() + geom_histogram(data = all_means, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
+        geom_vline(xintercept = mean(all_means$data), color = 'blue') 
+      
+    })
   })
+  
+  output$sampling_distribution_bernoulli <- renderPlot({
+    proportions <- data.frame(data = rep(NA, input$select_n_bernoulli_sampling))
+    for (i in 1:input$select_n_bernoulli_sampling) {
+      tmp <- rbinom(n = 100, size = 1, prob = input$select_prob_bernoulli_sampling)
+      proportions$data[i] <- mean(tmp)
+    }
+    ggplot() + geom_histogram(data = proportions, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
+      geom_vline(xintercept = mean(proportions$data), color = 'blue') 
+  })
+  
+  
+  # output$regression <- renderPlot({
+  #   x <- seq(from = 1, to = 10, length.out = input$sample_size)
+  #   y <- input$select_b0 + input$select_b1*x + rnorm(length(x), 0,input$select_sigma)
+  #   df <- data.frame(x, y)
+  #   ggplot(df, aes(x = x, y = y)) + geom_point() + geom_smooth(method='lm', formula= y~x,se = F) + theme_bw()
+  # })
+  
+  Z <- rbinom(n = 100, size = 1, prob = 0.5)
+  X <- rnorm(n = 100, mean = 65, sd = 3)
+  tau <- 5
+  Y0 <- 10 + 1.1*X + rnorm(100, mean = 0, sd = 1)
+  Y1 <- 10 + 1.1*X + tau + rnorm(100, mean = 0, sd = 1)
+  Y <- ifelse(Z == 1,  Y1, Y0)
+  
+  output$simulation_treatment_code <- renderText({
+    "rbinom(n = 100, size = 1, prob = 0.5)"
+  })
+  
+  output$simulation_treatment <- renderText({
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(Z[i])))
+    }
+    toString(text)
+  })
+  
+  output$simulation_prescore_code <- renderText({
+    "rnorm(n = 100, mean = 60, sd = 10)"
+  })
+  
+  output$simulation_prescore <- renderText({
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(X[i])))
+    }
+    toString(text)
+  })
+  
+  output$simulation_treatment <- renderText({
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(Z[i])))
+    }
+    toString(text)
+  })
+  
+  output$simulation_postscore_code <- renderText({
+    "tau <- 5 \nY0 <- 10 + X + 0 + rnorm(100, mean = 0, sd = 1) \nY1 <- 10 + X + tau + rnorm(100, mean = 0, sd = 1) \nY <- ifelse(Z == 1,  Y1, Y0)"
+  })
+  
+  output$simulation_postscore <- renderText({
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(Y[i])))
+    }
+    toString(text)
+  })
+  
+  
+  output$simulation_sate_code <- renderText({
+    "mean(Y1 - Y0)"
+  })
+  
+  output$simulation_sate <- renderText({
+    round(mean(Y1 - Y0), 2)
+  })
+  
+  
+  output$simulation_mean_diff_code <- renderText({
+    "mean(Y[Z == 1]) - mean(Y[Z == 0])"
+  })
+  
+  output$simulation_mean_diff <- renderText({
+    round(mean(Y[Z == 1]) - mean(Y[Z == 0]), 2)
+  })
+  
+  output$simulation_reg_code <- renderText({
+    "fit <- lm(Y ~ X + Z) \nsummary(fit)$coefficients['Z', 1]"
+  })
+  
+  output$simulation_reg <- renderText({
+    fit <- lm(Y ~ X + Z)
+    round(summary(fit)$coefficients['Z', 1], 2)
+  })
+  
+  output$mean_diff_reg_compare <- renderText({
+    "mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:10000) {\n    Z <- rbinom(N, 1, prob = 0.5) \n    Y <- ifelse(Z == 1, Y_1, Y_0)
+    \n    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)]) \n    fit_tmp <- lm(Y ~ X + Z) \n    
+    lm_estimate_tmp <- coef(fit_tmp)['Z'] \n    mean_diff <- c(mean_diff, mean_diff_tmp) \n    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
+}"
+  })
+  
+  mean_diff <- c()
+  lm_estimate <- c()
+  N <- 100
+  for (i in 1:10000) {
+    Z <- rbinom(N, 1, prob = 0.5)
+    Y <- ifelse(Z == 1, Y1, Y0)
+    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)])
+    fit_tmp <- lm(Y ~ X + Z)
+    lm_estimate_tmp <- coef(fit_tmp)['Z']
+    mean_diff <- c(mean_diff, mean_diff_tmp)
+    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
+  }
+  SATE <- mean(Y1 - Y0)
+  
+  output$mean_diff_compare <- renderPlot({
+    
+    hist(mean_diff, xlim = c(4,6), main = 'Distribution of Mean Difference')
+    abline(v = SATE, col = 'red')
+    abline(v = mean(mean_diff), col = 'blue')
+    legend(5.5, 1700, c("SATE", "Mean"), col = c('red', 'blue'),
+           lty = c(1, 1),bg = "gray90")
+  })
+  
+  output$reg_compare <- renderPlot({
+    
+    hist(lm_estimate, xlim = c(4,6), main = 'Distribution of Regression Estimate')
+    abline(v = SATE, col = 'red')
+    abline(v = mean(mean_diff), col = 'blue')
+    legend(5.5, 1700, c("SATE", "Mean"), col = c('red', 'blue'),
+           lty = c(1, 1),bg = "gray90")
+  })
+  
+  output$mean_diff_biasedness_code <- renderText({
+    '(mean(mean_diff)-SATE)/sd(Y)'
+  })
+  output$mean_diff_biasedness <- renderText({
+    (mean(mean_diff)-SATE)/sd(Y)
+  })
+  
+  output$reg_biasedness_code <- renderText({
+    '(mean(lm_estimate)-SATE)/sd(Y)'
+  })
+  output$reg_biasedness <- renderText({
+    (mean(lm_estimate)-SATE)/sd(Y)
+  })
+  
+  output$mean_diff_efficiency_code <- renderText({
+    'sd(mean_diff)'
+  })
+  output$mean_diff_efficiency <- renderText({
+    sd(mean_diff)
+  })
+  
+  output$reg_efficiency_code <- renderText({
+    'sd(lm_estimate)'
+  })
+  output$reg_efficiency <- renderText({
+    sd(lm_estimate)
+  })
+  
+  
   
 }
 
