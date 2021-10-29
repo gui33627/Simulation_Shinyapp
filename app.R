@@ -160,7 +160,7 @@ ui <- fluidPage(
                          label = "Select the standard deviation of the pre-treatment score:",
                          min = 0, max = 10, value = 5, step = 1),
              
-             actionButton("draw_hundred_student", "Draw 100 students"),
+             actionButton("draw_hundred_student", "Simulate 100 students' scores"),
              br(),
              textOutput('hundred_student_score_print'),
              br(),
