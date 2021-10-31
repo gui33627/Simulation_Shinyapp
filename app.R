@@ -84,34 +84,49 @@ ui <- fluidPage(
     "Probability Distribution",
     tabPanel("Discrete Random Variable and Distribution",
              # img(src = "population.png", height = 400, width = 700),
-             p("After we have simulated a sample of 100 students, in order to generate which students participate in the program, we need a data generator governed by probability distribution. 
-               Probablity distrbution refers to what type of distribution we're using in the data generating process."),
+             #VZ:do we want to put a demo graph for sampling? 
+             #the one Jennifer suggested population to sample and how sample represents population
+             #Up till this session, we yet to explain what is a random variable- do we need to or are we assuming our users would have known?
+             h4('Probability Distribution'),
+             p("With our sample of 100 students, we would like to assign them to the treatment group or the control group.
+             To do so, we need a data generator governed by a probability distribution.
+               Probability distribution refers to a function that assigns a random variable to a value.
+               It also defines the range and possibility that variable shall be."),
              br(),
-             p('In our example of afterschool program for the Global History regents exam, 
-               when we randomly assign a student to either participating in the program or not participating, or in another word, treatment group or control group. 
-               Since the randomly assignment only has two possible values and each assignment is independent of each other, we get a Bernoulli distribution. '),
-             p('There is only one parameter in Bernoulli distribution, probability p, and the random variable, a student in treatment or control group in our example, 
-               takes the value 1 (treatment group) with probability p and the value 0 with probability (1-p).'),
+             h4('Bernoulli distribution'),
+             p('
+               When we randomly assign a student to a group, there are two possible values, treatment group or control group,
+               and each assignment is independent of each other. Such probability distribution is called a Bernoulli distribution. '),
+             p('There is only one parameter in Bernoulli distribution, probability of success p. In our example, we
+               take the value 1 (treatment group) as success, with probability p, 
+               the value 0 (control group) thus has a probability of (1-p).'),
+             
+             h4('Try for yourself!'),
+             
+             p('Each click will show an assignment of a random student.
+             Set the probability of the treatment group from 0 to 1 and see how often a student is in the treatment group.'),
+             p('(Hint:if you set the p as 1, every click will show a student being in the treatment group.)'),
              sliderInput(inputId = "bernoulli_prob",
-                         label = "Select the probability of in the treatment group (p):",
+                         label = "Select the probability of assigning to the treatment group (p):",
                          min = 0, max = 1, value = 0.5, step = 0.1),
-             actionButton("one_student_treatment", "Assign a student"),
+             actionButton("one_student_treatment", "Assign a student to a group"),
              br(),
              textOutput('one_student_treatment_plot'),
+   
              
              tags$div(
-             br(),
-             p('If the probability of in the treatment group is 0.5, then a student has equal chance of being assigned to participate in the afterschool program and not in the program.
-               However, if you try setting the probability of in the treatment group be 1, every student will get into treatment group when you click "Assign a student". 
-               By each clicking, you simulate a new treatment for a student.'),
-             br(),br(),br(),
-             p("If we randomly assignment treatments to 100 students and suppose we only care about how many students out of the 100 are in the treatment group 
-               and don't need to know the treatment of each of them, we can use a binomial distribution to generate the data."),
-             p("The Bernoulli process is in nature a sequence of independent Bernoulli trials. 
-               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, and the probability of success in each Bernoulli trials, p. 
-               Another simple example of Binomial distribution is that suppose we flip a fair coin 100 times ('trials'), and count the number of Heads ('success'). 
-               Here the random variable is the number of Heads we observe."),
-             sliderInput(inputId = "select_n_binomial",
+               br(),
+            h4('Binomial distribution'),
+             p("If we randomly assignment treatments to 100 students,and suppose we do not need to know exactly roster for each group, we can use a binomial distribution to generate the data."),
+             p("A Binomial distribution is a set of Bernoulli events (when each trial is independent).
+               There are two parameters in Binomial distribution, the number of Bernoulli events, n, 
+               and the probability of success for each event, p. 
+               In other words, a Binomial distribution is the number of successes in Bernoulli events, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
+            h4('Try for yourself!'),
+            p("Each click will simulate a result that assigned every student to a group. The table summarizes the total counts
+            of students in each group based on your selected number of students and probability of assigning to the treatment group.'
+            "),
+            sliderInput(inputId = "select_n_binomial",
                          label = "Select the number of treatment assignments (n):",
                          min = 1, max = 100, value = 100, step = 1),
              sliderInput(inputId = "select_p_binomial",
@@ -120,6 +135,7 @@ ui <- fluidPage(
              actionButton("hundred_student_treatment", "Assign students"),
              textOutput('hundreds_student_treatment_result'),
              # plotOutput('hundred_students_treatment_plot'),
+            #VZ-change table title
              tableOutput('hundreds_student_treatment_result_table'),
              br(),
              tags$div(
