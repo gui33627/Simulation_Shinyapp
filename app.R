@@ -12,30 +12,30 @@ ui <- fluidPage(
     "Introduction",
     tabPanel('Get Started!',
              h3('Welcome to the simulation app!'),
-             p("This app is intended show you how to simulate hypothetical samples in ordr to test if different causal inference methods are unbiased and efficient."),
-             p("Throughout your simulation journey, we will cover several different topics using a hypothetical real-world example that will hopefully build your intuition and knowledge about the joys of simulation. 
-               One key thing to remember is that as you go through this app, you will have access to two very important hats: the ", tags$em("researcher hat"), " and ", tags$em("omniscient hat"), ". 
-               The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world, and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), " where you will transcend your feeble human mind and become an all-knowing and powerful being. 
-               These two hats are very important when we are simulating, and will come into play quite often throughout our journey."),
+             p("This app explains how to simulate hypothetical samples to test if different causal inference methods are unbiased and efficient."),
+             p("Throughout the app, we will use a hypothetical real-world example, that intends to build your intuition and knowledge about the joys of simulation."), 
+             p("You will have access to two very important hats: the ", tags$em("researcher hat"), " and ", tags$em("omniscient hat"), ". 
+               The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), " where you become a powerful all-knowing being and knows every what-if. 
+               These two hats are very important when we simulate, and will come into play quite often throughout our journey."),
              p("Ready? Okay, let's get started.")),
     tabPanel("Hypothetical Example", 
       tags$div(
-      p('In order to make the leanrning process easy and fun, we make up the following hypothetical example that links concepts throughout the app.'),
+      p('The following hypothetical example will link concepts stey by step throughout the app.'),
       br(),
-      p('In New York State, there are a series of exams that high school students must take and pass in order to graduate. 
-        These are known as the Regents exams, and they cover a wide variety of topics such as Algebra, Global History, English, and Earth Science.
-        Generally, the Global History regents is considered to be one of the most difficult, primarily due to the sheer amount of memorization students need to do (it is a traumatizing memory for this author). 
-        Students must score a 65 or higher to pass, but may re-take these exams as many times as necessary until they achieve their desired score. 
-        However, these exams are generally offered once a year, so students wishing to re-take the exam must wait a year.')),
+      p('In New York State, the Global History regents is considered to be one of 
+      the most difficult Regents exams. Regents exams are a series of exams that high 
+      school students must take and pass in order to graduate.
+        Students must score a 65 or higher to pass but may re-take as many times as necessary.  
+        ')),
       tags$div(
-      p("Let's say you are a budding educational researcher who wants to understand how an afterschool pilot program would impact students' Global History regents scores. 
-        However, you are but one researcher, and don't have the funding or a team to help collect the necessary data. 
-        You also obviously don't have an actual afterschool pilot program either. But this is a question that has burned with the intensity of a thousand suns ever since you were in high school! 
-        What if you had access to an afterschool program back then? Would you have done better on your Global History regents exam?")),
+      p("The Global History regents is hard primarily due to the sheer amount of memorization (it is a traumatizing memory for the author). 
+      You, as an educational researcher, want to understand if an afterschool pilot program would impact students' Global History regents scores. 
+        ")),
       tags$div(
-      p("Since this is a hypothetical example, we physically don't have any data. And as such, you can do one of two things to answer your research question: travel back in time, or simulate. 
-         If you decide to go with option one, let me know - I have some scores I want settled with some people in my past. 
-         More than likely however, you will need to ", tags$strong("simulate your data"), " to answer your question. Luckily, you have those two hats, which will open up worlds of possibilities, and be the key to solving this burning question of yours."))),
+      p("Since this is a hypothetical example, you physically don't have any data. You can do one of two things to answer your research question:
+      travel back in time and built this program, or simulate.
+         More than likely however, you will need to ", tags$strong("simulate your data"), " to answer your question. 
+        With those two hats, which will open up worlds of possibilities, you can solve this hypothetical question of yours."))),
     tabPanel("What is simulation?",
              p("Suppose the true causal effect of the afterschool program is 5 points higher in the Global History Regent score, but in reality we would never know the true causal effect value. 
                Instead what we can do is to use causal inference methods to estimate the effect of the afterschool program. However, due to lack of the true value, we don't know if our estimation can recover the true value or not.
