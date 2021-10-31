@@ -124,7 +124,7 @@ ui <- fluidPage(
                In other words, a Binomial distribution is the number of successes in Bernoulli events, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
             h4('Try for yourself!'),
             p("Each click will simulate a result that assigned every student to a group. The table summarizes the total counts
-            of students in each group based on your selected number of students and probability of assigning to the treatment group.'
+            of students in each group based on your selected number of students and probability of assigning to the treatment group.
             "),
             sliderInput(inputId = "select_n_binomial",
                          label = "Select the number of treatment assignments (n):",
@@ -147,27 +147,27 @@ ui <- fluidPage(
                  )
                )
              ),
-             p('To summarize above,', tags$strong('discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+            h4('In summary'),
+             p('Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
                such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.'),
              br(),  br(),  
              br())),
     tabPanel("Continuous Random Variable and Distribution",
-             p('Besides the treatment assignment for each of the students in your sample, 
-               we also need to generate the scores for students before the afterschool program begins. 
-               By specifying a mean and standard deviation of the scores of all students in New York State, 
-               we can simulate the pre-treatment scores for the students in our sample by a normal distribution. 
-               We can view the pre-treatment score of a student as a random variable, X, possibly taking any value between 0 and 100.'),
-             p('The mean of the distribution is the average score of all the high school students in New York and 
-                it is also the average score we would expect to see from sampling one student at random. 
-                The mean is also called the expectation or expected value and is written as E(X) or mu_X.'),
-             p('The variance of the distribution of X is E((X − mu_X )^2), that is, the mean of the squared difference from the mean. 
-               To understand this expression, first consider the special case in which X takes on only a single score. In that case, this single value is the same as the mean, 
-               so X − mu_X = 0 for all X in the distribution, and the variance is 0. 
-               As the sampled scores for student from high school in New York State can be different, this will show up as values of X that are higher and lower than mu_X, 
-               and the variance of the distribution of X is nonzero. The standard deviation is the square root of the variance. 
-               Suppose the mean and variance of the distribution are 60 and 100 repectively. Then it means that if you randomly sample a student from the population, 
-               observe their score x, and compute (x − 60)^2, the average value you will get is 100, and the standard deviation is sqrt(100) = 10. 
-               We typically work with the standard deviation rather than the variance because it is on the original scale of the distribution. '),
+             h4('Normal Distribution'),
+             p('For this hypothetical study, we also want to generate some covariates and outcomes to estimate the effects of the afterschool program.
+              We will use the pre-treatment score as the example here.'),
+             p('
+              Normal distribution is a continuous probability distribution, 
+              and it is often used in simulation and teaching because it approximates to many natural events. 
+              There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
+             h4('Try for yourself!'),
+             #VZ-will use latex for the equations
+             #do we need to explain var?
+             p('You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. '),
+             p(' The mean value is the average score of all the high school students in New York. Since our sample is randomly collected, 
+                we would also expect to our sample has the average score. 
+                The mean is also called the expectation or expected value and is written as E(X) or mu_X. The standard deviation of the distribution of X can be expressed as sqrt(E((X − mu_X )^2)). '),
+             p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
              
              sliderInput(inputId = "select_mean_normal",
                          label = "Select the expectation of the pre-treatment score (E(X)):",
@@ -178,6 +178,7 @@ ui <- fluidPage(
              
              actionButton("draw_hundred_student", "Simulate 100 students' scores"),
              br(),
+             #VZ-may change it to a table or a better format later
              textOutput('hundred_student_score_print'),
              br(),
              plotOutput('hundred_students_scores'),
@@ -195,11 +196,13 @@ ui <- fluidPage(
              
              textOutput('normal_mean_var'),
              br(),
-             
+             #VZ-if we really need to explain var, maybe we better combine it with explaining how rnorm is used in epsilon?
+             h4('Normal distribution assumption in regression assumptions'),
              p('In addition to the distribution of data, normal distributions is also commonly used in regression modeling to help us characterize the variation that remains after predicting the average ---
                the error term epsilon in the expression y = a + bx + epsilon. The distributions allows us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.'),
              br(),
-             p("To wrap up, we've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
+             h4('In summary'),
+             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
                Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')),
     
              
