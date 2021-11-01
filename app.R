@@ -12,16 +12,17 @@ ui <- fluidPage(
     "Introduction",
     tabPanel('Get Started!',
              h3('Welcome to the simulation app!'),
-             p("This app explains how to simulate hypothetical samples to test if different causal inference methods are unbiased and efficient."),
-             p("Throughout the app, we will use a hypothetical real-world example, that intends to build your intuition and knowledge about the joys of simulation."), 
+             p("This app will walk you through simulating hypothetical samples to test if different causal inference methods are unbiased and efficient."),
+             p("Throughout the app, we will use a hypothetical real-world example to build your intuition and knowledge about the joys of simulation."), 
              p("You will have access to two very important hats: the ", tags$em("researcher hat"), " and ", tags$em("omniscient hat"), ". 
-               The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), " where you become a powerful all-knowing being and knows every what-if. 
+               The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), "  where you will transcend your feeble human mind and become an all-knowing and powerful being. 
                These two hats are very important when we simulate, and will come into play quite often throughout our journey."),
              p("Ready? Okay, let's get started.")),
     tabPanel("Hypothetical Example", 
       tags$div(
-      p('The following hypothetical example will link concepts stey by step throughout the app.'),
+      p('The following hypothetical example will link concepts step by step throughout the app:'),
       br(),
+      h4('The Dreaded Global History Regents Exam'),
       p('In New York State, the Global History regents is considered to be one of 
       the most difficult Regents exams. Regents exams are a series of exams that high 
       school students must take and pass in order to graduate.
@@ -29,14 +30,12 @@ ui <- fluidPage(
         ')),
       tags$div(
       p("The Global History regents is hard primarily due to the sheer amount of memorization (it is a traumatizing memory for the author). 
-      You, as an educational researcher, want to understand if an afterschool pilot program would impact students' Global History regents scores. 
+      You, as an educational researcher, want to understand if the treatment effect estimate is unbiased and efficient.
         ")),
       tags$div(
-      p("Since this is a hypothetical example, you physically don't have any data. You can do one of two things to answer your research question:
-      travel back in time and built this program, or simulate.
-         More than likely however, you will need to ", tags$strong("simulate your data"), " to answer your question. 
-        With those two hats, which will open up worlds of possibilities, you can solve this hypothetical question of yours."))),
+      p("Since this is a hypothetical example, you physically don't have any data. So instead, you're going to have to ", tags$strong("simulate your data"), " to answer your question. The key here is that when you simulate fake data, you essentially start from an omniscient position (remember the omniscient hat?). That is, you know and understand everything about how your data are generated and what's going on internally. "))),
     tabPanel("What is simulation?",
+             h4('The Whats and Whys of Simulation'),
              p("Suppose the true causal effect of the afterschool program is 5 points higher in the Global History Regent score, but in reality we would never know the true causal effect value. 
                Instead what we can do is to use causal inference methods to estimate the effect of the afterschool program. However, due to lack of the true value, we don't know if our estimation can recover the true value or not.
                In order to test different causal inference methods valid or not, we can artificially generate data that simulate the real-world data and because we create all the data generation process we know the true causal effect in the simulation.
