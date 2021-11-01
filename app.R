@@ -36,10 +36,10 @@ ui <- fluidPage(
       p("Since this is a hypothetical example, you physically don't have any data. So instead, you're going to have to ", tags$strong("simulate your data"), " to answer your question. The key here is that when you simulate fake data, you essentially start from an omniscient position (remember the omniscient hat?). That is, you know and understand everything about how your data are generated and what's going on internally. "))),
     tabPanel("What is simulation?",
              h4('The Whats and Whys of Simulation'),
-             p("Suppose the true causal effect of the afterschool program is 5 points higher in the Global History Regent score, but in reality we would never know the true causal effect value. 
-               Instead what we can do is to use causal inference methods to estimate the effect of the afterschool program. However, due to lack of the true value, we don't know if our estimation can recover the true value or not.
-               In order to test different causal inference methods valid or not, we can artificially generate data that simulate the real-world data and because we create all the data generation process we know the true causal effect in the simulation.
-               With a correct answer, we now can examine if a causal inference method is valid or not when it is used to make inference on the truth."),
+             p("Suppose the true causal effect (or treatment effect) of the afterschool program is an increase of 5 points on the Global History regents exam score. In reality, we would never know this 'true' treatment effect, so instead what we can do is to use causal inference methods to", tags$em("estimate"), " the effect of the afterschool program. As long as you have your", tags$em("researcher hat"), " on, you will never know whether or not this estimation will recover the 'true' treatment effect. 
+               In order to test whether different causal inference methods are valid or not, we can artificially generate 'fake' data that simulate the real-world data. And because we create all the data generation process we know the true causal effect in the simulation.
+               Once we've done this, and have the 'correct' answer, we can then examine whether a causal inference method is valid or not when it is used to make inference on the truth."),
+             h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Scores'),
              p("Let's decompose the description of the hypothetical example, and put the ", tags$em("omniscient hat"), " on, since it feels good to know everything. 
                With this powerful hat, you know that you have a sample of 100 fake students (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
@@ -49,6 +49,7 @@ ui <- fluidPage(
              p("These are fairly self-explanatory: ", tags$em("pre-treatment"), " test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$em("post-treatment"), 
                " test scores are the scores of the 100 sample students after the treatment period. 
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called", tags$em("potential outcomes"), "."),
+             h4('Reality vs. Simulation'),
              p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, 
                but you cannot know what the post-treatment test scores of the treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which again, let me know). 
                The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, 
