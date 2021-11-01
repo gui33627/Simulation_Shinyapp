@@ -29,7 +29,7 @@ ui <- fluidPage(
         Students must score a 65 or higher to pass but may re-take as many times as necessary.  
         ')),
       tags$div(
-      p("The Global History regents is hard primarily due to the sheer amount of memorization (it is a traumatizing memory for the author). 
+      p("The Global History regents is hard primarily due to the sheer amount of memorization (it is fairly traumatizing). 
       You, as an educational researcher, want to understand if the treatment effect estimate is unbiased and efficient.
         ")),
       tags$div(
@@ -51,7 +51,7 @@ ui <- fluidPage(
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called", tags$em("potential outcomes"), "."),
              h4('Reality vs. Simulation'),
              p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, 
-               but you cannot know what the post-treatment test scores of the treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which again, let me know). 
+               but you cannot know what the post-treatment test scores of the treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
                The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, 
                everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
              p("For now, understand that simulation starts all the way at the beginning: who is in your sample, and what are their pre-treatment test scores?"),
