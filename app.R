@@ -389,10 +389,10 @@ server <- function(input, output, session) {
     
     output$hundred_students_scores <- renderPlot({
       tmp <- data.frame(score = df$score)
-      mean <- paste0('Sample Mean: ', round(mean(tmp$score),1))
-      sd <- paste0('Sample Sd: ', round(sd(tmp$score),1))
+      mean <- paste0('Sample Mean: ', round(mean(as.numeric(tmp$score)),1))
+      sd <- paste0('Sample Sd: ', round(sd(as.numeric(tmp$score)),1))
       ggplot() + geom_histogram(data = tmp, aes(x = score, y = ..density..), bins = 30, alpha = 0.5) + 
-        geom_vline(xintercept = mean(tmp$score), color = 'blue') +
+        geom_vline(xintercept = mean(as.numeric(tmp$score)), color = 'blue') +
         annotate("text",x=input$select_mean_normal + 10,y=0.095,label= mean, fontface = "italic", size = 5) +
         annotate("text",x=input$select_mean_normal + 10,y=0.085,label= sd, fontface = "italic", size = 5) 
     })
@@ -400,8 +400,8 @@ server <- function(input, output, session) {
   
   output$normal_mean_var <- renderText({
     tmp <- data.frame(score = df$score)
-    mean <- round(mean(tmp$score),1)
-    sd <- round(sd(tmp$score),1)
+    mean <- round(mean(as.numeric(tmp$score)),1)
+    sd <- round(sd(as.numeric(tmp$score)),1)
     
     text <- paste0("The plot above shows the distribution of the pre-treatment test scores of students in out 100 students sample. 
     When you wear omnicient hat, you specify and hence know the true expectation and standard deviation of the pre-treatment score of all students in New York State. 
