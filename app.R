@@ -586,21 +586,25 @@ server <- function(input, output, session) {
   SATE <- mean(Y1 - Y0)
   
   output$mean_diff_compare <- renderPlot({
-    
-    hist(mean_diff, xlim = c(4,6), main = 'Distribution of Mean Difference')
-    abline(v = SATE, col = 'red')
-    abline(v = mean(mean_diff), col = 'blue')
-    legend(5.5, 1700, c("SATE", "Mean"), col = c('red', 'blue'),
-           lty = c(1, 1),bg = "gray90")
+    cols <- c("True SATE" = "red", "Mean" = "blue")
+    mean_diff_df <- data.frame(data = mean_diff)
+    ggplot() + geom_histogram(data = mean_diff_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
+      geom_vline(aes(xintercept = mean(as.numeric(mean_diff_df$data)), color = 'Mean')) +
+      geom_vline(aes(xintercept = SATE, color = 'True SATE')) + xlim(min(mean_diff) - 0.1, max(mean_diff) + 0.1) +
+      labs(title = 'Distribution of Mean Difference', x = 'Mean Difference', y = 'Frequency') +
+      scale_color_manual(values = cols) + 
+      theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
   })
   
   output$reg_compare <- renderPlot({
-    
-    hist(lm_estimate, xlim = c(4,6), main = 'Distribution of Regression Estimate')
-    abline(v = SATE, col = 'red')
-    abline(v = mean(mean_diff), col = 'blue')
-    legend(5.5, 1700, c("SATE", "Mean"), col = c('red', 'blue'),
-           lty = c(1, 1),bg = "gray90")
+    cols <- c("True SATE" = "red", "Mean" = "blue")
+    lm_estimate_df <- data.frame(data = lm_estimate)
+    ggplot() + geom_histogram(data = lm_estimate_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
+      geom_vline(aes(xintercept = mean(as.numeric(lm_estimate_df$data)), color = 'Mean')) +
+      geom_vline(aes(xintercept = SATE, color = 'True SATE')) + xlim(min(mean_diff) - 0.1, max(mean_diff) + 0.1) +
+      labs(title = 'Distribution of Regression Estimate', x = 'Regression Estimate', y = 'Frequency') +
+      scale_color_manual(values = cols) + 
+      theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
   })
   
   output$mean_diff_biasedness_code <- renderText({
