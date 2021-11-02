@@ -12,12 +12,12 @@ ui <- fluidPage(
     "Introduction",
     tabPanel('Get Started!',
              h3('Welcome to the simulation app!'),
-             p("This app will walk you through simulating hypothetical samples to test if different causal inference methods are unbiased and efficient."),
+             p("This app will walk you through simulating hypothetical samples to test if different causal inference methods are unbiased and efficient in estimating treatment effect."),
              p("Throughout the app, we will use a hypothetical real-world example to build your intuition and knowledge about the joys of simulation."), 
              p("You will have access to two very important hats: the ", tags$em("researcher hat"), " and ", tags$em("omniscient hat"), ". 
                The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), "  where you will transcend your feeble human mind and become an all-knowing and powerful being. 
                These two hats are very important when we simulate, and will come into play quite often throughout our journey."),
-             p("Ready? Okay, let's get started.")),
+             p("Ready? Okay, let's get started!")),
     tabPanel("Hypothetical Example", 
       tags$div(
       p('The following hypothetical example will link concepts step by step throughout the app:'),
@@ -30,8 +30,10 @@ ui <- fluidPage(
         ')),
       tags$div(
       p("The Global History regents is hard primarily due to the sheer amount of memorization (it is fairly traumatizing). 
-      You, as an educational researcher, want to understand if the treatment effect estimate is unbiased and efficient.
-        ")),
+      For students who didn’t get 65 or above at the first attempt for the Global History regents, they need to take the quiz again. 
+      Before the second attempt of the exam, half of them is randomly assigned to attend an afterschool program and the other half does not receive any additional help. 
+      The half of students that receives extra tutoring in the afterschool program is defined as the treated group. 
+      The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
       tags$div(
       p("Since this is a hypothetical example, you physically don't have any data. This means you're going to have to ", tags$strong("simulate your data"), " to answer your question. The key here is that when you simulate fake data, you essentially start from an omniscient position (remember the omniscient hat?). That is, you know and understand everything about how your data are generated and what's going on internally. "))),
     tabPanel("What is simulation?",
