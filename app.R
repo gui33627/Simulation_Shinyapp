@@ -59,7 +59,7 @@ ui <- fluidPage(
              p("Click the button below to randomly select 50 students into the treatment group. 
                 If you click again, you will select a different group of 50 students who participate in the program. 
                 Each of your click generates a simulated sample of students. If you click many times, you can generate many simulated samples. 
-                By combining all these samples or all possible senarios, we are able to know the population trend.
+                By combining all these samples or all possible senarios, we will be able to know the population trend.
                 Try it for yourself!"),
              br(),
              p('All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, 
@@ -88,8 +88,7 @@ ui <- fluidPage(
              h4('Probability Distribution'),
              p("With our sample of 100 students, we would like to assign them to the treatment group or the control group.
              To do so, we need a data generator governed by a probability distribution.
-               Probability distribution refers to a function that assigns a random variable to a value.
-               It also defines the range and possibility that variable shall be."),
+               Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take."),
              br(),
              h4('Bernoulli distribution'),
              p('
@@ -115,11 +114,11 @@ ui <- fluidPage(
              tags$div(
                br(),
             h4('Binomial distribution'),
-             p("If we randomly assignment treatments to 100 students,and suppose we do not need to know exactly roster for each group, we can use a binomial distribution to generate the data."),
-             p("A Binomial distribution is a set of Bernoulli events (when each trial is independent).
-               There are two parameters in Binomial distribution, the number of Bernoulli events, n, 
+             p("If we randomly assign treatments to 100 students, and suppose we do not need to know exactly roster for each group, we can use a binomial distribution to generate the data."),
+             p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
+               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
                and the probability of success for each event, p. 
-               In other words, a Binomial distribution is the number of successes in Bernoulli events, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
+               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
             h4('Try for yourself!'),
             p("Each click will simulate a result that assigned every student to a group. The table summarizes the total counts
             of students in each group based on your selected number of students and probability of assigning to the treatment group.
@@ -405,7 +404,7 @@ server <- function(input, output, session) {
     mean <- round(mean(as.numeric(tmp$score)),1)
     sd <- round(sd(as.numeric(tmp$score)),1)
     
-    text <- paste0("The plot above shows the distribution of the pre-treatment test scores of students in out 100 students sample. 
+    text <- paste0("The plot above shows the distribution of the pre-treatment test scores of students in the 100 students sample. 
     When you wear omnicient hat, you specify and hence know the true expectation and standard deviation of the pre-treatment score of all students in New York State. 
     However, in reality we only have a sample of 100 students and can only estimate the expectation by the sample mean of the 100 pre-treatment scores and estimate the standard deviation by the sample standard deviation of the 100 pre-treatment scores.
     The sample mean score of the 100 students is ", mean, ", and the sample standard deviation of students' scores is ", sd, ".")
@@ -423,7 +422,7 @@ server <- function(input, output, session) {
   observeEvent(input$show_code_binomial, {
     toggle('code_div_binomial')
     output$code_binomial <- renderText({
-      paste0('# n specifies the number of Binomial distribution \n# size defines how many Bernoulli trails in a Binomial distribution \n# prob prescribes the probability of success in one Bernoulli trial \nrbinom(n = 1, size = ', input$select_n_binomial, ', porb = ', input$select_p_binomial, ')')
+      paste0('# n specifies the number of Binomial distribution \n# size defines how many Bernoulli trials in a Binomial distribution \n# prob prescribes the probability of success in one Bernoulli trial \nrbinom(n = 1, size = ', input$select_n_binomial, ', porb = ', input$select_p_binomial, ')')
     })
     
   })
