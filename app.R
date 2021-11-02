@@ -251,6 +251,7 @@ ui <- fluidPage(
              tags$div(
                sliderInput('select_n_bernoulli_sampling', label = "Select the number of Bernoulli trials", min = 1000, max = 10000, value = 5000, step = 10),
                sliderInput('select_prob_bernoulli_sampling', label = "Select the probability of success in each Bernoulli trial", min = 0, max = 1, value = 0.5, step = 0.1),
+               actionButton("generate_sampling_distribution_bernoulli", "Generate the Sampling Distribution"),
                plotOutput('sampling_distribution_bernoulli')),
              
              p('You may notice that the sampling distributions are all bell-curve no matter which distribution the statistics are originally calculated from. 
@@ -443,12 +444,15 @@ server <- function(input, output, session) {
   output$sampling_distr <- renderText(choose(100000,100))
   
   
-  observeEvent(input$generate_sampling_distribution, {
+ 
     output$sampling_distribution_normal <- renderPlot({
-      
-      all_means <- data.frame(data = rep(NA, input$select_n_sampling_distribution))
-      for (i in 1:input$select_n_sampling_distribution) {
-        sample <- rnorm(n = 100, mean = input$select_mean_normal_sampling, sd = input$select_sd_normal_sampling)
+      input$generate_sampling_distribution
+      select_n <- isolate(input$select_n_sampling_distribution)
+      select_mean <- isolate(input$select_mean_normal_sampling)
+      select_sd <- isolate(input$select_sd_normal_sampling)
+      all_means <- data.frame(data = rep(NA, select_n))
+      for (i in 1:select_n) {
+        sample <- rnorm(n = 100, mean = select_mean, sd = select_sd)
         tmp <- mean(sample)
         all_means$data[i] <- tmp
       }
@@ -456,17 +460,23 @@ server <- function(input, output, session) {
         geom_vline(xintercept = mean(all_means$data), color = 'blue') 
       
     })
-  })
+
   
-  output$sampling_distribution_bernoulli <- renderPlot({
-    proportions <- data.frame(data = rep(NA, input$select_n_bernoulli_sampling))
-    for (i in 1:input$select_n_bernoulli_sampling) {
-      tmp <- rbinom(n = 100, size = 1, prob = input$select_prob_bernoulli_sampling)
-      proportions$data[i] <- mean(tmp)
-    }
-    ggplot() + geom_histogram(data = proportions, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
-      geom_vline(xintercept = mean(proportions$data), color = 'blue') 
-  })
+  
+    output$sampling_distribution_bernoulli <- renderPlot({
+      input$generate_sampling_distribution_bernoulli
+      select_n <- isolate(input$select_n_bernoulli_sampling)
+      select_p <- isolate(input$select_prob_bernoulli_sampling)
+      proportions <- data.frame(data = rep(NA, select_n))
+      for (i in 1:select_n) {
+        tmp <- rbinom(n = 100, size = 1, prob = select_p)
+        proportions$data[i] <- mean(tmp)
+      }
+      ggplot() + geom_histogram(data = proportions, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
+        geom_vline(xintercept = mean(proportions$data), color = 'blue') 
+    })
+
+  
   
   
   # output$regression <- renderPlot({
