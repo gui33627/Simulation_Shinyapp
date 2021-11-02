@@ -83,8 +83,18 @@ ui <- fluidPage(
     
     
     "Probability Distribution",
+    tabPanel("Sample and Population",
+             img(src = "population-and-sample.png", height = 400, width = 700),
+             br(), br(), br(),
+             p('As you have seen in the introduction, we sampled 100 students from all high school students in New York State. 
+               In the example, the population is all high school students in New York State, 
+               and the sample is the 100 students that you will collect data from.'),
+             p('Typically, population is very large and making a complete enumeration of all the individuals in the population either impractical or impossible. 
+               A sample usually represents a subset of manageable size. Samples are collected and statistics are calculated from the samples, 
+               so that one can make inferences/generalizations from the sample to the population. 
+               Specifically, we want to infer the treatment effect of the afterschool program on average for high school students in New York State 
+               from the treatment effect estimated from the 100 students sample.')),
     tabPanel("Discrete Random Variable and Distribution",
-             # img(src = "population.png", height = 400, width = 700),
              #VZ:do we want to put a demo graph for sampling? 
              #the one Jennifer suggested population to sample and how sample represents population
              #Up till this session, we yet to explain what is a random variable- do we need to or are we assuming our users would have known?
