@@ -280,22 +280,23 @@ ui <- fluidPage(
             ),
     "Simulation",
     tabPanel("Data Generation Process (DGP)",
+             h3('The Data Generating Process (DGP)'),
              p("In this final section, we will use what we learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: 
                Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that omniscient hat? It's time to put it on."),
              p("As with any simulation study, we need to first establish our", tags$strong("Data Generating Process (DGP)."), "
                This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. 
                For the purposes of this study, we will use what we learned in previous sections to walk through our DGP."),
-             h3('Treatment Assignment'),
+             h4('Treatment Assignment'),
              p("We already know how to simulate treatment assignments from Section 2 (Probability Distribution - Discrete Random Variables) using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
              verbatimTextOutput('simulation_treatment_code'),
              textOutput('simulation_treatment'),
-             h3("Pre-treatment test scores"),
+             h4("Pre-treatment test scores"),
              p("We also know that we can use the Normal distribution from Section 2 (Probability Distribution - Continuous Random Variables) to simulate our pre-treatment test scores. 
                Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
              verbatimTextOutput('simulation_prescore_code'),
              textOutput('simulation_prescore'),
              
-             h3('Outcome test scores based on treatment assignment'),
+             h4('Outcome test scores based on treatment assignment'),
              p("As omniscient beings, we know that the treatment effect (or", tags$em("tau"), ") is", tags$strong("5."), 
                "That is, we know that the post-treatment test scores of students who went through the afterschool program is on average", tags$strong("5"),  "points higher than the students who did not. 
                To generate these outcome scores, we would simulate a", tags$em("dependency"), "based on the treatment assignment variable from above:"),
@@ -304,18 +305,19 @@ ui <- fluidPage(
           
              ),
     tabPanel("Average Treatment Effect (ATE)",
-            p('Once we have simulated all the data necessary from our DGP, we can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  'of the afterschool program using different causal inference methods. We would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, we would compare the two to see how close our estimate is to the truth.
-               Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
+            h3("Average Treatment Effect (ATE)"),
+            p('Once we have simulated all the data necessary from our DGP, we can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  'of the afterschool program using different causal inference methods. We would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, we would compare the two to see how close our estimate is to the truth.'),
+            p('Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
                This is intentional because as a researcher, you will never know the truth (in this case, that the treatment effect is 5) and thus you are always estimating the ATE (or any other estimand). 
                But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.'),
             br(),
-            h3('Calculate the true SATE'),
+            h4('Calculate the true SATE'),
             verbatimTextOutput('simulation_sate_code'),
             textOutput('simulation_sate'),
-            h3('Use a difference in mean outcomes to estimate SATE.'),
+            h4('Use a difference in mean outcomes to estimate SATE.'),
             verbatimTextOutput('simulation_mean_diff_code'),
             textOutput('simulation_mean_diff'),
-            h3('Use Linear Regression to estimate SATE'),
+            h4('Use Linear Regression to estimate SATE'),
             verbatimTextOutput('simulation_reg_code'),
             textOutput('simulation_reg'),
              
@@ -326,6 +328,7 @@ ui <- fluidPage(
 #                Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts.")
 ),
     tabPanel("Estimator Comparisons",
+             h3("Comparing Estimators"),
              p('Now we will further explore the properties of these two different approaches to estimating our ATEs by simulation.
                For now we will only consider the variability in estimates that would manifest as a result of the randomness in who is assigned to receive the treatment (this is sometimes referred to as “randomization based inference”). 
                Since we are wearing omniscient hat we can see how the observed outcomes and estimates would change across a distribution of possible treatment assignments. 
