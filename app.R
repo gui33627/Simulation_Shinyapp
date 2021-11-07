@@ -282,21 +282,21 @@ ui <- fluidPage(
     tabPanel("Data Generation Process (DGP)",
              p("In this final section, we will use what we learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: 
                Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that omniscient hat? It's time to put it on."),
-             p("As with any simulation study, we need to first establish our **Data Generating Process (DGP)**. 
+             p("As with any simulation study, we need to first establish our", tags$strong("Data Generating Process (DGP)."), "
                This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. 
                For the purposes of this study, we will use what we learned in previous sections to walk through our DGP."),
              h3('Treatment Assignment'),
-             p("We already know how to simulate treatment assignments from [section 2] using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
+             p("We already know how to simulate treatment assignments from Section 2 (Probability Distribution - Discrete Random Variables) using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
              verbatimTextOutput('simulation_treatment_code'),
              textOutput('simulation_treatment'),
              h3("Pre-treatment test scores"),
-             p("We also know that we can use the Normal distribution from [section 2] to simulate our pre-treatment test scores. 
+             p("We also know that we can use the Normal distribution from Section 2 (Probability Distribution - Continuous Random Variables) to simulate our pre-treatment test scores. 
                Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
              verbatimTextOutput('simulation_prescore_code'),
              textOutput('simulation_prescore'),
              
              h3('Outcome test scores based on treatment assignment'),
-             p("As omniscient beings, we know that the treatment effect (or \tau) is **5**. 
+             p("As omniscient beings, we know that the treatment effect (or", tags$em("tau"), ") is **5**. 
                That is, we know that the post-treatment test scores of students who went through the afterschool program is on average **5** points higher than the students who did not. 
                To generate these outcome scores, we would simulate a _dependency_ based on the treatment assignment variable from above:"),
              verbatimTextOutput('simulation_postscore_code'),
