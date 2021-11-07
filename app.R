@@ -304,8 +304,7 @@ ui <- fluidPage(
           
              ),
     tabPanel("Average Treatment Effect (ATE)",
-            p('Once we have simulated all the data necessary from our DGP, we can move on to estimate the aveargae treatment effect of the afterschool program using different causal inference methods 
-               when we wear researcher hat in reality and compare them to the true average treatment effect which we know can calculate only if we wear a omnicient hat. 
+            p('Once we have simulated all the data necessary from our DGP, we can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  'of the afterschool program using different causal inference methods. We would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, we would compare the two to see how close our estimate is to the truth.
                Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
                This is intentional because as a researcher, you will never know the truth (in this case, that the treatment effect is 5) and thus you are always estimating the ATE (or any other estimand). 
                But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.'),
