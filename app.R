@@ -296,9 +296,9 @@ ui <- fluidPage(
              textOutput('simulation_prescore'),
              
              h3('Outcome test scores based on treatment assignment'),
-             p("As omniscient beings, we know that the treatment effect (or", tags$em("tau"), ") is **5**. 
-               That is, we know that the post-treatment test scores of students who went through the afterschool program is on average **5** points higher than the students who did not. 
-               To generate these outcome scores, we would simulate a _dependency_ based on the treatment assignment variable from above:"),
+             p("As omniscient beings, we know that the treatment effect (or", tags$em("tau"), ") is", tags$strong("5."), 
+               "That is, we know that the post-treatment test scores of students who went through the afterschool program is on average", tags$strong("5"),  "points higher than the students who did not. 
+               To generate these outcome scores, we would simulate a", tags$em("dependency"), "based on the treatment assignment variable from above:"),
              verbatimTextOutput('simulation_postscore_code'),
              textOutput('simulation_postscore')
           
