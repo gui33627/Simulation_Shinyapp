@@ -30,20 +30,22 @@ ui <- fluidPage(
       tags$div(
       p("The Global History regents is hard primarily due to the sheer amount of memorization (it is fairly traumatizing). 
       Hypothetically, the school is starting an afterschool program to assist students who failed at the first attempt to take the exam again.
-      Before the second attempt of the exam, half of them is randomly assigned to attend an afterschool program and the other half does not receive any additional help. 
+      Before the second attempt of the exam, half of them are randomly assigned to attend an afterschool program and the other half does not receive any additional help. 
       The half of students that receives extra tutoring in the afterschool program is defined as the treated group. 
       The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
       tags$div(
       p("Since this is a hypothetical example, you physically don't have any data. This means you're going to have to ", tags$strong("simulate your data"), " to answer your question. 
-        The key here is that when you simulate fake data, you wear the omniscient hat. That is, you know and understand everything about how your data are generated and what's going on internally. "))),
-    tabPanel("What is simulation?",
-             h4('The Whats and Whys of Simulation'),
-             p("Simulation is a way to explore and understand things about your data, model(s), and underlying assumptions in a controlled environment. In this realm, you can switch freely between the researcher and omniscient hats, and see things about your data that you would normally never be able to see in the real world. This makes simulation a powerful learning tool when comparing different methods and examining efficiency and bias in causal inference."),
-             p("Suppose the true causal effect (or", tags$em("treatment effect"), ") of the afterschool program is 
+        The key here is that when you simulate fake data, you wear the omniscient hat. That is, you start from a position where you know and understand everything about how your data are generated and what's going on internally. ")),
+      h4('The Whats and Whys of Simulation'),
+      p("Simulation is a way to explore and understand things about your data, model(s), and underlying assumptions in a controlled environment. In this realm, you can switch freely between the researcher and omniscient hats, and see things about your data that you would normally never be able to see in the real world. This makes simulation a powerful learning tool when comparing different methods and examining efficiency and bias in causal inference."),
+      p("Suppose the true causal effect (or", tags$em("treatment effect"), ") of the afterschool program is 
                an increase of 5 points on the exam score. Wearing your", tags$em("researcher hat"), " you would never know this 'true' treatment effect.
                You still can use causal inference methods to", tags$em("estimate"), " the effect of the afterschool program."),
-             p("With simulation, you shall wear the", tags$em("omniscient hat"), " and create data with the true causal effect through data
+      p("With simulation, you shall wear the", tags$em("omniscient hat"), " and create data with the true causal effect through data
              generate process. Knowing the true causal effect, you shall test whether different causal inference methods are valid or not."),
+      ),
+    tabPanel("What is simulation?",
+             
              h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Scores'),
              p("Let's decompose the description of the hypothetical example, and put the ", tags$em("omniscient hat"), " on, since it feels good to know everything. 
                With this powerful hat, you know that you have a sample of 100 fake students (that you will generate), 
