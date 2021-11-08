@@ -29,7 +29,7 @@ ui <- fluidPage(
         ')),
       tags$div(
       p("The Global History regents is hard primarily due to the sheer amount of memorization (it is fairly traumatizing). 
-      Hypothetically, the school is starting an afterschool program to assist students who failed at the first attempt to take the exam again.
+      Hypothetically, the New York State Education Department is starting an afterschool program to assist students who failed at the first attempt to take the exam again.
       Before the second attempt of the exam, half of them are randomly assigned to attend an afterschool program and the other half does not receive any additional help. 
       The half of students that receives extra tutoring in the afterschool program is defined as the treated group. 
       The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
@@ -80,20 +80,17 @@ ui <- fluidPage(
     
     "Probability Distribution",
     tabPanel("Sample and Population",
-             img(src = "population-and-sample.png", height = 400, width = 700),
+             img(src = "population-and-sample.png", height="50%", width="100%", align="left"),
              br(), br(), br(),
-             p('As you have seen in the introduction, we sampled 100 students from all high school students in New York State. 
-               In the example, the population is all high school students in New York State, 
-               and the sample is the 100 students that you will collect data from.'),
-             p('Typically, population is very large and making a complete enumeration of all the individuals in the population either impractical or impossible. 
-               A sample usually represents a subset of manageable size. Samples are collected and statistics are calculated from the samples, 
+             p('In our example, we sampled 100 students from all high school students in New York State. 
+               The population is all high school students in New York State, 
+               and the sample is the 100 students that you collect data from.'),
+             p('Typically, population is too large to make a complete enumeration of all the individuals in the population. 
+               Samples therefore are collected and statistics are calculated from the samples, 
                so that one can make inferences/generalizations from the sample to the population. 
-               Specifically, we want to infer the treatment effect of the afterschool program on average for high school students in New York State 
-               from the treatment effect estimated from the 100 students sample.')),
+               Specifically, using the treatment effect estimated from the 100 students sample,
+               you will infer the treatment effect of the afterschool program on average for high school students in New York State.')),
     tabPanel("Discrete Random Variable and Distribution",
-             #VZ:do we want to put a demo graph for sampling? 
-             #the one Jennifer suggested population to sample and how sample represents population
-             #Up till this session, we yet to explain what is a random variable- do we need to or are we assuming our users would have known?
              h4('Probability Distribution'),
              p("With our sample of 100 students, we would like to assign them to the treatment group or the control group.
              To do so, we need a data generator governed by a probability distribution.
@@ -106,12 +103,12 @@ ui <- fluidPage(
              p('There is only one parameter in Bernoulli distribution, probability of success p. In our example, we
                take the value 1 (treatment group) as success, with probability p, 
                the value 0 (control group) thus has a probability of (1-p).'),
-             
-             h4('Try for yourself!'),
+             br(),
+             h4('Illustration'),
              
              p('Each click will show an assignment of a random student.
              Set the probability of the treatment group from 0 to 1 and see how often a student is in the treatment group.'),
-             p('(Hint:if you set the p as 1, every click will show a student being in the treatment group.)'),
+             p('(Hint:if you set the p as 1, you assign all students to the treatment group.)'),
              sliderInput(inputId = "bernoulli_prob",
                          label = "Select the probability of assigning to the treatment group (p):",
                          min = 0, max = 1, value = 0.5, step = 0.1),
@@ -128,7 +125,8 @@ ui <- fluidPage(
                There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
                and the probability of success for each event, p. 
                In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
-            h4('Try for yourself!'),
+            br(),
+            h4('Illustration'),
             p("Each click will simulate a result that assigned every student to a group. The table summarizes the total counts
             of students in each group based on your selected number of students and probability of assigning to the treatment group.
             "),
@@ -140,9 +138,25 @@ ui <- fluidPage(
                          min = 0, max = 1, value = 0.5, step = 0.1),
              actionButton("hundred_student_treatment", "Assign students"),
              textOutput('hundreds_student_treatment_result'),
-             # plotOutput('hundred_students_treatment_plot'),
-            #VZ-change table title
+             #plotOutput('hundred_students_treatment_plot'),
+
              tableOutput('hundreds_student_treatment_result_table'),
+            #VZ-fix it after meeting
+            #sidebarLayout(
+            #sidebarPanel(
+              #sliderInput(inputId = "select_n_binomial",
+                          #label = "Select the number of treatment assignments (n):",
+                          #min = 1, max = 100, value = 100, step = 1),
+              #sliderInput(inputId = "select_p_binomial",
+                          #label = "Select the probability of in the treatment group in one assignmnet (p):",
+                          #min = 0, max = 1, value = 0.5, step = 0.1),
+              #actionButton("hundred_student_treatment", "Assign students"),),
+            #mainPanel(
+              # Output: Tabset w/ plot, summary, and table ----
+              #tabsetPanel(type = "tabs",
+                          #tabPanel('hundreds_student_treatment_result'),
+                          #tabPanel("table"))
+              #plotOutput('hundred_students_treatment_plot'),)
              br(),
              tags$div(
                useShinyjs(),
@@ -153,6 +167,7 @@ ui <- fluidPage(
                  )
                )
              ),
+            br(),
             h4('In summary'),
              p('Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
                such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.'),
@@ -166,7 +181,7 @@ ui <- fluidPage(
               Normal distribution is a continuous probability distribution, 
               and it is often used in simulation and teaching because it approximates to many natural events. 
               There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
-             h4('Try for yourself!'),
+             h4('Illustration'),
              #VZ-will use latex for the equations
              #do we need to explain var?
              p('You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. '),
