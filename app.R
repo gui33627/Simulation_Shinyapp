@@ -67,13 +67,7 @@ ui <- fluidPage(
                 By combining all these samples or all possible senarios, we will be able to know the population trend.
                 Try it for yourself!"),
              br(),
-             p('All 100 students: James, Robert, John, Michael, William, David, Richard, Joseph, Thomas, Charles, Christopher, Daniel, Matthew, Anthony, Mark, Donald, 
-               Steven, Paul, Andrew, Joshua, Kenneth, Kevin, Brian, George, Edward, Mary, Patricia, Jennifer, Linda, Elizabeth, Barbara, Yeri, Jessica, Sarah, Karen, 
-               Nancy, Lisa, Lee, Margaret, Sandra, Ashley, Kimberly, Emily, Donna, Michelle, Dorothy, Carol, Amanda, Melissa, Hee-jung,Yichen,Aarav, Mohammed, Sofía, 
-               Olivia, Lucas, Ben, Emma, Mia, Chloé, Gabriel, Raphaël, Santiago, Francisco, Leonor, Leon, Maria, Himari, Nathaniel, Jacob, Dalisay, Analyn,Nur, Yuxuan, 
-               Ahmad, Megan, Charlotte, Xinyi, Jack, Alex, Giulia,Andrea, Chiara, Marco, Hannah, Samantha, Nathan, Simon, Camila, Juan, Afiq,Nurul, Haruto, Ren, Akari, 
-               Salomé, Oliver, Aadya, Saanvi, Yinuo.'),
-             
+             p('All 100 students: Afiq, Leonor, Himari, Mary, Andrew, Dalisay, Michael, Sarah, Karen, John, Nancy, Lee, Mohammed, Ahmad, Aadya, Mark, Matthew, Daniel, Nur, Francisco, Analyn, Michelle, James, Emma, Camila, Lisa, Elizabeth, Hee-jung, Leon, Joshua, Nathan, Edward, Akari, Aarav, Joseph, Emily, William, Jacob, Ashley, Patricia, Ben, Salomé, Donna, Lucas, Juan, Anthony, Raphaël, Brian, Jennifer, Jessica, Sofía, Dorothy, Ren, Charles, Marco, Paul, George, Kevin, Kenneth, Megan, Andrea, Gabriel, Robert, Sandra, Mia, Yinuo, Steven, Maria, Hannah, Simon, Donald, Richard, Margaret, Chloé, Charlotte, Yichen, Kimberly, Melissa, Haruto, David, Olivia, Nathaniel, Barbara, Nurul, Oliver, Amanda, Giulia, Yuxuan, Carol, Yeri, Linda, Chiara, Saanvi, Thomas, Samantha, Alex, Xinyi, Jack, Christopher, Santiago.'),
              actionButton("draw_50_student", "Draw 50 students for treatment"),
              textOutput('student_list'),
              br(),
@@ -207,11 +201,6 @@ ui <- fluidPage(
              ),
              
              textOutput('normal_mean_var'),
-             br(),
-             #VZ-if we really need to explain var, maybe we better combine it with explaining how rnorm is used in epsilon?
-             h4('Normal distribution assumption in regression assumptions'),
-             p('In addition to the distribution of data, normal distributions is also commonly used in regression modeling to help us characterize the variation that remains after predicting the average ---
-               the error term epsilon in the expression y = a + bx + epsilon. The distributions allows us to get a handle on how uncertain our predictions are and, additionally, our uncertainty in the estimated parameters of the model.'),
              br(),
              h4('In summary'),
              p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
@@ -353,7 +342,7 @@ ui <- fluidPage(
 ))
 
 server <- function(input, output, session) {
-  students <- c('James','Robert', 'John',
+  students <- sample(c('James','Robert', 'John',
                 'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
                 'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
                 'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
@@ -364,7 +353,7 @@ server <- function(input, output, session) {
                 'Santiago', 'Francisco', 'Leonor', 'Leon', 'Maria', 'Himari', 'Nathaniel', 'Jacob', 'Dalisay', 'Analyn', 
                 'Nur', 'Yuxuan', 'Ahmad', 'Megan', 'Charlotte', 'Xinyi', 'Jack', 'Alex', 'Giulia',
                 'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
-                'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo')
+                'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo'))
   observeEvent(input$draw_50_student, {
     studentlist <- sample(students, size = 50)
     output$student_list <- renderText(toString(studentlist))
@@ -409,7 +398,7 @@ server <- function(input, output, session) {
     output$hundred_students_scores <- renderPlot({
       tmp <- data.frame(score = df$score)
       mean <- paste0('Sample Mean: ', round(mean(as.numeric(tmp$score)),1))
-      sd <- paste0('Sample Sd: ', round(sd(as.numeric(tmp$score)),1))
+      sd <- paste0('Sample Standard Deviation: ', round(sd(as.numeric(tmp$score)),1))
       ggplot() + geom_histogram(data = tmp, aes(x = score, y = ..density..), bins = 30, alpha = 0.5) + 
         geom_vline(xintercept = mean(as.numeric(tmp$score)), color = 'blue') +
         annotate("text",x=input$select_mean_normal + 10,y=0.095,label= mean, fontface = "italic", size = 5) +
