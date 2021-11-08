@@ -1,6 +1,7 @@
 
 library(shiny)
 library(ggplot2)
+library(plotly)
 library(shinyjs)
 theme_set(theme_bw())
 
