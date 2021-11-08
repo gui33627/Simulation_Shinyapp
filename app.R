@@ -142,21 +142,21 @@ ui <- fluidPage(
 
              tableOutput('hundreds_student_treatment_result_table'),
             #VZ-fix it after meeting
-            #sidebarLayout(
-            #sidebarPanel(
+           # sidebarLayout(
+           # sidebarPanel(
               #sliderInput(inputId = "select_n_binomial",
-                          #label = "Select the number of treatment assignments (n):",
-                          #min = 1, max = 100, value = 100, step = 1),
+                        #  label = "Select the number of treatment assignments (n):",
+                         # min = 1, max = 100, value = 100, step = 1),
               #sliderInput(inputId = "select_p_binomial",
-                          #label = "Select the probability of in the treatment group in one assignmnet (p):",
-                          #min = 0, max = 1, value = 0.5, step = 0.1),
-              #actionButton("hundred_student_treatment", "Assign students"),),
+                         # label = "Select the probability of in the treatment group in one assignmnet (p):",
+                          #min = 0, max = 1, value = 0.5, step = 0.1)),
             #mainPanel(
-              # Output: Tabset w/ plot, summary, and table ----
+              #Output: Tabset w/ plot, summary, and table ----
               #tabsetPanel(type = "tabs",
-                          #tabPanel('hundreds_student_treatment_result'),
-                          #tabPanel("table"))
-              #plotOutput('hundred_students_treatment_plot'),)
+                         # tabPanel("Summary", verbatimTextOutput("summary")),
+                          #tabPanel("Table", tableOutput("treatment"))
+                         # )
+              #)
              br(),
              tags$div(
                useShinyjs(),
