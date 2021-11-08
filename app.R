@@ -115,6 +115,13 @@ ui <- fluidPage(
              actionButton("one_student_treatment", "Assign a student to a group"),
              br(),
              textOutput('one_student_treatment_plot'),
+             br(), br(),
+             p("Now let's run a Bernoulli trial for each of the 100 students and then we can randomly assign each student to either treatment group (1) or control group (0). 
+               Each of your click on the button 'Assign 100 students' will randomly re-assign the students to the two groups."),
+             br(), 
+             actionButton('reassign_100_treatment', "Assign 100 students"),
+             br(), br(),
+             plotlyOutput('animation_bernoulli'),
    
              
              tags$div(
@@ -236,16 +243,18 @@ ui <- fluidPage(
              verbatimTextOutput('sampling_distr'),
              p('Therefore, we usually use a large number of samples to get an approximate sampling distribution of statistics. 
                For example, below you can simulate a sampling distribution of sample mean by choosing the number of samples, and the population mean and standard deviation of the pre-treatement score.'),
-             sliderInput(inputId = "select_n_sampling_distribution",
-                         label = "Select the number of samples to generate the sampling distribution:",
-                         min = 1000, max = 10000, value = 5000, step = 10),
+             fluidRow(column(width = 6,
+                             sliderInput(inputId = "select_n_sampling_distribution",
+                                         label = "Select the number of samples to generate the sampling distribution:",
+                                         min = 1000, max = 10000, value = 5000, step = 10)),
+                      column(width = 6,
+                             sliderInput(inputId = "select_mean_normal_sampling",
+                                         label = "Select the expectation of the pre-treatment score (E(X)):",
+                                         min = 20, max = 80, value = 60, step = 1),
+                             sliderInput(inputId = "select_sd_normal_sampling",
+                                         label = "Select the standard deviation of the pre-treatment score:",
+                                         min = 0, max = 10, value = 5, step = 1))),
              
-             sliderInput(inputId = "select_mean_normal_sampling",
-                         label = "Select the expectation of the pre-treatment score (E(X)):",
-                         min = 20, max = 80, value = 60, step = 1),
-             sliderInput(inputId = "select_sd_normal_sampling",
-                         label = "Select the standard deviation of the pre-treatment score:",
-                         min = 0, max = 10, value = 5, step = 1),
              actionButton("generate_sampling_distribution", "Generate the Sampling Distribution"),
              plotOutput('sampling_distribution_normal'),
              
@@ -255,8 +264,11 @@ ui <- fluidPage(
                 we can also generate a sampling distribution for it by calculating the proportions for each of the many 100 students samples. 
                 A proportion is a special case of an average in which the data are 1’s and 0’s (in the afterschool program/not in the afterschool program).'),
              tags$div(
-               sliderInput('select_n_bernoulli_sampling', label = "Select the number of Bernoulli trials", min = 1000, max = 10000, value = 5000, step = 10),
-               sliderInput('select_prob_bernoulli_sampling', label = "Select the probability of success in each Bernoulli trial", min = 0, max = 1, value = 0.5, step = 0.1),
+               fluidRow(column(width = 6,
+                               sliderInput('select_iter_bernoulli_sampling', label = "Select the number of samples to generate the sampling distribution:", min = 1000, max = 10000, value = 5000, step = 10)),
+                        column(width = 6,
+                               sliderInput('select_sample_size_bernoulli_sampling', label = "Select the number of Bernoulli trials in each sample:", min = 5, max = 1000, value = 100, step = 1),
+                               sliderInput('select_prob_bernoulli_sampling', label = "Select the probability of success in each Bernoulli trial:", min = 0, max = 1, value = 0.5, step = 0.1) )),
                actionButton("generate_sampling_distribution_bernoulli", "Generate the Sampling Distribution"),
                plotOutput('sampling_distribution_bernoulli')),
              
@@ -303,11 +315,30 @@ ui <- fluidPage(
              h4('Outcome test scores based on treatment assignment'),
              p("As omniscient beings, we know that the treatment effect (or", tags$em("tau"), ") is", tags$strong("5."), 
                "That is, we know that the post-treatment test scores of students who went through the afterschool program is on average", tags$strong("5"),  "points higher than the students who did not. 
-               To generate these outcome scores, we would simulate a", tags$em("dependency"), "based on the treatment assignment variable from above:"),
+               To generate these outcome scores, we would simulate a", tags$em("dependency"), "based on the treatment assignment variable from above. 
+               In the interactive graph below, you can specify the true relationship between the pre-treatment test scores (X) and the outcome test scores by selecting the coefficients in the regression model."),
+             fluidRow(column(width = 6,
+                             sliderInput(inputId = "select_b0", label = "Intercept (b0):", min = 1, max = 20, value = 10, step = 1),
+                             sliderInput(inputId = "select_b1", label = "Coefficient on X (b1):", min = 0.1, max = 1.2, value = 1, step = 0.1)
+             ),
+             column(width = 6,
+                    sliderInput(inputId = "epsilon_error",
+                                label = "Residual Std Dev (sigma)",
+                                min = 0, max = 3, value = 1, step = 0.1),
+                    checkboxInput(inputId = "include_y0", 
+                                  label = "Show Y0", value = T),
+                    checkboxInput(inputId = "include_y1",
+                                  label = "Show Y1", value = T),
+                    checkboxInput(inputId = "include_y0_mean", 
+                                  label = "Show the mean function for Y0", value = T),
+                    checkboxInput(inputId = "include_y1_mean",
+                                  label = "Show the mean function for Y1", value = T))
+             
+             ),
+             plotOutput(outputId = "result_plot", height = "500px"),
              verbatimTextOutput('simulation_postscore_code'),
              textOutput('simulation_postscore')
-          
-             ),
+    ),
     tabPanel("Average Treatment Effect (ATE)",
             h3("Average Treatment Effect (ATE)"),
             p('Once we have simulated all the data necessary from our DGP, we can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  'of the afterschool program using different causal inference methods. We would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, we would compare the two to see how close our estimate is to the truth.'),
@@ -449,6 +480,44 @@ server <- function(input, output, session) {
     
   })
   
+  
+  Z_100 <- reactiveValues(data = rbinom(100, size = 1, prob = 0.5))
+  
+  observeEvent(input$reassign_100_treatment, {
+    Z_100$data <- rbinom(100, size = 1, prob = 0.5)
+  })
+  
+  output$animation_bernoulli <- renderPlotly({
+    
+    Z <- Z_100$data
+    stage1 <- data.frame(id = 1:100, name = students, frame = rep(1, 100), x = rep(0.5, 100), y = 1:100, z = rep('before', 100))
+    stage2 <- data.frame(id = 1:100, name = students, frame = rep(2, 100), x = ifelse(Z == 1, 1, 0), y = 1:100, z = ifelse(Z == 1, 'treat', 'control'))
+    
+    df <- rbind(stage1, stage2)
+    t <- list(
+      family = "sans serif",
+      size = 7,
+      color = toRGB("grey50"))
+    
+    plot_ly() %>% 
+      add_markers(data=df, x = ~x, y = ~y, frame = ~frame, ids = ~id, text = ~name, hoverinfo = "text") %>%
+      animation_opts(frame = 2000, transition = 1999, redraw = FALSE) %>% 
+      add_text(data=df, x = ~x, y = ~y, frame = ~frame, ids = ~id, text = ~name, textfont = t, textposition = "middle right") %>% 
+      animation_opts(frame = 2000, transition = 1999, redraw = FALSE) %>% 
+      layout(
+        title = 'Treatment assignment for each of the 100 students',
+        font=list(
+          family='Times New Roman',
+          size=12),
+        xaxis = list(
+          title = "Group",
+          ticktext = list("0", "1"), 
+          tickvals = list(0, 1),
+          tickmode = "array"),
+        showlegend = FALSE)
+  })
+  
+  
   output$sampling_distr <- renderText(choose(100000,100))
   
   
@@ -473,176 +542,213 @@ server <- function(input, output, session) {
   
     output$sampling_distribution_bernoulli <- renderPlot({
       input$generate_sampling_distribution_bernoulli
-      select_n <- isolate(input$select_n_bernoulli_sampling)
+      select_iter <- isolate(input$select_iter_bernoulli_sampling)
       select_p <- isolate(input$select_prob_bernoulli_sampling)
-      proportions <- data.frame(data = rep(NA, select_n))
-      for (i in 1:select_n) {
-        tmp <- rbinom(n = 100, size = 1, prob = select_p)
+      select_n <- isolate(input$select_sample_size_bernoulli_sampling)
+      proportions <- data.frame(data = rep(NA, select_iter))
+      for (i in 1:select_iter) {
+        tmp <- rbinom(n = select_n, size = 1, prob = select_p)
         proportions$data[i] <- mean(tmp)
       }
       ggplot() + geom_histogram(data = proportions, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
         geom_vline(xintercept = mean(proportions$data), color = 'blue') 
     })
-
+    
   
   
-  
-  # output$regression <- renderPlot({
-  #   x <- seq(from = 1, to = 10, length.out = input$sample_size)
-  #   y <- input$select_b0 + input$select_b1*x + rnorm(length(x), 0,input$select_sigma)
-  #   df <- data.frame(x, y)
-  #   ggplot(df, aes(x = x, y = y)) + geom_point() + geom_smooth(method='lm', formula= y~x,se = F) + theme_bw()
-  # })
-  
-  Z <- rbinom(n = 100, size = 1, prob = 0.5)
-  X <- rnorm(n = 100, mean = 65, sd = 3)
-  tau <- 5
-  Y0 <- 10 + 1.1*X + rnorm(100, mean = 0, sd = 1)
-  Y1 <- 10 + 1.1*X + tau + rnorm(100, mean = 0, sd = 1)
-  Y <- ifelse(Z == 1,  Y1, Y0)
-  
-  output$simulation_treatment_code <- renderText({
-    "rbinom(n = 100, size = 1, prob = 0.5)"
-  })
-  
-  output$simulation_treatment <- renderText({
-    text <- c()
-    for (i in 1:100) {
-      text <- c(text, paste0(students[i], ': ', round(Z[i])))
-    }
-    toString(text)
-  })
-  
-  output$simulation_prescore_code <- renderText({
-    "rnorm(n = 100, mean = 60, sd = 10)"
-  })
-  
-  output$simulation_prescore <- renderText({
-    text <- c()
-    for (i in 1:100) {
-      text <- c(text, paste0(students[i], ': ', round(X[i])))
-    }
-    toString(text)
-  })
-  
-  output$simulation_treatment <- renderText({
-    text <- c()
-    for (i in 1:100) {
-      text <- c(text, paste0(students[i], ': ', round(Z[i])))
-    }
-    toString(text)
-  })
-  
-  output$simulation_postscore_code <- renderText({
-    "tau <- 5 \nY0 <- 10 + X + 0 + rnorm(100, mean = 0, sd = 1) \nY1 <- 10 + X + tau + rnorm(100, mean = 0, sd = 1) \nY <- ifelse(Z == 1,  Y1, Y0)"
-  })
-  
-  output$simulation_postscore <- renderText({
-    text <- c()
-    for (i in 1:100) {
-      text <- c(text, paste0(students[i], ': ', round(Y[i])))
-    }
-    toString(text)
-  })
-  
-  
-  output$simulation_sate_code <- renderText({
-    "mean(Y1 - Y0)"
-  })
-  
-  output$simulation_sate <- renderText({
-    round(mean(Y1 - Y0), 2)
-  })
-  
-  
-  output$simulation_mean_diff_code <- renderText({
-    "mean(Y[Z == 1]) - mean(Y[Z == 0])"
-  })
-  
-  output$simulation_mean_diff <- renderText({
-    round(mean(Y[Z == 1]) - mean(Y[Z == 0]), 2)
-  })
-  
-  output$simulation_reg_code <- renderText({
-    "fit <- lm(Y ~ X + Z) \nsummary(fit)$coefficients['Z', 1]"
-  })
-  
-  output$simulation_reg <- renderText({
-    fit <- lm(Y ~ X + Z)
-    round(summary(fit)$coefficients['Z', 1], 2)
-  })
-  
-  output$mean_diff_reg_compare <- renderText({
-    "mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:10000) {\n    Z <- rbinom(N, 1, prob = 0.5) \n    Y <- ifelse(Z == 1, Y_1, Y_0)
-    \n    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)]) \n    fit_tmp <- lm(Y ~ X + Z) \n    
+    Z <- rbinom(n = 100, size = 1, prob = 0.5)
+    X <- rnorm(n = 100, mean = 65, sd = 3)
+    tau <- 5
+    
+    Y0 <- reactive({
+      input$select_b0 + input$select_b1*X + rnorm(100, mean = 0, sd = input$epsilon_error)
+    }) 
+    Y1 <- reactive({input$select_b0 + input$select_b1*X + 5 + rnorm(100, mean = 0, sd = input$epsilon_error) }) 
+    Y <- reactive({
+      ifelse(Z == 1,  Y1(), Y0())
+    })
+    
+    output$simulation_treatment_code <- renderText({
+      "rbinom(n = 100, size = 1, prob = 0.5)"
+    })
+    
+    output$simulation_treatment <- renderText({
+      text <- c()
+      for (i in 1:100) {
+        text <- c(text, paste0(students[i], ': ', round(Z[i])))
+      }
+      toString(text)
+    })
+    
+    output$simulation_prescore_code <- renderText({
+      "rnorm(n = 100, mean = 60, sd = 10)"
+    })
+    
+    output$simulation_prescore <- renderText({
+      text <- c()
+      for (i in 1:100) {
+        text <- c(text, paste0(students[i], ': ', round(X[i])))
+      }
+      toString(text)
+    })
+    
+    
+    # generate real relationship 
+    real_functional_relationship <- reactive({
+      data <- data.frame(x = X, z=Z)
+      data$y0_actual <-  with(data, x*input$select_b1 + input$select_b0)
+      data$y1_actual <-  with(data, x*input$select_b1 + 5 + input$select_b0)
+      data
+    })
+    
+    sample_tibble <- reactive({
+      data <- data.frame(x = X, z = Z)
+      data$y0 <-  Y0()
+      data$y1 <-  Y1()
+      data
+    })
+    
+    output$result_plot <- renderPlot({
+      req(input$select_b0)
+      req(input$select_b1)
+      colors <- c("Y0 (control)" = "blue", "Y1(treated)" = "red")
+      data <- paste0(" Y0 = ", input$select_b0, " + ", input$select_b1, "X + e, ", "e~N(0, ",input$epsilon_error,"^2)\n", "Y1 = ", input$select_b0, " + ", input$select_b1, "X + 5 + e, ", "e~N(0, ",input$epsilon_error,"^2)")
+      final_plot <- ggplot() +
+        annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=1.7,label=as.character(data), fontface = "italic", size = 6) + scale_color_manual('Potential Outcomes', values = colors) 
+      if(input$include_y0){
+        final_plot <- final_plot + geom_point(data = sample_tibble(), aes(x = x, y = y0, color = 'Y0 (control)')) 
+      }
+      if(input$include_y1){
+        final_plot <- final_plot + geom_point(data = sample_tibble(), aes(x = x, y = y1, color = 'Y1(treated)')) 
+      }
+      if(input$include_y0_mean){
+        final_plot <- final_plot + geom_line(data = real_functional_relationship(), aes(x = x, y = y0_actual, color = 'Y0 (control)'))
+      }
+      if(input$include_y1_mean){
+        final_plot <- final_plot + geom_line(data = real_functional_relationship(), aes(x = x, y = y1_actual, color = 'Y1(treated)'))
+      }
+      
+      final_plot
+    })
+    
+    output$simulation_postscore_code <- renderText({
+      paste0("tau <- 5 \nY0 <- ",input$select_b0," + ",input$select_b1,"X + 0 + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \nY1 <- ",input$select_b0, " + ", input$select_b1, "X + tau + rnorm(100, mean = 0, sd = ", input$epsilon_error,") \nY <- ifelse(Z == 1,  Y1, Y0)")
+    })
+    
+    output$simulation_postscore <- renderText({
+      text <- c()
+      for (i in 1:100) {
+        text <- c(text, paste0(students[i], ': ', round(Y()[i])))
+      }
+      toString(text)
+    })
+    
+    
+    output$simulation_sate_code <- renderText({
+      "mean(Y1 - Y0)"
+    })
+    
+    output$simulation_sate <- renderText({
+      round(mean(Y1() - Y0()), 2)
+    })
+    
+    
+    output$simulation_mean_diff_code <- renderText({
+      "mean(Y[Z == 1]) - mean(Y[Z == 0])"
+    })
+    
+    output$simulation_mean_diff <- renderText({
+      round(mean(Y()[Z == 1]) - mean(Y()[Z == 0]), 2)
+    })
+    
+    output$simulation_reg_code <- renderText({
+      "fit <- lm(Y ~ X + Z) \nsummary(fit)$coefficients['Z', 1]"
+    })
+    
+    output$simulation_reg <- renderText({
+      fit <- lm(Y() ~ X + Z)
+      round(summary(fit)$coefficients['Z', 1], 2)
+    })
+    
+    output$mean_diff_reg_compare <- renderText({
+      "mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:5000) {\n    Z <- rbinom(N, 1, prob = 0.5) \n    Y <- ifelse(Z == 1, Y_1, Y_0)
+    \n    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)]) \n    fit_tmp <- lm(Y ~ X + Z) \n
     lm_estimate_tmp <- coef(fit_tmp)['Z'] \n    mean_diff <- c(mean_diff, mean_diff_tmp) \n    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
 }"
-  })
-  
-  mean_diff <- c()
-  lm_estimate <- c()
-  N <- 100
-  for (i in 1:10000) {
-    Z <- rbinom(N, 1, prob = 0.5)
-    Y <- ifelse(Z == 1, Y1, Y0)
-    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)])
-    fit_tmp <- lm(Y ~ X + Z)
-    lm_estimate_tmp <- coef(fit_tmp)['Z']
-    mean_diff <- c(mean_diff, mean_diff_tmp)
-    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
-  }
-  SATE <- mean(Y1 - Y0)
-  
-  output$mean_diff_compare <- renderPlot({
-    cols <- c("True SATE" = "red", "Mean" = "blue")
-    mean_diff_df <- data.frame(data = mean_diff)
-    ggplot() + geom_histogram(data = mean_diff_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
-      geom_vline(aes(xintercept = mean(as.numeric(mean_diff_df$data)), color = 'Mean')) +
-      geom_vline(aes(xintercept = SATE, color = 'True SATE')) + xlim(min(mean_diff) - 0.1, max(mean_diff) + 0.1) +
-      labs(title = 'Distribution of Mean Difference', x = 'Mean Difference', y = 'Frequency') +
-      scale_color_manual(values = cols) + 
-      theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
-  })
-  
-  output$reg_compare <- renderPlot({
-    cols <- c("True SATE" = "red", "Mean" = "blue")
-    lm_estimate_df <- data.frame(data = lm_estimate)
-    ggplot() + geom_histogram(data = lm_estimate_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
-      geom_vline(aes(xintercept = mean(as.numeric(lm_estimate_df$data)), color = 'Mean')) +
-      geom_vline(aes(xintercept = SATE, color = 'True SATE')) + xlim(min(mean_diff) - 0.1, max(mean_diff) + 0.1) +
-      labs(title = 'Distribution of Regression Estimate', x = 'Regression Estimate', y = 'Frequency') +
-      scale_color_manual(values = cols) + 
-      theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
-  })
-  
-  output$mean_diff_biasedness_code <- renderText({
-    '(mean(mean_diff)-SATE)/sd(Y)'
-  })
-  output$mean_diff_biasedness <- renderText({
-    (mean(mean_diff)-SATE)/sd(Y)
-  })
-  
-  output$reg_biasedness_code <- renderText({
-    '(mean(lm_estimate)-SATE)/sd(Y)'
-  })
-  output$reg_biasedness <- renderText({
-    (mean(lm_estimate)-SATE)/sd(Y)
-  })
-  
-  output$mean_diff_efficiency_code <- renderText({
-    'sd(mean_diff)'
-  })
-  output$mean_diff_efficiency <- renderText({
-    sd(mean_diff)
-  })
-  
-  output$reg_efficiency_code <- renderText({
-    'sd(lm_estimate)'
-  })
-  output$reg_efficiency <- renderText({
-    sd(lm_estimate)
-  })
-  
+    })
+    
+    
+    
+    
+    comparison <- reactive({
+      mean_diff <- c()
+      lm_estimate <- c()
+      N <- 100
+      for (i in 1:5000) {
+        Z <- rbinom(N, 1, prob = 0.5)
+        Y <- ifelse(Z == 1, Y1(), Y0())
+        mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)])
+        fit_tmp <- lm(Y ~ X + Z)
+        lm_estimate_tmp <- coef(fit_tmp)['Z']
+        mean_diff <- c(mean_diff, mean_diff_tmp)
+        lm_estimate <- c(lm_estimate, lm_estimate_tmp)
+      }
+      result <- list(mean_diff, lm_estimate)
+    })
+    
+    SATE <- reactive({mean(Y1() - Y0())})
+    
+    output$mean_diff_compare <- renderPlot({
+      cols <- c("True SATE" = "red", "Mean" = "blue")
+      mean_diff_df <- data.frame(data = comparison()[[1]])
+      ggplot() + geom_histogram(data = mean_diff_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
+        geom_vline(aes(xintercept = mean(as.numeric(mean_diff_df$data)), color = 'Mean')) +
+        geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(mean_diff_df$data) - 0.1, max(mean_diff_df$data) + 0.1) +
+        labs(title = 'Distribution of Mean Difference', x = 'Mean Difference', y = 'Frequency') +
+        scale_color_manual(values = cols) +
+        theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
+    })
+    
+    output$reg_compare <- renderPlot({
+      cols <- c("True SATE" = "red", "Mean" = "blue")
+      lm_estimate_df <- data.frame(data = comparison()[[2]])
+      ggplot() + geom_histogram(data = lm_estimate_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
+        geom_vline(aes(xintercept = mean(as.numeric(lm_estimate_df$data)), color = 'Mean')) +
+        geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(comparison()[[1]]) - 0.1, max(comparison()[[1]]) + 0.1) +
+        labs(title = 'Distribution of Regression Estimate', x = 'Regression Estimate', y = 'Frequency') +
+        scale_color_manual(values = cols) +
+        theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
+    })
+    
+    output$mean_diff_biasedness_code <- renderText({
+      '(mean(mean_diff)-SATE)/sd(Y)'
+    })
+    output$mean_diff_biasedness <- renderText({
+      (mean(comparison()[[1]])-SATE())/sd(Y())
+    })
+    
+    output$reg_biasedness_code <- renderText({
+      '(mean(lm_estimate)-SATE)/sd(Y)'
+    })
+    output$reg_biasedness <- renderText({
+      (mean(comparison()[[2]])-SATE())/sd(Y())
+    })
+    
+    output$mean_diff_efficiency_code <- renderText({
+      'sd(mean_diff)'
+    })
+    output$mean_diff_efficiency <- renderText({
+      sd(comparison()[[1]])
+    })
+    
+    output$reg_efficiency_code <- renderText({
+      'sd(lm_estimate)'
+    })
+    output$reg_efficiency <- renderText({
+      sd(comparison()[[2]])
+    })
+    
+    
   
   
 }
