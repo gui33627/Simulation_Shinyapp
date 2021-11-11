@@ -4,6 +4,7 @@ library(ggplot2)
 library(plotly)
 library(shinyjs)
 library(learnr)
+library(shinyLP)
 theme_set(theme_bw())
 
 ui <- fluidPage(
@@ -743,15 +744,9 @@ server <- function(input, output, session) {
       sd(comparison()[[2]])
     })
     
-    observe({ 
-      query <- members[which(members$nr==input$Member),2]
-      test <<- paste0("http://news.scibite.com/scibites/news.html?q=GENE$",query)
-    })
     output$Exercise_1<- renderUI({
-      input$Member
-      my_test <- tags$iframe(src=test, height=600, width=535)
-      print(my_test)
-      my_test
+      iframe(width = "560", height = "315",
+             url_link = "https://apsta.shinyapps.io/HypothesisTesting/#section-lecture-1-comparing-the-z--and-t-tests")
     })
   
   
