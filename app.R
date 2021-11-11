@@ -3,6 +3,7 @@ library(shiny)
 library(ggplot2)
 library(plotly)
 library(shinyjs)
+library(learnr)
 theme_set(theme_bw())
 
 ui <- fluidPage(
@@ -149,22 +150,6 @@ ui <- fluidPage(
              #plotOutput('hundred_students_treatment_plot'),
 
              tableOutput('hundreds_student_treatment_result_table'),
-            #VZ-fix it after meeting
-           # sidebarLayout(
-           # sidebarPanel(
-              #sliderInput(inputId = "select_n_binomial",
-                        #  label = "Select the number of treatment assignments (n):",
-                         # min = 1, max = 100, value = 100, step = 1),
-              #sliderInput(inputId = "select_p_binomial",
-                         # label = "Select the probability of in the treatment group in one assignmnet (p):",
-                          #min = 0, max = 1, value = 0.5, step = 0.1)),
-            #mainPanel(
-              #Output: Tabset w/ plot, summary, and table ----
-              #tabsetPanel(type = "tabs",
-                         # tabPanel("Summary", verbatimTextOutput("summary")),
-                          #tabPanel("Table", tableOutput("treatment"))
-                         # )
-              #)
              br(),
              tags$div(
                useShinyjs(),
@@ -228,8 +213,14 @@ ui <- fluidPage(
              h4('In summary'),
              p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
                Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')),
-    
-             
+    tabPanel("Exercise", #VZ - bookmarks
+             p("You need to generate a covariate", tags$strong("frq"), "that measures how often a student would study for the test on their own in a week.
+                The expected rate of occurrences($lambda$) is 3 "),
+             p("Please try to generate the covariate using the function rpois(n, lambda), where n is the number of random values to return and lambda is the parameter lambda"),
+            #input
+            #output
+  ),
+  
     "Sampling Distribution",
     tabPanel("What is Sampling Distribution?",
              p('Suppose you simulated many samples consisting of 100 students drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-treatment score in New York State.
@@ -295,6 +286,9 @@ ui <- fluidPage(
              #   (for example, normal with mean 0 and standard deviation $sigma$), then the sampling distribution is the set of possible datasets obtained from these values of $x_i$ , 
              #   drawing new errors $epsilon_i$ from their assigned distribution.")
             ),
+  tabPanel("Exercise", 
+           p()
+  ),
     "Simulation",
     tabPanel("Data Generation Process (DGP)",
              h3('The Data Generating Process (DGP)'),
@@ -558,7 +552,8 @@ server <- function(input, output, session) {
   
   
     Z <- rbinom(n = 100, size = 1, prob = 0.5)
-    X <- rnorm(n = 100, mean = 65, sd = 3)
+    X <- rnorm(n = 100, mean = 50, sd = 5)
+    #change to be consistent 
     tau <- 5
     
     Y0 <- reactive({
@@ -582,9 +577,9 @@ server <- function(input, output, session) {
     })
     
     output$simulation_prescore_code <- renderText({
-      "rnorm(n = 100, mean = 60, sd = 10)"
+      "rnorm(n = 100, mean = 50, sd = 5)"
     })
-    
+    #change to be consistent 
     output$simulation_prescore <- renderText({
       text <- c()
       for (i in 1:100) {
