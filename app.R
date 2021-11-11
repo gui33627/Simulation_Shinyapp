@@ -217,8 +217,7 @@ ui <- fluidPage(
              p("You need to generate a covariate", tags$strong("frq"), "that measures how often a student would study for the test on their own in a week.
                 The expected rate of occurrences($lambda$) is 3 "),
              p("Please try to generate the covariate using the function rpois(n, lambda), where n is the number of random values to return and lambda is the parameter lambda"),
-            #input
-            #output
+             shiny::uiOutput("Exercise_1")
   ),
   
     "Sampling Distribution",
@@ -744,7 +743,16 @@ server <- function(input, output, session) {
       sd(comparison()[[2]])
     })
     
-    
+    observe({ 
+      query <- members[which(members$nr==input$Member),2]
+      test <<- paste0("http://news.scibite.com/scibites/news.html?q=GENE$",query)
+    })
+    output$Exercise_1<- renderUI({
+      input$Member
+      my_test <- tags$iframe(src=test, height=600, width=535)
+      print(my_test)
+      my_test
+    })
   
   
 }
