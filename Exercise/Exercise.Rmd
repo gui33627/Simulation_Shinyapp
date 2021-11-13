@@ -11,6 +11,7 @@ library(shiny)
 library(tidyverse)
 library(plotly)
 library(shinyjs)
+theme_set(theme_bw())
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -128,11 +129,15 @@ You need to generate pre-treatment test scores with two different distribution, 
 
 First, let's generate the sampling distribution of test scores using normal distribution. Modify the following code to generate the data:
 
-```{r clt1, exercise=TRUE, exercise.eval=TRUE}
+```{r clt1, exercise=TRUE}
 #create a dataframe to store mean value of each sample
-
+rnorm_means <- 
+  
 #write a loop to generate sampling distribution
- 
+
+  
+# set the variable as a global variable for subsequent plotting
+assign("rnorm_means", rnorm_means, envir=globalenv())
 ```
 
 ```{r clt1-hint-1}
@@ -165,16 +170,23 @@ for (i in 1:1000) {
         sample <- rnorm(n = 100, mean = 50, sd = 5)
   #calculate and store the the mean value
         rnorm_means$data[i]  <- mean(sample)
-      }
+}
+assign("rnorm_means", rnorm_means, envir=globalenv())
 ```
+ 
+ 
  
 Now you shall try to generate the sampling distribution of test scores using uniform distribution. Based on the spread of normal distribution, we can assume the test scores in the uniform distribution runs from 35 to 65. Modify the following code to generate the data:
 
-```{r clt2, exercise=TRUE, exercise.eval=TRUE,exercise.setup = "clt1"}
+```{r clt2, exercise=TRUE, exercise.setup = "clt1"}
 #create a dataframe to store mean value of each sample
-
+uni_means <- 
+  
 #write a loop to generate sampling distribution
  
+  
+# set the variable as a global variable for subsequent plotting
+assign("uni_means", uni_means, envir=globalenv())  
 ```
 
 
@@ -193,12 +205,15 @@ for (i in 1:1000) {
         sample <- runif(n = 100, min = 35, max = 65)
   #calculate and store the the mean value
         uni_means$data[i]  <- mean(sample)
-      }
+}
+assign("uni_means", uni_means, envir=globalenv())
 ```
+
+
 
 Now, generate the histogram for both sampling distribution. Do you spot any difference?
 
-```{r clt3, exercise=TRUE, exercise.eval=TRUE,exercise.setup = "clt2"}
+```{r clt3, exercise=TRUE, exercise.eval=TRUE}
 
 ```
 
