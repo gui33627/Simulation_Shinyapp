@@ -1,0 +1,126 @@
+---
+title: "Sampling Distribution"
+output: learnr::tutorial
+runtime: shiny_prerendered
+
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(shinyjs)
+theme_set(theme_bw())
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Exercise
+You need to generate pre-treatment test scores with two different distribution, normal distribution and uniform distribution. Then, compare two sampling distributions of test scores generated with plots.        
+
+For normal distribution, we assume the expectation of the pre-treatment score (E(X)) is 50, the standard deviation of the pre-treatment score is 5, and we sample 1000 times. We also assume the test scores in the uniform distribution runs from 35 to 65.
+
+First, let's generate the sampling distribution of test scores using normal distribution and uniform distribution. Modify the following code to generate the data:
+    
+        
+          
+          
+          
+```{r clt1, exercise=TRUE}
+#1. define how many iteration you need to run
+
+
+#2. create a dataframe to store mean value of each sample
+
+
+#3. write a loop to generate sampling distribution
+
+
+#4. write a loop to generate sampling distribution
+
+
+```
+
+```{r clt1-hint-1}
+#1. define how many iteration you need to run
+iter<-1000
+#2. create a dataframe to store mean value of each sample
+rnorm_means <- data.frame(...)
+uni_means <- data.frame(...)
+#3. write a loop to generate sampling distribution
+for (i in 1:iter) {
+  #generate a sample using normal distribution
+        sample <- rnorm(...)
+  #calculate and store the the mean value
+        rnorm_means$data[i]  <- ...}
+#4. write a loop to generate sampling distribution
+for (i in 1:iter) {
+  #generate a sample using uniform distribution
+  #calculate and store the the mean value
+}
+```
+
+```{r clt1-hint-2}
+#1. define how many iteration you need to run
+iter<-1000
+#2. create a dataframe to store mean value of each sample
+rnorm_means <- data.frame(data = rep(NA, iter))
+uni_means <- data.frame(data = rep(NA, iter))
+#3. write a loop to generate sampling distribution
+for (i in 1:iter) {
+  #generate a sample using normal distribution
+        sample <- rnorm(n = 100, mean = 50, sd = 5)
+  #calculate and store the the mean value
+        rnorm_means$data[i]  <- mean(sample)}
+#4. write a loop to generate sampling distribution
+for (i in 1:iter) {
+  #generate a sample using uniform distribution
+        sample <- runif(...)
+  #calculate and store the the mean value
+        }
+```
+
+
+```{r clt1-solution}
+#1. define how many iteration you need to run
+iter<-1000
+#2. create a dataframe to store mean value of each sample
+rnorm_means <- data.frame(data = rep(NA, iter))
+uni_means <- data.frame(data = rep(NA, iter))
+#3. write a loop to generate sampling distribution
+for (i in 1:iter) {
+  #generate a sample using normal distribution
+        sample <- rnorm(n = 100, mean = 50, sd = 5)
+  #calculate and store the the mean value
+        rnorm_means$data[i]  <- mean(sample)}
+#4. write a loop to generate sampling distribution
+for (i in 1:iter) {
+  #generate a sample using uniform distribution
+        sample <- runif(n = 100, min = 35, max = 65)
+  #calculate and store the the mean value
+        uni_means$data[i]  <- mean(sample)}
+```
+ 
+Now, generate the histogram for both sampling distribution. Do you spot any difference?
+
+```{r clt2, exercise=TRUE, exercise.eval=TRUE, exercise.setup ="clt1-solution"}
+
+```
+
+```{r clt2-hint}
+#Here is the plot for normal distribution. Please overlay the plot of uniform distribution on top of it
+ggplot() + 
+geom_histogram(data = rnorm_means, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
+geom_vline(xintercept = mean(rnorm_means$data), color = 'blue') 
+      
+```
+
+
+```{r clt2-solution}
+ ggplot() + 
+geom_histogram(data = rnorm_means, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
+geom_vline(xintercept = mean(rnorm_means$data), color = 'blue') + 
+geom_histogram(data = uni_means, aes(x = data, y = ..density..), bins = 30, alpha = 0.5,fill = "green") +
+geom_vline(xintercept = mean(uni_means$data), color = 'red') 
+      
+```

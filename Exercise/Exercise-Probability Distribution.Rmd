@@ -1,0 +1,51 @@
+---
+title: "Probability Distribution"
+output: learnr::tutorial
+runtime: shiny_prerendered
+
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(shinyjs)
+theme_set(theme_bw())
+knitr::opts_chunk$set(echo = FALSE)
+```
+### Exercise
+
+You need to generate a covariate *frq* that measures how often a student would study for the test on their own in a week. The expected rate of occurrences($lambda$) is 3.       
+Please try to generate the covariate using the function rpois(n, lambda), where n is the number of random values to return and lambda is the parameter lambda.
+
+Write the code to generate the covariate. You shall check the hint if you are unfamiliar with R functions:
+
+```{r frq, exercise=TRUE, exercise.eval=TRUE}
+
+```
+
+```{r frq-hint}
+frq<-rpois(n= ,lambda =  )
+print(frq)
+```
+
+```{r frq-solution}
+frq<-rpois(n=100,lambda = 3)
+print(frq)
+```
+ 
+```{r frq-code-check}
+grade_code()
+```
+
+```{r quiz}
+quiz(
+  question("Which of following is not an example of continuous variable  :",
+    answer("Age of students"),
+    answer("Race of students", correct = TRUE),
+    answer("Grade of students", correct = TRUE),
+    answer("Commute time of students")
+  )
+)
+```

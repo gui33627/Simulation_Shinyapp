@@ -1,0 +1,165 @@
+---
+title: "Simulation"
+output: learnr::tutorial
+runtime: shiny_prerendered
+
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(shinyjs)
+theme_set(theme_bw())
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+### Exercise
+You should use this exercise to test if different treatment effect would effect the bias of different causal inference methods. Remember:        
+1. Wearing the omniscient hat, you know the post-program scores of each student, if they are selected to the program and if they aren't.       
+2. As a researcher, you are only able to observe the post-program score, conditioning on students' group.
+
+After generating the data, you shall use the difference in mean method and regression to estimate the causal effect. Since you had omniscient hat while you were generating the data, you can compare estimated effect to the true causal effect. 
+
+Last but not least, you should simulate the dataset multiple times to compare the bias and efficiency of these estimators. Feel free to change different properties of your data generating process to see how that may change the estimators.
+
+**Step 1: Data Generating Process (DGP)**       
+(The hints are based on the setting of our example: 1. There are 100 students in our sample. Each student is randomly assigned to a group. 2. The expectation of the pre-treatment score is 50, and the standard deviation is 5. The true treatment effect is 5, and every student should have a better score (increase of 10) on their second attempts.)
+```{r simprac, exercise=TRUE, exercise.eval=TRUE}
+
+
+
+
+
+```
+
+```{r simprac-hint-1}
+#1. Generate treatment Assignment: 100 students are randomly assigned to a group.
+
+#2. Generate pre-treatment score
+
+#3. Define true treatment effect
+
+#4. omniscient hat. 
+
+
+#5. researcher's heat
+
+
+```
+
+```{r simprac-hint-2}
+#1. Generate treatment Assignment: 100 students are randomly assigned to a group.
+Z<-rbinom(...)
+#2. Generate pre-treatment score
+X<-rnorm(...)
+#3. Define true treatment effect
+tau<-...
+#4. omniscient hat. 
+Y0 <- ... + rnorm(100, mean = 0, sd = 1) 
+Y1 <- ... + rnorm(100, mean = 0, sd = 1)
+#5. researcher's heat
+Y <- ifelse(...)
+
+```
+
+```{r simprac-solution}
+#1. Generate treatment Assignment: 100 students are randomly assigned to a group.
+Z<-rbinom(n = 100, size = 1, prob = 0.5)
+#2. Generate pre-treatment score
+X<-rnorm(n = 100, mean = 50, sd = 5)
+#3. Define true treatment effect
+tau<-5
+#4. omniscient hat. 
+Y0 <- 10 + X + 0 + rnorm(100, mean = 0, sd = 1) 
+Y1 <- 10 + X + tau + rnorm(100, mean = 0, sd = 1)
+#5. researcher's heat
+Y <- ifelse(Z == 1,  Y1, Y0)
+
+```
+
+**Step 2: Calculate SATE**
+```{r simprac2, exercise=TRUE, exercise.eval=TRUE, exercise.setup = "simprac-solution"}
+#difference in mean to estimate SATE
+
+#linear Regression to estimate SATE
+
+#calculate true SATE
+
+
+```
+
+```{r simprac2-hint}
+#difference in mean to estimate SATE
+mean(Y[Z == ...]) - mean(Y[Z == ...])
+#linear Regression to estimate SATE
+fit <- lm(...) 
+summary(fit)$...
+#calculate true SATE
+mean(...)
+```
+
+```{r simprac2-solution}
+
+#difference in mean
+mean(Y[Z == 1]) - mean(Y[Z == 0])
+#linear Regression
+fit <- lm(Y ~ X + Z) 
+summary(fit)$coefficients['Z', 1]
+#true SATE
+mean(Y1 - Y0)
+```
+
+**Step 3: Comparing Estimators**
+```{r simprac3, exercise=TRUE, exercise.eval=TRUE , exercise.setup = "simprac-solution"}
+#create vectors to store values & define how many iteration you need to run
+
+#Simulation
+
+
+#comparing estimators
+
+```
+
+```{r simprac3-hint}
+#create vectors to store values
+mean_diff <- c() 
+lm_estimate <- c()
+#define how many iteration you need to run
+iter<-1000
+#Simulation
+for (i in 1:iter) {
+    Z <- ... 
+    Y <- ..
+    mean_diff_tmp <- ... 
+    fit_tmp <- ...
+    lm_estimate_tmp <- ...
+    mean_diff <- ...
+    lm_estimate <- ...
+}
+#comparing estimators
+(...)/sd(...)
+(...)/sd(...)
+```
+
+```{r simprac3-solution}
+#create vectors to store values
+mean_diff <- c() 
+lm_estimate <- c()
+#define how many iteration you need to run
+iter<-1000
+#Simulation
+for (i in 1:iter) {
+    Z <- rbinom(100, 1, prob = 0.5) 
+    Y <- ifelse(Z == 1, Y1, Y0)
+    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)]) 
+    fit_tmp <- lm(Y ~ X + Z) 
+    lm_estimate_tmp <- coef(fit_tmp)['Z'] 
+    mean_diff <- c(mean_diff, mean_diff_tmp) 
+    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
+}
+#comparing estimators
+(mean(mean_diff)-mean(Y1 - Y0))/sd(mean_diff)
+(mean(lm_estimate)-mean(Y1 - Y0))/sd(lm_estimate)
+```
