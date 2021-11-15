@@ -22,7 +22,7 @@ ui <- fluidPage(
                These two hats are very important when we simulate, and will come into play quite often throughout our journey."),
              p("Ready? Okay, let's get started!"),
              br(),br(),br(),
-             fluidRow(column(width = 3,
+             fluidRow(column(width = 3, align = 'left',
                              img(src='male_researcher.png', width="200", height="200")),
                       column(width = 3,
                              img(src='female_researcher.png', width="200", height="200"))
