@@ -95,7 +95,7 @@ ui <- fluidPage(
     
     "Probability Distribution",
     tabPanel("Sample and Population",
-             img(src = "population-and-sample.png", height="50%", width="100%", align="left"),
+             img(src = "population-and-sample.png", height="40%", width="80%", align="center"),
              br(), br(), br(),
              p('In our Global History regents exam example, we have a sample of 100 students randomly drawn from the population of all high school students in New York State. 
                The100 students in the sample are the subjects you will collect data from/simulate data for.'),
