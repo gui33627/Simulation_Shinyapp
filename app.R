@@ -302,11 +302,12 @@ ui <- fluidPage(
                  )
                )
              ),
+             h4('Treatment Effect'),
+             sliderInput(inputId = "tau", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
+             
              h4('Outcome test scores based on treatment assignment'),
-             p("As omniscient beings, we know that the treatment effect (or", tags$em("tau"), ") is", tags$strong("5."), 
-               "That is, we know that the post-treatment test scores of students who went through the afterschool program is on average", tags$strong("5"),  "points higher than the students who did not. 
-               To generate these outcome scores, we would simulate a", tags$em("dependency"), "based on the treatment assignment variable from above. 
-               In the interactive graph below, you can specify the true relationship between the pre-treatment test scores (X) and the outcome test scores by selecting the coefficients in the regression model."),
+             textOutput('simulation_dgp_outcome'),
+             
              fluidRow(column(width = 6,
                              sliderInput(inputId = "select_b0", label = "Intercept (b0):", min = 1, max = 20, value = 10, step = 1),
                              sliderInput(inputId = "select_b1", label = "Coefficient on X (b1):", min = 0.1, max = 1.2, value = 1, step = 0.1)
@@ -332,9 +333,7 @@ ui <- fluidPage(
     tabPanel("Average Treatment Effect (ATE)",
             h3("Average Treatment Effect (ATE)"),
             p('Once we have simulated all the data necessary from our DGP, we can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  'of the afterschool program using different causal inference methods. We would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, we would compare the two to see how close our estimate is to the truth.'),
-            p('Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
-               This is intentional because as a researcher, you will never know the truth (in this case, that the treatment effect is 5) and thus you are always estimating the ATE (or any other estimand). 
-               But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.'),
+            textOutput('simulation_ate'),
             br(),
             h4('Calculate the true SATE'),
             verbatimTextOutput('simulation_sate_code'),
@@ -361,14 +360,16 @@ ui <- fluidPage(
              verbatimTextOutput('mean_diff_reg_compare'),
              plotOutput('mean_diff_compare'),
              plotOutput('reg_compare'),
+             h5('Standardized bias using mean difference method:'),
              verbatimTextOutput('mean_diff_biasedness_code'),
              textOutput('mean_diff_biasedness'),
-             
+             h5('Standardized bias using regression method:'),
              verbatimTextOutput('reg_biasedness_code'),
              textOutput('reg_biasedness'),
+             h5('Efficiency using mean difference method:'),
              verbatimTextOutput('mean_diff_efficiency_code'),
              textOutput('mean_diff_efficiency'),
-             
+             h5('Efficiency using regression method:'),
              verbatimTextOutput('reg_efficiency_code'),
              textOutput('reg_efficiency')
           
@@ -421,7 +422,7 @@ server <- function(input, output, session) {
     #   tmp <- data.frame(treatment = df$treatment)
     #   ggplot() + geom_histogram(data = tmp, aes(x = treatment, y = ..density..), bins = 30, alpha = 0.5) 
     # })
-    table <- data.frame(Group = c(as.integer(1),as.integer(0)), Frequence = c(as.integer(df$treatment), as.integer(input$select_n_binomial - df$treatment)))
+    table <- data.frame(Group = c('treatment (1)','control (0)'), Frequence = c(as.integer(df$treatment), as.integer(input$select_n_binomial - df$treatment)))
     output$hundreds_student_treatment_result_table <- renderTable(table)
   })
   
@@ -553,13 +554,11 @@ server <- function(input, output, session) {
   
     Z <- rbinom(n = 100, size = 1, prob = 0.5)
     X <- rnorm(n = 100, mean = 50, sd = 5)
-    #change to be consistent 
-    tau <- 5
     
     Y0 <- reactive({
       input$select_b0 + input$select_b1*X + rnorm(100, mean = 0, sd = input$epsilon_error)
     }) 
-    Y1 <- reactive({input$select_b0 + input$select_b1*X + 5 + rnorm(100, mean = 0, sd = input$epsilon_error) }) 
+    Y1 <- reactive({input$select_b0 + input$select_b1*X + input$tau + rnorm(100, mean = 0, sd = input$epsilon_error) }) 
     Y <- reactive({
       ifelse(Z == 1,  Y1(), Y0())
     })
@@ -591,11 +590,18 @@ server <- function(input, output, session) {
       output$simulation_prescore_assign <- renderText(toString(text))
     })
     
+    output$simulation_dgp_outcome <- renderText({
+      paste0("As omniscient beings, we know that the treatment effect (or tau is ", input$tau, 
+        ". That is, we know that the post-treatment test scores of students who went through the afterschool program is on average ", input$tau, " points higher than the students who did not. 
+               To generate these outcome scores, we would simulate a dependency based on the treatment assignment variable from above. 
+               In the interactive graph below, you can specify the true relationship between the pre-treatment test scores (X) and the outcome test scores by selecting the coefficients in the regression model.")
+    })
+    
     # generate real relationship 
     real_functional_relationship <- reactive({
       data <- data.frame(x = X, z=Z)
       data$y0_actual <-  with(data, x*input$select_b1 + input$select_b0)
-      data$y1_actual <-  with(data, x*input$select_b1 + 5 + input$select_b0)
+      data$y1_actual <-  with(data, x*input$select_b1 + input$tau + input$select_b0)
       data
     })
     
@@ -610,7 +616,7 @@ server <- function(input, output, session) {
       req(input$select_b0)
       req(input$select_b1)
       colors <- c("Y0 (control)" = "blue", "Y1(treated)" = "red")
-      data <- paste0(" Y0 = ", input$select_b0, " + ", input$select_b1, "X + e, ", "e~N(0, ",input$epsilon_error,"^2)\n", "Y1 = ", input$select_b0, " + ", input$select_b1, "X + 5 + e, ", "e~N(0, ",input$epsilon_error,"^2)")
+      data <- paste0(" Y0 = ", input$select_b0, " + ", input$select_b1, "X + e, ", "e~N(0, ",input$epsilon_error,"^2)\n", "Y1 = ", input$select_b0, " + ", input$select_b1, "X + ", input$tau," + e, ", "e~N(0, ",input$epsilon_error,"^2)")
       final_plot <- ggplot() +
         annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=1.7,label=as.character(data), fontface = "italic", size = 6) + scale_color_manual('Potential Outcomes', values = colors) 
       if(input$include_y0){
@@ -630,7 +636,7 @@ server <- function(input, output, session) {
     })
     
     output$simulation_postscore_code <- renderText({
-      paste0("tau <- 5 \nY0 <- ",input$select_b0," + ",input$select_b1,"X + 0 + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \nY1 <- ",input$select_b0, " + ", input$select_b1, "X + tau + rnorm(100, mean = 0, sd = ", input$epsilon_error,") \nY <- ifelse(Z == 1,  Y1, Y0)")
+      paste0("tau <- ", input$tau," \nY0 <- ",input$select_b0," + ",input$select_b1,"X + 0 + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \nY1 <- ",input$select_b0, " + ", input$select_b1, "X + tau + rnorm(100, mean = 0, sd = ", input$epsilon_error,") \nY <- ifelse(Z == 1,  Y1, Y0)")
     })
     
     output$simulation_postscore <- renderText({
@@ -641,6 +647,11 @@ server <- function(input, output, session) {
       toString(text)
     })
     
+    output$simulation_ate <- renderText({
+      paste0('Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
+               This is intentional because as a researcher, you will never know the truth (in this case, that the treatment effect is ', input$tau,') and thus you are always estimating the ATE (or any other estimand). 
+               But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.')
+    })
     
     output$simulation_sate_code <- renderText({
       "mean(Y1 - Y0)"
