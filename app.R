@@ -179,6 +179,7 @@ ui <- fluidPage(
              br(),  br(),  
              br())),
     tabPanel("Continuous Random Variable and Distribution",
+             withMathJax(),
              h4('Normal Distribution'),
              p('For this hypothetical study, you next need to generate pre-treatment scores and post-treatment scores to estimate the effect of the afterschool program. 
              To simulate the two continuous variables, Normal distribution would be an appropriate probability distribution. 
@@ -191,9 +192,9 @@ ui <- fluidPage(
              #VZ-will use latex for the equations
              #do we need to explain var?
              p('You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. '),
-             p(' The mean value is the average score of all the high school students in New York. Since our sample is randomly collected, 
+             withMathJax(paste0(' The mean value is the average score of all the high school students in New York. Since our sample is randomly collected, 
                 we would also expect that our sample has the average score. 
-                The mean is also called the expectation or expected value and is written as E(X) or mu_X. The standard deviation of the distribution of X can be expressed as sqrt(E((X − mu_X )^2)). '),
+                The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
              p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
              
              sliderInput(inputId = "select_mean_normal",
