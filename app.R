@@ -4,7 +4,7 @@ library(ggplot2)
 library(plotly)
 library(shinyjs)
 library(learnr)
-library(shinyLP)
+# library(shinyLP)
 theme_set(theme_bw())
 
 ui <- fluidPage(
@@ -45,7 +45,7 @@ ui <- fluidPage(
                an increase of 5 points on the exam score. Wearing your", tags$em("researcher hat"), " you would never know this 'true' treatment effect.
                You still can use causal inference methods to", tags$em("estimate"), " the effect of the afterschool program."),
       p("With simulation, you shall wear the", tags$em("omniscient hat"), " and create data with the true causal effect through data
-             generate process. Knowing the true causal effect, you shall test whether different causal inference methods are valid or not."),
+             generate process. Knowing the true causal effect, you shall test whether different causal inference methods are valid or not.")
       ),
     tabPanel("What is simulation?",
              
@@ -212,10 +212,10 @@ ui <- fluidPage(
              br(),
              h4('In summary'),
              p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
-               Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')),
-    tabPanel("Exercise", 
-            shiny::uiOutput("Exercise_1")
-  ),
+               Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
+             ),
+    tabPanel("Exercise",
+             htmlOutput("Exercise_1")),
   
     "Sampling Distribution",
     tabPanel("What is Sampling Distribution?",
@@ -264,27 +264,10 @@ ui <- fluidPage(
                This is actually summarized as a theorem called "Central Limit Theorem". Suppose that a sample is obtained containing many observations, 
                each observation being randomly generated in a way that does not depend on the values of the other observations, 
                and that the arithmetic mean of the observed values is computed. If this procedure is performed many times, 
-               the central limit theorem says that the probability distribution of the average will closely approximate a normal distribution. ')
-             
-             # p("One continuous predictor: y = b0 + b1x + eps"),
-             # numericInput(inputId = "select_b0", "Intercept (b0):", 1),
-             # numericInput(inputId = "select_b1", "Coefficient on X (b1):", 0.5),
-             # numericInput(inputId = "select_sigma", "Residual Std Dev (sigma):", 1),
-             # sliderInput(inputId = "sample_size",label = "Select Sample Size",
-             #             min = 10, max = 1000, value = 250, step = 10),
-             # plotOutput('regression'),
-             # p("In practice, we will not know the sampling distribution; we can only estimate it, as it depends on aspects of the population, not merely on the observed data. In the pure random sampling model, the sampling distribution depends on all N datapoints. For the measurement-error model, 
-             #   the sampling distribution depends on the parameters a, b, and $sigma$, which in general are not known, and will be estimated from the data."),
-             # 
-             # p("The simplest example of a sampling distribution is the pure random sampling model: if the data are a simple random sample of size n from a population of size N, then the sampling distribution is the set of all samples of size n, all with equal probabilities."),
-             # p("The normal distribution, binomial distribution, and poisson distribution with specified parameters on the previous page are all sampling distributions for the samples of sizes of your choice."),
-             # p("The next simplest example is pure measurement error: if observations $y_i$, i = 1,. . . , n, are generated from the model $y_i = a + bx_i + epsilon_i$ , with fixed coefficients a and b, pre-specified values of the predictor $x_i$ , and a specified distribution for the errors $epsilon_i$ 
-             #   (for example, normal with mean 0 and standard deviation $sigma$), then the sampling distribution is the set of possible datasets obtained from these values of $x_i$ , 
-             #   drawing new errors $epsilon_i$ from their assigned distribution.")
-            ),
-  tabPanel("Exercise", 
-           shiny::uiOutput("Exercise_2")
-  ),
+               the central limit theorem says that the probability distribution of the average will closely approximate a normal distribution. ')),
+            
+      tabPanel("Exercise",
+               htmlOutput("Exercise_2")),
   
     "Simulation",
     tabPanel("Data Generation Process (DGP)",
@@ -391,11 +374,11 @@ ui <- fluidPage(
           
              
              ), # use sampling distribution to compare unbiasedness and efficiency
-tabPanel("Exercise", 
-         shiny::uiOutput("Exercise_3")
-),
-
+    tabPanel("Exercise",
+         htmlOutput("Exercise_3"))
 ))
+
+
 
 server <- function(input, output, session) {
   students <- sample(c('James','Robert', 'John',
@@ -764,18 +747,18 @@ server <- function(input, output, session) {
     })
     
     output$Exercise_1<- renderUI({
-      iframe(width = "600", height = "900",
-             url_link = "https://verazhouty.shinyapps.io/Exercise-ProbDist/")
+      tags$iframe(width = "1000", height = "900",
+             src = "https://verazhouty.shinyapps.io/Exercise-ProbDist/")
     })
   
     output$Exercise_2<- renderUI({
-      iframe(width = "600", height = "1000",
-             url_link = " https://verazhouty.shinyapps.io/Exercise-SamplingDist/")
+      tags$iframe(width = "1000", height = "900",
+             src = " https://verazhouty.shinyapps.io/Exercise-SamplingDist/")
     })
     
     output$Exercise_3<- renderUI({
-      iframe(width = "600", height = "1000",
-             url_link = "https://verazhouty.shinyapps.io/Exercise-Simulation/")
+      tags$iframe(width = "1000", height = "900",
+             src = "https://verazhouty.shinyapps.io/Exercise-Simulation/")
     })
 }
 
