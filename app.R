@@ -297,13 +297,28 @@ ui <- fluidPage(
              h4('Treatment Assignment'),
              p("We already know how to simulate treatment assignments from Section 2 (Probability Distribution - Discrete Random Variables) using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
              verbatimTextOutput('simulation_treatment_code'),
-             textOutput('simulation_treatment'),
+             tags$div(
+               useShinyjs(),
+               actionButton("simulation_treatment", "Show every assignment"),
+               hidden(
+                 div(id='simulation_treatment_list',
+                     verbatimTextOutput("simulation_treatment_assign")
+                 )
+               )
+             ),
              h4("Pre-treatment test scores"),
              p("We also know that we can use the Normal distribution from Section 2 (Probability Distribution - Continuous Random Variables) to simulate our pre-treatment test scores. 
                Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
              verbatimTextOutput('simulation_prescore_code'),
-             textOutput('simulation_prescore'),
-             
+             tags$div(
+               useShinyjs(),
+               actionButton("simulation_prescore", "Show every prescore"),
+               hidden(
+                 div(id='simulation_prescore_list',
+                     verbatimTextOutput("simulation_prescore_assign")
+                 )
+               )
+             ),
              h4('Outcome test scores based on treatment assignment'),
              p("As omniscient beings, we know that the treatment effect (or", tags$em("tau"), ") is", tags$strong("5."), 
                "That is, we know that the post-treatment test scores of students who went through the afterschool program is on average", tags$strong("5"),  "points higher than the students who did not. 
@@ -475,6 +490,8 @@ server <- function(input, output, session) {
     
   })
   
+
+  
   
   Z_100 <- reactiveValues(data = rbinom(100, size = 1, prob = 0.5))
   
@@ -568,26 +585,28 @@ server <- function(input, output, session) {
       "rbinom(n = 100, size = 1, prob = 0.5)"
     })
     
-    output$simulation_treatment <- renderText({
+
+    output$simulation_prescore_code <- renderText({
+      "rnorm(n = 100, mean = 50, sd = 5)"
+    })
+
+    
+    observeEvent(input$simulation_treatment, {
+      toggle('simulation_treatment_list')
       text <- c()
       for (i in 1:100) {
         text <- c(text, paste0(students[i], ': ', round(Z[i])))
       }
-      toString(text)
+      output$simulation_treatment_assign <- renderText(toString(text))
     })
-    
-    output$simulation_prescore_code <- renderText({
-      "rnorm(n = 100, mean = 50, sd = 5)"
-    })
-    #change to be consistent 
-    output$simulation_prescore <- renderText({
+    observeEvent(input$simulation_prescore, {
+      toggle('simulation_prescore_list')
       text <- c()
       for (i in 1:100) {
         text <- c(text, paste0(students[i], ': ', round(X[i])))
       }
-      toString(text)
+      output$simulation_prescore_assign <- renderText(toString(text))
     })
-    
     
     # generate real relationship 
     real_functional_relationship <- reactive({
