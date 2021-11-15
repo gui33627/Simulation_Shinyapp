@@ -11,6 +11,7 @@ library(shiny)
 library(tidyverse)
 library(plotly)
 library(shinyjs)
+library(rsconnect)
 theme_set(theme_bw())
 knitr::opts_chunk$set(echo = FALSE)
 ```
@@ -49,3 +50,8 @@ quiz(
   )
 )
 ```
+
+```{r}
+rsconnect::deployApp('/Users/tianyangzhou/Desktop/mygithub/Simulation_Shinyapp/Exercise/Exercise-1/Exercise-Probability Distribution.Rmd')
+```
+

@@ -193,7 +193,6 @@ ui <- fluidPage(
              
              actionButton("draw_hundred_student", "Simulate 100 students' scores"),
              br(),
-             #VZ-may change it to a table or a better format later
              textOutput('hundred_student_score_print'),
              br(),
              plotOutput('hundred_students_scores'),
@@ -214,11 +213,8 @@ ui <- fluidPage(
              h4('In summary'),
              p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
                Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')),
-    tabPanel("Exercise", #VZ - bookmarks
-             p("You need to generate a covariate", tags$strong("frq"), "that measures how often a student would study for the test on their own in a week.
-                The expected rate of occurrences($lambda$) is 3 "),
-             p("Please try to generate the covariate using the function rpois(n, lambda), where n is the number of random values to return and lambda is the parameter lambda"),
-             shiny::uiOutput("Exercise_1")
+    tabPanel("Exercise", 
+            shiny::uiOutput("Exercise_1")
   ),
   
     "Sampling Distribution",
@@ -287,8 +283,9 @@ ui <- fluidPage(
              #   drawing new errors $epsilon_i$ from their assigned distribution.")
             ),
   tabPanel("Exercise", 
-           p()
+           shiny::uiOutput("Exercise_2")
   ),
+  
     "Simulation",
     tabPanel("Data Generation Process (DGP)",
              h3('The Data Generating Process (DGP)'),
@@ -379,7 +376,10 @@ ui <- fluidPage(
           
              
              ), # use sampling distribution to compare unbiasedness and efficiency
-    tabPanel("Exercise")
+tabPanel("Exercise", 
+         shiny::uiOutput("Exercise_3")
+),
+
 ))
 
 server <- function(input, output, session) {
@@ -745,11 +745,19 @@ server <- function(input, output, session) {
     })
     
     output$Exercise_1<- renderUI({
-      iframe(width = "560", height = "315",
-             url_link = "https://apsta.shinyapps.io/HypothesisTesting/#section-lecture-1-comparing-the-z--and-t-tests")
+      iframe(width = "600", height = "900",
+             url_link = "https://verazhouty.shinyapps.io/Exercise-ProbDist/")
     })
   
-  
+    output$Exercise_2<- renderUI({
+      iframe(width = "600", height = "1000",
+             url_link = " https://verazhouty.shinyapps.io/Exercise-SamplingDist/")
+    })
+    
+    output$Exercise_3<- renderUI({
+      iframe(width = "600", height = "1000",
+             url_link = "https://verazhouty.shinyapps.io/Exercise-Simulation/")
+    })
 }
 
 shinyApp(ui, server)

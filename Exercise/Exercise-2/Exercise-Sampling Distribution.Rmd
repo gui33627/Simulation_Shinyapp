@@ -11,6 +11,7 @@ library(shiny)
 library(tidyverse)
 library(plotly)
 library(shinyjs)
+library(rsconnect)
 theme_set(theme_bw())
 knitr::opts_chunk$set(echo = FALSE)
 ```
@@ -124,3 +125,8 @@ geom_histogram(data = uni_means, aes(x = data, y = ..density..), bins = 30, alph
 geom_vline(xintercept = mean(uni_means$data), color = 'red') 
       
 ```
+
+```{r}
+
+```
+
