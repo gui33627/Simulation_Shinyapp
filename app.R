@@ -22,15 +22,15 @@ ui <- fluidPage(
                These two hats are very important when we simulate, and will come into play quite often throughout our journey."),
              p("Ready? Okay, let's get started!"),
              br(),br(),br(),
-             fluidRow(column(width = 3, align = 'left',
-                             img(src='male_researcher.png', width="200", height="200")),
+             fluidRow(column(width = 3, align = 'center',
+                             img(src='male_researcher.png', width="100%", height="150%")),
                       column(width = 3,
-                             img(src='female_researcher.png', width="200", height="200"))
+                             img(src='female_researcher.png', width="100%", height="150%"))
                       ),
-             fluidRow(column(width = 9, align = 'right',
-                             img(src='male_omniscient.png', width="210", height="210")),
+             fluidRow(column(width = 3, align = 'center',
+                             img(src='male_omniscient.png',width="100%", height="150%")),
                       column(width = 3,
-                             img(src='female_omniscient.png', width="210", height="210")))
+                             img(src='female_omniscient.png', width="100%", height="150%")))
              ),
              
     tabPanel("Hypothetical Example", 
