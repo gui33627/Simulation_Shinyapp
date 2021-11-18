@@ -71,9 +71,26 @@ ui <- fluidPage(
                " test scores are the scores of the 100 sample students after the treatment period. 
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called", tags$em("potential outcomes.")),
              h4('Reality vs. Simulation'),
-             p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
+             p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
+            For instance, if the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes."),
+             # new mini-simulation
+      sidebarLayout(
+             sidebarPanel(
+               radioButtons("potential_oc", "Potential Outcomes",
+                            c("All potential outcomes" = "ally0y1",
+                              "If everyone participates in the program" = "ally1",
+                              "If everyone does not participate in the program" = "ally0",
+                              "Researcher's point of view" = "obsy")
+                            )
+               ),
+             mainPanel(plotOutput('researcher_hat_plot') 
+                       )
+      ),
+      textOutput('researcher_hat_list'),
+             #bookmark
+          
+              p("The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
              p("For now, understand that simulation starts all the way at the beginning: who is in your sample, and what are their pre-treatment test scores?"),
-             
              br(),
              h4('Example: Which students in your sample participate in the afterschool program?'),
              p("Click the button below to randomly select 50 students into the treatment group. 
@@ -409,7 +426,45 @@ server <- function(input, output, session) {
                 'Nur', 'Yuxuan', 'Ahmad', 'Megan', 'Charlotte', 'Xinyi', 'Jack', 'Alex', 'Giulia',
                 'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
                 'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo'))
-  observeEvent(input$draw_50_student, {
+  #bookmark
+
+  #mini-set dataset
+  pre=rnorm(n = 10, mean = 50, sd = 5)
+  y0=10 + pre + 0 + rnorm(10, mean = 0, sd = 1)
+  y1=10 + pre + 5 + rnorm(10, mean = 0, sd = 1)
+  treat=rbinom(n = 10, size = 1, prob = 0.5)
+  y=ifelse(treat == 1,  y1, y0)
+  rhdf<-data.frame(
+    students=sample(students,10),
+    pre=pre,
+    y0=y0,
+    y1=y1,
+    treat=treat,
+    y=y)
+  pbase<-ggplot(rhdf) +theme_bw()+theme(legend.position = "none")+ylim(40,80)
+  
+  p01<-pbase+geom_point(aes(students, y0)) +
+    geom_point(aes(students, y1),color = "red")
+  p1<-pbase+geom_point(data =rhdf, aes(students, y1),color = "red")
+  p0<-pbase+geom_point(aes(students, y0)) 
+  py<-pbase+geom_point(aes(students, y,colour= factor(treat)))+
+    scale_color_manual(values=c("black","red"))
+  
+  output$researcher_hat_plot<- renderPlot({
+    potential_oc <- switch(input$potential_oc,
+                           ally0y1 = p01,
+                           ally1 = p1,
+                           ally0 = p0,
+                           obsy = py,
+                           p01)
+    potential_oc
+  })
+
+  output$researcher_hat_list<-renderText(paste0(rhdf$students, ': ', rhdf$treat))
+  
+  
+  
+   observeEvent(input$draw_50_student, {
     studentlist <- sample(students, size = 50)
     output$student_list <- renderText(toString(studentlist))
   })
