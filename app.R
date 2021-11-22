@@ -327,7 +327,7 @@ ui <- fluidPage(
                actionButton("simulation_treatment", "Show every assignment"),
                hidden(
                  div(id='simulation_treatment_list',
-                     verbatimTextOutput("simulation_treatment_assign")
+                     textOutput("simulation_treatment_assign")
                  )
                )
              ),
@@ -340,7 +340,7 @@ ui <- fluidPage(
                actionButton("simulation_prescore", "Show every prescore"),
                hidden(
                  div(id='simulation_prescore_list',
-                     verbatimTextOutput("simulation_prescore_assign")
+                     textOutput("simulation_prescore_assign")
                  )
                )
              ),
