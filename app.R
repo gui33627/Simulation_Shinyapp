@@ -22,15 +22,10 @@ ui <- fluidPage(
                These two hats are very important when we simulate, and will come into play quite often throughout our journey."),
              p("Ready? Okay, let's get started!"),
              br(),br(),br(),
-             fluidRow(column(width = 3, align = 'center',
-                             img(src='male_researcher.png', width="100%", height="150%")),
-                      column(width = 3,
-                             img(src='female_researcher.png', width="100%", height="150%"))
-                      ),
-             fluidRow(column(width = 3, align = 'center',
-                             img(src='male_omniscient.png',width="100%", height="150%")),
-                      column(width = 3,
-                             img(src='female_omniscient.png', width="100%", height="150%")))
+             fluidRow(column(width = 6, align = 'center',
+                             img(src='researcher_hat.png',width="100%", height="150%")),
+                      column(width = 6, align = 'center',
+                             img(src='omniscient_hat.png', width="100%", height="150%")))
              ),
              
     tabPanel("Hypothetical Example", 
@@ -237,7 +232,6 @@ ui <- fluidPage(
                  )
                )
              ),
-             
              textOutput('normal_mean_var'),
              br(),
              h4('In summary'),
@@ -375,13 +369,7 @@ ui <- fluidPage(
             textOutput('simulation_mean_diff'),
             h4('Use Linear Regression to estimate SATE'),
             verbatimTextOutput('simulation_reg_code'),
-            textOutput('simulation_reg'),
-             
-             
-#              p("Simulation of random variables is important in applied statistics for several reasons. 
-# First, we use several probability models to mimic variation in the world, and the tools of simulation can help us better understand how this variation plays out.
-#                Second, we can use simulation to approximate the sampling distribution of data and propagate this to the sampling distribution of statistical estimates and procedures.
-#                Third, regression models are not deterministic; they produce probabilistic predictions. Simulation is the most convenient and general way to represent uncertainties in forecasts.")
+            textOutput('simulation_reg')
 ),
     tabPanel("Estimator Comparisons",
              h3("Comparing Estimators"),
