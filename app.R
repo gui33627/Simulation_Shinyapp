@@ -130,7 +130,10 @@ ui <- fluidPage(
                take the value 1 (treatment group) as success, with probability p, 
                the value 0 (control group) thus has a probability of (1-p).'),
              br(),
-             h4('Illustration'),
+             fluidRow(column(width = 8,
+                             h4('Illustration')),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
              
              p('Each click will show an assignment of a random student.
              Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
@@ -160,7 +163,10 @@ ui <- fluidPage(
                and the probability of success in each trial, p. 
                In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
             br(),
-            h4('Illustration'),
+            fluidRow(column(width = 8,
+                            h4('Illustration')),
+                     column(width = 4, align = 'center',
+                            img(src='omniscient_hat.png', width="30%", height="50%"))),
             p("Each click will simulate a result that assigns all the students in the sample to two groups. 
               The table summarizes the total counts of students in each group based on your selected number of students and probability of assigning to the treatment group."),
             sliderInput(inputId = "select_n_binomial",
@@ -200,7 +206,10 @@ ui <- fluidPage(
               Normal distribution is a continuous probability distribution, 
               and it is often used in simulation and teaching because it approximates to many natural events. 
               There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
-             h4('Illustration'),
+             fluidRow(column(width = 8,
+                             h4('Illustration')),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
              #VZ-will use latex for the equations
              #do we need to explain var?
              p('You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. '),
@@ -246,15 +255,18 @@ ui <- fluidPage(
              p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-treatment score in New York State.
              A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true population mean. 
              The sampling distribution of sample mean is the set of possible sample means estimated from all samples of size 100 that could have been observed if the data simulation process had been re-done, along with the probabilities of these possible values.'),
-             p("However, the combinations of 100 students from all students in New York State is an extraordinarily large number, and can even exceed the computation capacity of your computer. 
+             withMathJax(paste0("However, the combinations of 100 students from all students in New York State is an extraordinarily large number, and can even exceed the computation capacity of your computer. 
                For example, say there are 100,000 high school students in New York State and we randomly select 100 students. Here we have population size of 100,000 and sample size of 100. 
-               How many samples of size 100 are possible out of a population of size 100,000? That's 100,000 choose 100, ${100,000 choose100}$, and the number is so large that even R only returns Inf."),
+               How many samples of size 100 are possible out of a population of size 100,000? That's 100,000 choose 100, \\(100,000 \\choose100\\), and the number is so large that even R only returns Inf.")),
              br(),
              code("choose(100000,100)"),
              br(),
              verbatimTextOutput('sampling_distr'),
              p('Therefore, we usually use a large number of samples to get an approximate sampling distribution of statistics. 
                For example, below you can simulate a sampling distribution of sample mean by choosing the number of samples, and the population mean and standard deviation of the pre-treatement score.'),
+             fluidRow(column(width = 8),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
              fluidRow(column(width = 6,
                              sliderInput(inputId = "select_n_sampling_distribution",
                                          label = "Select the number of samples to generate the sampling distribution:",
@@ -275,6 +287,9 @@ ui <- fluidPage(
              p('If you are interested in the proportion of students who got into the treatment group, 
                 you can also generate a sampling distribution for it by calculating the proportions for each of the many 100 students samples. 
                 A proportion is a special case of an average in which the data are 1’s and 0’s (in the afterschool program/not in the afterschool program).'),
+             fluidRow(column(width = 8),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
              tags$div(
                fluidRow(column(width = 6,
                                sliderInput('select_iter_bernoulli_sampling', label = "Select the number of samples to generate the sampling distribution:", min = 1000, max = 10000, value = 5000, step = 10)),
@@ -295,7 +310,10 @@ ui <- fluidPage(
   
     "Simulation",
     tabPanel("Data Generation Process (DGP)",
-             h3('The Data Generating Process (DGP)'),
+             fluidRow(column(width = 8,
+                             h3('The Data Generating Process (DGP)')),
+               column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="40%", height="60%"))),
              p("In this final section, you will use what you've learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: 
                Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that omniscient hat? It's time to put it on."),
              p("As with any simulation study, you need to first establish the", tags$strong("Data Generating Process (DGP)."), "
@@ -361,13 +379,22 @@ ui <- fluidPage(
               tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, you would compare the two to see how close our estimate is to the truth.'),
             textOutput('simulation_ate'),
             br(),
-            h4('Calculate the true SATE'),
+            fluidRow(column(width = 8,
+                            h4('Calculate the true SATE')),
+                     column(width = 4, align = 'center',
+                            img(src='omniscient_hat.png', width="30%", height="50%"))),
             verbatimTextOutput('simulation_sate_code'),
             textOutput('simulation_sate'),
-            h4('Use a difference in mean outcomes to estimate SATE.'),
+            fluidRow(column(width = 8,
+                            h4('Use a difference in mean outcomes to estimate SATE')),
+                     column(width = 4, align = 'center',
+                            img(src='researcher_hat.png', width="30%", height="50%"))),
             verbatimTextOutput('simulation_mean_diff_code'),
             textOutput('simulation_mean_diff'),
-            h4('Use Linear Regression to estimate SATE'),
+            fluidRow(column(width = 8,
+                            h4('Use Linear Regression to estimate SATE')),
+                     column(width = 4, align = 'center',
+                            img(src='researcher_hat.png', width="30%", height="50%"))),
             verbatimTextOutput('simulation_reg_code'),
             textOutput('simulation_reg')
 ),
