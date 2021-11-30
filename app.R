@@ -108,8 +108,14 @@ ui <- fluidPage(
     
     "Probability Distribution",
     tabPanel('Example',
+             h4('Example: treatment assignment'),
+             p('For this hypothetical study, you first need to randomly assign each of the 100 students to one of the groups, treatment group or control group. 
+               The random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
+               Since there are two possible values of the treatment assignment, treatment group or control group, and each assignment of a student is independent of assignments of other students. 
+               Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success p.'),
+             br(),
              h4('Example: pre-test scores'),
-             p('For this hypothetical study, you next need to generate pre-treatment scores and post-treatment scores. 
+             p('You next need to generate pre-treatment scores and post-treatment scores. 
                This will allow us to estimate the effect of the afterschool program in our hypothetical data. 
                What kind of distribution is appropriate for test scores? Luckily we have access to test scores from another project.  
                We plot them using a histogram and they look like the following'),
