@@ -44,21 +44,22 @@ ui <- fluidPage(
       The half of students that receive extra tutoring in the afterschool program is defined as the treated group. 
       The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
       tags$div(
-      p("Since this is a hypothetical example, you physically don't have any data. This means you're going to have to ", tags$strong("simulate your data"), " to answer your question. 
-        The key here is that when you simulate fake data, you wear the omniscient hat. That is, you start from a position where you know and understand everything about how your data are generated and what's going on internally. ")),
+      p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect.  
+        The simulation will help you understand the difference between the methods. When you simulate data, you wear the omniscient hat. 
+        That is, you start from a position where you know and understand everything about how your data are generated and what is the true treatment effect of the afterschool program.")),
       h4('The Whats and Whys of Simulation'),
-      p("Simulation is a way to explore and understand things about your data, model(s), and underlying assumptions in a controlled environment. In this realm, you can switch freely between the researcher and omniscient hats, and see things about your data that you would normally never be able to see in the real world. This makes simulation a powerful learning tool when comparing different methods and examining efficiency and bias in causal inference."),
-      p("Suppose the true causal effect (or", tags$em("treatment effect"), ") of the afterschool program is 
-               an increase of 5 points on the exam score. Wearing your", tags$em("researcher hat"), " you would never know this 'true' treatment effect.
-               You still can use causal inference methods to", tags$em("estimate"), " the effect of the afterschool program."),
-      p("With simulation, you shall wear the", tags$em("omniscient hat"), " and create data with the true causal effect through data
-             generation process. Knowing the true causal effect, you shall test whether different causal inference methods are valid or not.")
+      p("With the randomized experiment design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the different treatments. 
+        Two methods are commonly used for estimating the average difference between the treated and control groups, difference in means and regression. 
+        However, which method would be better in terms of bias and efficiency? To answer this question, simulation is the way to go."),
+      p("With simulation, you can have your omniscient hat on. You shall choose the rules with which your data is generated, including what is the true treatment effect. 
+        By comparing against the true causal effect, you shall explore the properties of these two different approaches to estimating average treatment effects, i.e. whether they are unbiased and efficient. 
+        This investigation is impossible when you are wearing your researcher hat because you would never know the true treatment effect in the real world. Therefore, simulation is a powerful learning tool when comparing different methods and examining how they might behave in practice.")
       ),
     tabPanel("What is simulation?",
              
              h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Scores'),
              p("Let's decompose the description of the hypothetical example, and put the ", tags$em("omniscient hat"), " on, since it feels good to know everything. 
-               With this powerful hat, you know that you have a sample of 100 fake students (that you will generate), 
+               With this powerful hat, you know that you have a sample of 100 hypotehtical students (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
                'Treatment' in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, 
                and those in the control group will receive normal tutoring. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
@@ -67,7 +68,7 @@ ui <- fluidPage(
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called", tags$em("potential outcomes.")),
              h4('Reality vs. Simulation'),
              p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
-            For instance, if the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student."),
+            For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student."),
              # new mini-simulation
       sidebarLayout(
              sidebarPanel(
@@ -106,30 +107,61 @@ ui <- fluidPage(
     
     
     "Probability Distribution",
-    tabPanel("Sample and Population",
-             img(src = "population-and-sample.png", height="40%", width="80%", align="center"),
-             br(), br(), br(),
-             p('In our Global History regents exam example, we have a sample of 100 students randomly drawn from the population of all high school students in New York State. 
-               The100 students in the sample are the subjects you will collect data from/simulate data for.'),
-             p('Typically, a population is too large to make a complete enumeration of all the individuals in the population. 
-               Samples therefore are collected and statistics are calculated from the samples, 
-               so that one can make inferences/generalizations from the sample to the population. 
-               Specifically, using the treatment effect estimated from the 100 students sample,
-               you will infer the treatment effect of the afterschool program on average for high school students in New York State.')),
-    tabPanel("Discrete Random Variable and Distribution",
+    tabPanel('Example',
+             h4('Example: pre-test scores'),
+             p('For this hypothetical study, you next need to generate pre-treatment scores and post-treatment scores. 
+               This will allow us to estimate the effect of the afterschool program in our hypothetical data. 
+               What kind of distribution is appropriate for test scores? Luckily we have access to test scores from another project.  
+               We plot them using a histogram and they look like the following'),
+             img(src = "Sesame.png", height="40%", width="80%", align="center"),
+             p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation.")),
+    
+    
+    tabPanel("Distribution",
              h4('Probability Distribution'),
              p("With the sample of 100 students, you would like to first assign them to either the treatment group or the control group. 
                To do so, you need a data generator governed by a probability distribution. 
                Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take."),
              br(),
              h4('Bernoulli distribution'),
-             p('When randomly assigning a student to a group, there are two possible values, treatment group or control group, 
-               and each assignment of a student is independent of assignments of other students. 
-               Such a probability distribution is called a Bernoulli distribution.'),
+             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".  
+             There are two possible values of the treatment assignment, treatment group or control group, when you randomly assign a student to a group. 
+             Also, each assignment of a student is independent of assignments of other students. Such a probability distribution is called a Bernoulli distribution.'),
              p('There is only one parameter in Bernoulli distribution, probability of success p. In our example, we
                take the value 1 (treatment group) as success, with probability p, 
                the value 0 (control group) thus has a probability of (1-p).'),
              br(),
+        
+             br(),
+             h4('Binomial distribution'),
+             p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
+               then you can use a binomial distribution to generate the data."),
+             p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
+               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
+               and the probability of success in each trial, p. 
+               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
+             br(),
+           
+             h4('In summary'),
+             p('Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.'),
+             br(),  br(),  
+             
+             withMathJax(),
+             h4('Normal Distribution'),
+             p('For this hypothetical study, you next need to generate pre-treatment scores and post-treatment scores to estimate the effect of the afterschool program. 
+             To simulate the two continuous variables, Normal distribution would be an appropriate probability distribution. 
+               There are two parameters in normal distribution, a mean and a standard deviation of the variable.'),
+             p('Normal distribution is a continuous probability distribution, 
+              and it is often used in simulation and teaching because it approximates to many natural events. 
+              There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
+             withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
+             
+             h4('In summary'),
+             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
+               Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
+             ),
+    tabPanel("Illustration",
              fluidRow(column(width = 8,
                              h4('Illustration')),
                       column(width = 4, align = 'center',
@@ -137,7 +169,7 @@ ui <- fluidPage(
              
              p('Each click will show an assignment of a random student.
              Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
-             p('(Hint:if you set the p as 1, you assign all students to the treatment group.)'),
+             p('(Hint: If you set p = 1, the students will be assigned to the treatment group.)'),
              sliderInput(inputId = "bernoulli_prob",
                          label = "Select the probability of assigning to the treatment group (p):",
                          min = 0, max = 1, value = 0.5, step = 0.1),
@@ -151,25 +183,15 @@ ui <- fluidPage(
              actionButton('reassign_100_treatment', "Assign 100 students"),
              br(), br(),
              plotlyOutput('animation_bernoulli'),
-   
+             p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
              
-             tags$div(
-               br(),
-            h4('Binomial distribution'),
-             p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
-               then you can use a binomial distribution to generate the data."),
-             p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
-               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
-               and the probability of success in each trial, p. 
-               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
-            br(),
-            fluidRow(column(width = 8,
-                            h4('Illustration')),
-                     column(width = 4, align = 'center',
-                            img(src='omniscient_hat.png', width="30%", height="50%"))),
-            p("Each click will simulate a result that assigns all the students in the sample to two groups. 
+             fluidRow(column(width = 8,
+                             h4('Illustration')),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
+             p("Each click will simulate a result that assigns all the students in the sample to two groups. 
               The table summarizes the total counts of students in each group based on your selected number of students and probability of assigning to the treatment group."),
-            sliderInput(inputId = "select_n_binomial",
+             sliderInput(inputId = "select_n_binomial",
                          label = "Select the number of treatment assignments (n):",
                          min = 1, max = 100, value = 100, step = 1),
              sliderInput(inputId = "select_p_binomial",
@@ -178,7 +200,7 @@ ui <- fluidPage(
              actionButton("hundred_student_treatment", "Assign students"),
              textOutput('hundreds_student_treatment_result'),
              #plotOutput('hundred_students_treatment_plot'),
-
+             
              tableOutput('hundreds_student_treatment_result_table'),
              br(),
              tags$div(
@@ -190,32 +212,17 @@ ui <- fluidPage(
                  )
                )
              ),
-            br(),
-            h4('In summary'),
-             p('Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
-               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.'),
-             br(),  br(),  
-             br())),
-    tabPanel("Continuous Random Variable and Distribution",
-             withMathJax(),
-             h4('Normal Distribution'),
-             p('For this hypothetical study, you next need to generate pre-treatment scores and post-treatment scores to estimate the effect of the afterschool program. 
-             To simulate the two continuous variables, Normal distribution would be an appropriate probability distribution. 
-               There are two parameters in normal distribution, a mean and a standard deviation of the variable.'),
-             p('
-              Normal distribution is a continuous probability distribution, 
-              and it is often used in simulation and teaching because it approximates to many natural events. 
-              There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
+             br(),
+             
              fluidRow(column(width = 8,
                              h4('Illustration')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              #VZ-will use latex for the equations
              #do we need to explain var?
-             p('You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. '),
-             withMathJax(paste0(' The mean value is the average score of all the high school students in New York. Since our sample is randomly collected, 
-                we would also expect that our sample has the average score. 
-                The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
+             p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
+               Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
+               If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
              p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
              
              sliderInput(inputId = "select_mean_normal",
@@ -242,11 +249,8 @@ ui <- fluidPage(
                )
              ),
              textOutput('normal_mean_var'),
-             br(),
-             h4('In summary'),
-             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
-               Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
-             ),
+             br()
+    ),
     tabPanel("Exercise",
              htmlOutput("Exercise_1")),
   
