@@ -224,8 +224,7 @@ ui <- fluidPage(
                              h4('Illustration')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
-             #VZ-will use latex for the equations
-             #do we need to explain var?
+
              p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
                Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
                If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
@@ -286,7 +285,7 @@ ui <- fluidPage(
              
     tabPanel("Exercise",
              htmlOutput("Exercise_1")),
-  
+  #VZ-fix hints- window%
     "Sampling Distribution",
     tabPanel("What is Sampling Distribution?",
              p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-treatment score in New York State.
@@ -405,7 +404,7 @@ ui <- fluidPage(
                                   label = "Show the mean function for Y1", value = T))
              
              ),
-             plotOutput(outputId = "result_plot", height = "500px"),
+             plotOutput(outputId = "result_plot", height = "500px"), #VZ -fix mean/sd location
              verbatimTextOutput('simulation_postscore_code'),
              textOutput('simulation_postscore')
     ),

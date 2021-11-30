@@ -126,7 +126,3 @@ geom_vline(xintercept = mean(uni_means$data), color = 'red')
       
 ```
 
-```{r}
-
-```
-

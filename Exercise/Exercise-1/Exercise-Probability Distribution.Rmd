@@ -17,27 +17,27 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 ### Exercise
 
-You need to generate a covariate *frq* that measures how often a student would study for the test on their own in a week. The expected rate of occurrences($lambda$) is 3.       
-Please try to generate the covariate using the function rpois(n, lambda), where n is the number of random values to return and lambda is the parameter lambda.
-
-Write the code to generate the covariate. You shall check the hint if you are unfamiliar with R functions:
+You need to generate *Y* that represents the post-treatment scores for our sample of 100 students，if the program is not implemented.
+Write the code to generate the post-treatment scores. You shall check the hint if you are unfamiliar with R functions:
 
 ```{r frq, exercise=TRUE, exercise.eval=TRUE}
 
 ```
 
 ```{r frq-hint}
-frq<-rpois(n= ,lambda =  )
-print(frq)
+Y<-rnorm(n = 100, mean = ..., sd = ...)
+print(Y)
 ```
 
 ```{r frq-solution}
-frq<-rpois(n=100,lambda = 3)
-print(frq)
-```
+#This is just one example of simulating Y; You shall pick any reasonable expected average post-treatment score and the standard deviation
+Y<-rnorm(n = 100, mean = 60, sd = 5)
+print(Y)
+
  
-```{r frq-code-check}
-grade_code()
+#r frq-code-check
+#grade_code()
+#I delete the code check section, since we would like the students to simulate the dataset as they wish.
 ```
 
 ```{r quiz}
@@ -51,7 +51,4 @@ quiz(
 )
 ```
 
-```{r}
-rsconnect::deployApp('/Users/tianyangzhou/Desktop/mygithub/Simulation_Shinyapp/Exercise/Exercise-1/Exercise-Probability Distribution.Rmd')
-```
 
