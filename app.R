@@ -124,21 +124,14 @@ ui <- fluidPage(
     
     
     tabPanel("Distribution",
-             h4('Probability Distribution'),
-             p("With the sample of 100 students, you would like to first assign them to either the treatment group or the control group. 
-               To do so, you need a data generator governed by a probability distribution. 
-               Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take."),
-             br(),
              h4('Bernoulli distribution'),
-             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".  
-             There are two possible values of the treatment assignment, treatment group or control group, when you randomly assign a student to a group. 
-             Also, each assignment of a student is independent of assignments of other students. Such a probability distribution is called a Bernoulli distribution.'),
-             p('There is only one parameter in Bernoulli distribution, probability of success p. In our example, we
-               take the value 1 (treatment group) as success, with probability p, 
+             p('Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+             Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
+             Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
+             In our example, we take the value 1 (treatment group) as success, with probability p, 
                the value 0 (control group) thus has a probability of (1-p).'),
              br(),
         
-             br(),
              h4('Binomial distribution'),
              p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
                then you can use a binomial distribution to generate the data."),
@@ -148,28 +141,25 @@ ui <- fluidPage(
                In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
              br(),
            
-             h4('In summary'),
-             p('Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
-               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.'),
-             br(),  br(),  
-             
              withMathJax(),
              h4('Normal Distribution'),
-             p('For this hypothetical study, you next need to generate pre-treatment scores and post-treatment scores to estimate the effect of the afterschool program. 
-             To simulate the two continuous variables, Normal distribution would be an appropriate probability distribution. 
-               There are two parameters in normal distribution, a mean and a standard deviation of the variable.'),
              p('Normal distribution is a continuous probability distribution, 
               and it is often used in simulation and teaching because it approximates to many natural events. 
               There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
              withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
              
+             br(), br(),
              h4('In summary'),
-             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '. 
-               Discrete random variables can only take on a countable number of values while continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
+              
+             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
+             Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.
+               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
              ),
     tabPanel("Illustration",
+             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
              fluidRow(column(width = 8,
-                             h4('Illustration')),
+                             h4('Illustration for Bernoulli Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              
@@ -192,7 +182,7 @@ ui <- fluidPage(
              p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
              
              fluidRow(column(width = 8,
-                             h4('Illustration')),
+                             h4('Illustration for Binomial Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              p("Each click will simulate a result that assigns all the students in the sample to two groups. 
@@ -221,7 +211,7 @@ ui <- fluidPage(
              br(),
              
              fluidRow(column(width = 8,
-                             h4('Illustration')),
+                             h4('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
 
