@@ -251,6 +251,33 @@ ui <- fluidPage(
              textOutput('normal_mean_var'),
              br()
     ),
+    tabPanel('Conditional Distribution',
+             p('The post-test scores of students depend on the scores before they participate in the afterschool program (pretest score) and whether they received extra tutoring in the afterschool program (treatment group or control group). 
+               Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
+    
+             fluidRow(column(width = 6,
+                             sliderInput(inputId = "select_b0_distribution", label = "Intercept (b0):", min = 1, max = 20, value = 10, step = 1),
+                             sliderInput(inputId = "select_b1_distribution", label = "Coefficient on X (b1):", min = 0.1, max = 1.2, value = 1, step = 0.1)
+             ),
+             column(width = 6,
+                    sliderInput(inputId = "epsilon_error_distribution",
+                                label = "Residual Std Dev (sigma)",
+                                min = 0, max = 3, value = 1, step = 0.1))),
+             plotOutput(outputId = "Y0_plot", height = "500px"),
+             verbatimTextOutput('distribution_prescore_code'),
+             textOutput('distribution_prescore'),
+             
+             br(), br(),
+             p('What would be the post-test scores for the 100 students if they all received the extra tutoring? 
+               Suppose on average the treatment effect of the afterschool program is the same for everyone. 
+               Then the post-test is simply adding a constant indicating the treatment effect to their post-test scores had they not received the treatment. 
+               Below, you can select the true treatment effect.'),
+             
+             sliderInput(inputId = "tau_distribution", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
+             plotOutput(outputId = "Y1_plot", height = "500px"),
+             verbatimTextOutput('distribution_postscore_code'),
+             textOutput('distribution_postscore')),
+             
     tabPanel("Exercise",
              htmlOutput("Exercise_1")),
   
@@ -563,8 +590,6 @@ server <- function(input, output, session) {
     
   })
   
-
-  
   
   Z_100 <- reactiveValues(data = rbinom(100, size = 1, prob = 0.5))
   
@@ -602,11 +627,59 @@ server <- function(input, output, session) {
         showlegend = FALSE)
   })
   
+#### conditional distribution
   
-  output$sampling_distr <- renderText(choose(100000,100))
+  y0_distribution <- reactive({
+    input$select_b0_distribution + input$select_b1_distribution*X + 
+      rnorm(100, mean = 0, sd = input$epsilon_error_distribution)
+  }) 
   
+  output$Y0_plot <- renderPlot({
+    df <- data.frame(y0 = y0_distribution())
+    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1)
+  })
   
- 
+  output$distribution_prescore_code <- renderText({
+    paste0('Y0 <- beta_0 + beta_1*X + rnorm(N, mean = 0, sd = ', input$epsilon_error_distribution,')')
+  })
+  
+  output$distribution_prescore <- renderText({
+    scores <- y0_distribution()
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(scores[i])))
+    }
+    text
+  })
+  
+  y1_distribution <- reactive({
+    input$select_b0_distribution + input$select_b1_distribution*X + input$tau_distribution +
+      rnorm(100, mean = 0, sd = input$epsilon_error_distribution)
+  }) 
+  
+  output$Y1_plot <- renderPlot({
+    df <- data.frame(y0 = y1_distribution())
+    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1)
+  })
+  
+  output$distribution_postscore_code <- renderText({
+    paste0('Y1 <- beta_0 + beta_1*X + ',input$tau_distribution, ' + rnorm(N, mean = 0, sd = ', input$epsilon_error_distribution,')')
+  })
+  
+  output$distribution_postscore <- renderText({
+    scores <- y1_distribution()
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(scores[i])))
+    }
+    text
+  }) 
+  
+
+### Sampling distribution  
+  
+    output$sampling_distr <- renderText(choose(100000,100))
+
     output$sampling_distribution_normal <- renderPlot({
       input$generate_sampling_distribution
       select_n <- isolate(input$select_n_sampling_distribution)
