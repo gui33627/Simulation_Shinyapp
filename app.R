@@ -114,6 +114,7 @@ ui <- fluidPage(
              h4('Normal Distribution'),
              p('It turns out that test scores commonly approximate to a normal distribution. The normal distribution is a continuous probability distribution, and it is often used in simulation and teaching because it approximates to many natural events. There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
              withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
+             br(),
              
              fluidRow(column(width = 8,
                              h4('Illustration for Normal Distribution')),
@@ -158,6 +159,7 @@ ui <- fluidPage(
              p("Now that we have the pre-test scores, we need randomly assign each of the 100 students to one of the groups, treatment or control. 
                This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
                There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students."),
+             br(),
              h4('Bernoulli distribution'),
              p('This kind of distribution can be described by a Bernoulli distribution, which is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
              Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
@@ -189,7 +191,7 @@ ui <- fluidPage(
              br(), br(),
              plotlyOutput('animation_bernoulli'),
              p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
-             
+             br(), br(),
              
              ),
     
