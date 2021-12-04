@@ -235,7 +235,6 @@ ui <- fluidPage(
              Both Bernoulli distribution and Binomial distributions are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
                such as treatment and control groups in an treatment assignment, or the number of students assigned to the treatment group.
                Continuous random variables, on the other hand, can take on any real number or an uncountable amount of possibilities (i.e., to any amount of decimal places).')
-    ),
              ),
     
     # tabPanel('Example',
