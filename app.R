@@ -107,7 +107,7 @@ ui <- fluidPage(
     
     
     "Probability Distribution",
-    tabPanel('Continuous Distribution',
+    tabPanel('Continuous Probability Distribution',
              h4('Pre-test scores'),
              p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? Luckily, if we plot them using a histogram, they look like the following:'),
              img(src = "Sesame.png", height="40%", width="80%", align="center"),
@@ -153,30 +153,70 @@ ui <- fluidPage(
              
              ),
     
-    tabPanel('Example',
-             h4('Example: treatment assignment'),
-             p('For this hypothetical study, you first need to randomly assign each of the 100 students to one of the groups, treatment group or control group. 
-               The random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
-               Since there are two possible values of the treatment assignment, treatment group or control group, and each assignment of a student is independent of assignments of other students. 
-               Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success p.'),
+    tabPanel('Discrete Probability Distribution',
+             h4('Treatment assignment'),
+             p("Now that we have the pre-test scores, we need randomly assign each of the 100 students to one of the groups, treatment or control. 
+               This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
+               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students."),
+             h4('Bernoulli distribution'),
+             p('This kind of distribution can be described by a Bernoulli distribution, which is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+             Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
+             Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
+             In our example, we take the value 1 (treatment group) as success with probability p, and
+               the value 0 (control group) with a probability of (1-p).'),
              br(),
-             h4('Example: pre-test scores'),
-             p('You next need to generate pre-treatment scores and post-treatment scores. 
-               This will allow us to estimate the effect of the afterschool program in our hypothetical data. 
-               What kind of distribution is appropriate for test scores? Luckily we have access to test scores from another project.  
-               We plot them using a histogram and they look like the following'),
-             img(src = "Sesame.png", height="40%", width="80%", align="center"),
-             p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation.")),
+             
+             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
+             fluidRow(column(width = 8,
+                             h4('Illustration for Bernoulli Distribution')),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
+             
+             p('Each click will show an assignment of a random student.
+             Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
+             p('(Hint: If you set p = 1, the students will be assigned to the treatment group.)'),
+             sliderInput(inputId = "bernoulli_prob",
+                         label = "Select the probability of assigning to the treatment group (p):",
+                         min = 0, max = 1, value = 0.5, step = 0.1),
+             actionButton("one_student_treatment", "Assign a student to a group"),
+             br(),
+             textOutput('one_student_treatment_plot'),
+             br(), br(),
+             p("Now let's run a Bernoulli trial for each of the 100 students. 
+               Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0)."),
+             br(), 
+             actionButton('reassign_100_treatment', "Assign 100 students"),
+             br(), br(),
+             plotlyOutput('animation_bernoulli'),
+             p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
+             
+             
+             ),
+    
+    # tabPanel('Example',
+    #          h4('Example: treatment assignment'),
+    #          p('For this hypothetical study, you first need to randomly assign each of the 100 students to one of the groups, treatment group or control group. 
+    #            The random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
+    #            Since there are two possible values of the treatment assignment, treatment group or control group, and each assignment of a student is independent of assignments of other students. 
+    #            Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success p.'),
+    #          br(),
+             # h4('Example: pre-test scores'),
+             # p('You next need to generate pre-treatment scores and post-treatment scores. 
+             #   This will allow us to estimate the effect of the afterschool program in our hypothetical data. 
+             #   What kind of distribution is appropriate for test scores? Luckily we have access to test scores from another project.  
+             #   We plot them using a histogram and they look like the following'),
+             # img(src = "Sesame.png", height="40%", width="80%", align="center"),
+             # p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation.")),
     
     
     tabPanel("Distribution",
-             h4('Bernoulli distribution'),
-             p('Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
-             Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
-             Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
-             In our example, we take the value 1 (treatment group) as success, with probability p, 
-               the value 0 (control group) thus has a probability of (1-p).'),
-             br(),
+             # h4('Bernoulli distribution'),
+             # p('Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+             # Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
+             # Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
+             # In our example, we take the value 1 (treatment group) as success, with probability p, 
+             #   the value 0 (control group) thus has a probability of (1-p).'),
+             # br(),
         
              h4('Binomial distribution'),
              p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
@@ -204,30 +244,30 @@ ui <- fluidPage(
                Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
              ),
     tabPanel("Illustration",
-             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
-             fluidRow(column(width = 8,
-                             h4('Illustration for Bernoulli Distribution')),
-                      column(width = 4, align = 'center',
-                             img(src='omniscient_hat.png', width="30%", height="50%"))),
-             
-             p('Each click will show an assignment of a random student.
-             Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
-             p('(Hint: If you set p = 1, the students will be assigned to the treatment group.)'),
-             sliderInput(inputId = "bernoulli_prob",
-                         label = "Select the probability of assigning to the treatment group (p):",
-                         min = 0, max = 1, value = 0.5, step = 0.1),
-             actionButton("one_student_treatment", "Assign a student to a group"),
-             br(),
-             textOutput('one_student_treatment_plot'),
-             br(), br(),
-             p("Now let's run a Bernoulli trial for each of the 100 students. 
-               Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0)."),
-             br(), 
-             actionButton('reassign_100_treatment', "Assign 100 students"),
-             br(), br(),
-             plotlyOutput('animation_bernoulli'),
-             p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
-             
+             # p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
+             # fluidRow(column(width = 8,
+             #                 h4('Illustration for Bernoulli Distribution')),
+             #          column(width = 4, align = 'center',
+             #                 img(src='omniscient_hat.png', width="30%", height="50%"))),
+             # 
+             # p('Each click will show an assignment of a random student.
+             # Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
+             # p('(Hint: If you set p = 1, the students will be assigned to the treatment group.)'),
+             # sliderInput(inputId = "bernoulli_prob",
+             #             label = "Select the probability of assigning to the treatment group (p):",
+             #             min = 0, max = 1, value = 0.5, step = 0.1),
+             # actionButton("one_student_treatment", "Assign a student to a group"),
+             # br(),
+             # textOutput('one_student_treatment_plot'),
+             # br(), br(),
+             # p("Now let's run a Bernoulli trial for each of the 100 students. 
+             #   Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0)."),
+             # br(), 
+             # actionButton('reassign_100_treatment', "Assign 100 students"),
+             # br(), br(),
+             # plotlyOutput('animation_bernoulli'),
+             # p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
+             # 
              fluidRow(column(width = 8,
                              h4('Illustration for Binomial Distribution')),
                       column(width = 4, align = 'center',
