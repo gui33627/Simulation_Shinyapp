@@ -107,6 +107,52 @@ ui <- fluidPage(
     
     
     "Probability Distribution",
+    tabPanel('Continuous Distribution',
+             h4('Pre-test scores'),
+             p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? Luckily, if we plot them using a histogram, they look like the following:'),
+             img(src = "Sesame.png", height="40%", width="80%", align="center"),
+             h4('Normal Distribution'),
+             p('It turns out that test scores commonly approximate to a normal distribution. The normal distribution is a continuous probability distribution, and it is often used in simulation and teaching because it approximates to many natural events. There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
+             withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
+             
+             fluidRow(column(width = 8,
+                             h4('Illustration for Normal Distribution')),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
+             
+             p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
+               Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
+               If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
+             p('As you set different values for the mean and standard deviation of pre-test score, you may observe that the center (mean) of your graph shifts and the spread (variance) of your graph changes.'),
+             
+             sliderInput(inputId = "select_mean_normal",
+                         label = "Select the expectation of the pre-treatment score (E(X)):",
+                         min = 20, max = 80, value = 60, step = 1),
+             sliderInput(inputId = "select_sd_normal",
+                         label = "Select the standard deviation of the pre-treatment score:",
+                         min = 0, max = 10, value = 5, step = 1),
+             
+             actionButton("draw_hundred_student", "Simulate 100 students' scores"),
+             br(),
+             textOutput('hundred_student_score_print'),
+             br(),
+             plotOutput('hundred_students_scores'),
+             br(),
+             
+             tags$div(
+               useShinyjs(),
+               actionButton("show_code_normal", "Show me the R code of generating the distribution"),
+               hidden(
+                 div(id='code_div_normal',
+                     verbatimTextOutput("code_normal")
+                 )
+               )
+             ),
+             textOutput('normal_mean_var'),
+             br()
+             
+             ),
+    
     tabPanel('Example',
              h4('Example: treatment assignment'),
              p('For this hypothetical study, you first need to randomly assign each of the 100 students to one of the groups, treatment group or control group. 
@@ -140,14 +186,15 @@ ui <- fluidPage(
                and the probability of success in each trial, p. 
                In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
              br(),
-           
-             withMathJax(),
-             h4('Normal Distribution'),
-             p('Normal distribution is a continuous probability distribution, 
-              and it is often used in simulation and teaching because it approximates to many natural events. 
-              There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
-             withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
-             
+  
+             ## TO REMOVE         
+             # withMathJax(),
+             # h4('Normal Distribution'),
+             # p('Normal distribution is a continuous probability distribution, 
+             #  and it is often used in simulation and teaching because it approximates to many natural events. 
+             #  There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
+             # withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
+             # 
              br(), br(),
              h4('In summary'),
               
@@ -210,41 +257,41 @@ ui <- fluidPage(
              ),
              br(),
              
-             fluidRow(column(width = 8,
-                             h4('Illustration for Normal Distribution')),
-                      column(width = 4, align = 'center',
-                             img(src='omniscient_hat.png', width="30%", height="50%"))),
-
-             p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
-               Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
-               If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
-             p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
-             
-             sliderInput(inputId = "select_mean_normal",
-                         label = "Select the expectation of the pre-treatment score (E(X)):",
-                         min = 20, max = 80, value = 60, step = 1),
-             sliderInput(inputId = "select_sd_normal",
-                         label = "Select the standard deviation of the pre-treatment score:",
-                         min = 0, max = 10, value = 5, step = 1),
-             
-             actionButton("draw_hundred_student", "Simulate 100 students' scores"),
-             br(),
-             textOutput('hundred_student_score_print'),
-             br(),
-             plotOutput('hundred_students_scores'),
-             br(),
-             
-             tags$div(
-               useShinyjs(),
-               actionButton("show_code_normal", "Show me the R code of generating the distribution"),
-               hidden(
-                 div(id='code_div_normal',
-                     verbatimTextOutput("code_normal")
-                 )
-               )
-             ),
-             textOutput('normal_mean_var'),
-             br()
+             # fluidRow(column(width = 8,
+             #                 h4('Illustration for Normal Distribution')),
+             #          column(width = 4, align = 'center',
+             #                 img(src='omniscient_hat.png', width="30%", height="50%"))),
+             # 
+             # p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
+             #   Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
+             #   If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
+             # p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
+             # 
+             # sliderInput(inputId = "select_mean_normal",
+             #             label = "Select the expectation of the pre-treatment score (E(X)):",
+             #             min = 20, max = 80, value = 60, step = 1),
+             # sliderInput(inputId = "select_sd_normal",
+             #             label = "Select the standard deviation of the pre-treatment score:",
+             #             min = 0, max = 10, value = 5, step = 1),
+             # 
+             # actionButton("draw_hundred_student", "Simulate 100 students' scores"),
+             # br(),
+             # textOutput('hundred_student_score_print'),
+             # br(),
+             # plotOutput('hundred_students_scores'),
+             # br(),
+             # 
+             # tags$div(
+             #   useShinyjs(),
+             #   actionButton("show_code_normal", "Show me the R code of generating the distribution"),
+             #   hidden(
+             #     div(id='code_div_normal',
+             #         verbatimTextOutput("code_normal")
+             #     )
+             #   )
+             # ),
+             # textOutput('normal_mean_var'),
+             # br()
     ),
     tabPanel('Conditional Distribution',
              p('The post-test scores of students depend on the scores before they participate in the afterschool program (pretest score) and whether they received extra tutoring in the afterschool program (treatment group or control group). 
