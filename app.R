@@ -108,7 +108,7 @@ ui <- fluidPage(
     
     "Probability Distribution",
     tabPanel('Continuous Probability Distribution',
-             h4('Pre-test scores'),
+             h3('Pre-test scores'),
              p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? Luckily, if we plot them using a histogram, they look like the following:'),
              img(src = "Sesame.png", height="40%", width="80%", align="center"),
              h4('Normal Distribution'),
@@ -117,7 +117,7 @@ ui <- fluidPage(
              br(), br(),
              
              fluidRow(column(width = 8,
-                             h4('Illustration for Normal Distribution')),
+                             h5('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              
@@ -155,22 +155,22 @@ ui <- fluidPage(
              ),
     
     tabPanel('Discrete Probability Distribution',
-             h4('Treatment assignment'),
+             h3('Treatment assignment'),
              p("Now that we have the pre-test scores, we need randomly assign each of the 100 students to one of the groups, treatment or control. 
                This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
-               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students."),
+               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students. We are not going to look at two well-known distributions that can help us simulate treatment assignments"),
              br(),
-             h4('Bernoulli distribution'),
+             h4('1. Bernoulli distribution'),
              p('This kind of distribution is called a Bernoulli distribution, which is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
              Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
              Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
              In our example, we take the value 1 (treatment group) as success with probability p, and
                the value 0 (control group) with a probability of (1-p).'),
+             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
              br(),
              
-             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
              fluidRow(column(width = 8,
-                             h4('Illustration for Bernoulli Distribution')),
+                             h5('Illustration for Bernoulli Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              
@@ -193,15 +193,16 @@ ui <- fluidPage(
              p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
              br(), br(),
              
-             h4('Binomial distribution'),
+             h4('2. Binomial distribution'),
              p("Now suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group. Then you can use a binomial distribution to generate the data."),
              p("A binomial distribution is a set of Bernoulli trials (when each trial is independent).
                There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
                and the probability of success in each trial, p. 
                In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n = 1 for a Binomial distribution. "),
              br(),
+             
              fluidRow(column(width = 8,
-                             h4('Illustration for Binomial Distribution')),
+                             h5('Illustration for Binomial Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              p("Each click will simulate a result that assigns all the students in the sample to two groups. 
@@ -234,7 +235,8 @@ ui <- fluidPage(
              p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
              Both Bernoulli distribution and Binomial distributions are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
                such as treatment and control groups in an treatment assignment, or the number of students assigned to the treatment group.
-               Continuous random variables, on the other hand, can take on any real number or an uncountable amount of possibilities (i.e., to any amount of decimal places).')
+               Continuous random variables, on the other hand, can take on any real number or an uncountable amount of possibilities (i.e., to any amount of decimal places).'),
+             br(), br(),
              ),
     
     # tabPanel('Example',
