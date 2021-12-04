@@ -62,7 +62,7 @@ ui <- fluidPage(
                With this powerful hat, you know that you have a sample of 100 hypotehtical students (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
                'Treatment' in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, 
-               and those in the control group will receive normal tutoring. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
+               and those in the control group will receive normal tutoring. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome.")),
              p("These are fairly self-explanatory: ", tags$em("pre-treatment"), " test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$em("post-treatment"), 
                " test scores are the scores of the 100 sample students after the treatment period. 
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called", tags$em("potential outcomes.")),
