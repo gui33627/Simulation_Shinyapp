@@ -158,7 +158,7 @@ ui <- fluidPage(
              h3('Treatment assignment'),
              p("Now that we have the pre-test scores, we need to randomly assign each of the 100 students to one of the groups, treatment or control. 
                This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
-               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students. We are now going to look at two well-known distributions that can help us simulate treatment assignments"),
+               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students. We are now going to look at two well-known distributions that can help us simulate treatment assignments."),
              br(),
              h4('1. Bernoulli distribution'),
              p('The first is called a Bernoulli distribution, which is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
@@ -383,8 +383,9 @@ ui <- fluidPage(
     tabPanel('Conditional Distribution',
              h3('Post-test scores'),
              p('Now that we have the pre-test scores and treatment assignments, we need to generate the', tags$strong("post-test"), 'scores.'),
-             p('The post-test scores of students depend on the scores before they participate in the afterschool program (pretest score) and whether they received extra tutoring in the afterschool program (treatment group or control group). 
-               Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
+             p('The post-test scores of students depend on the scores before they participate in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a', tags$strong( "conditional distribution"), 'notated as f(post-test | pre-test, treatment).'),
+             p('Conditional distributions are important when simulating data, because data in the real world are rarely strictly independent. Therefore we need to have a way to', tags$em("condition"), 'certain data (such as outcomes) on other data that we have.'),
+             p('Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
     
              fluidRow(column(width = 6,
                              sliderInput(inputId = "select_b0_distribution", label = "Intercept (b0):", min = 1, max = 20, value = 10, step = 1),
