@@ -385,6 +385,8 @@ ui <- fluidPage(
              p('Now that we have the pre-test scores and treatment assignments, we need to generate the', tags$strong("post-test"), 'scores.'),
              p('The post-test scores of students depend on the scores before they participate in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a', tags$strong( "conditional distribution"), 'notated as f(post-test | pre-test, treatment).'),
              p('Conditional distributions are important when simulating data, because data in the real world are rarely strictly independent. Therefore we need to have a way to', tags$em("condition"), 'certain data (such as outcomes) on other data that we have.'),
+             br(),
+             h4('Example'),
              p('Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
     
              fluidRow(column(width = 6,
