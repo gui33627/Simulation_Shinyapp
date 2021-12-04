@@ -150,18 +150,18 @@ ui <- fluidPage(
                )
              ),
              textOutput('normal_mean_var'),
-             br()
+             br(), br(),
              
              ),
     
     tabPanel('Discrete Probability Distribution',
              h3('Treatment assignment'),
-             p("Now that we have the pre-test scores, we need randomly assign each of the 100 students to one of the groups, treatment or control. 
+             p("Now that we have the pre-test scores, we need to randomly assign each of the 100 students to one of the groups, treatment or control. 
                This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
-               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students. We are not going to look at two well-known distributions that can help us simulate treatment assignments"),
+               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students. We are now going to look at two well-known distributions that can help us simulate treatment assignments"),
              br(),
              h4('1. Bernoulli distribution'),
-             p('This kind of distribution is called a Bernoulli distribution, which is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+             p('The first is called a Bernoulli distribution, which is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
              Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
              Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
              In our example, we take the value 1 (treatment group) as success with probability p, and
@@ -381,6 +381,8 @@ ui <- fluidPage(
     # ),
   
     tabPanel('Conditional Distribution',
+             h3('Post-test scores'),
+             p('Now that we have the pre-test scores and treatment assignments, we need to generate the', tags$strong("post-test"), 'scores.'),
              p('The post-test scores of students depend on the scores before they participate in the afterschool program (pretest score) and whether they received extra tutoring in the afterschool program (treatment group or control group). 
                Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
     
