@@ -106,7 +106,7 @@ ui <- fluidPage(
                since these really make up the core of your simulation study.")),
     
     
-    "Probability Distribution",
+    "Probability Distributions",
     tabPanel('Continuous Probability Distribution',
              h3('Pre-test scores'),
              p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? Luckily, if we plot them using a histogram, they look like the following:'),
