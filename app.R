@@ -123,18 +123,26 @@ ui <- fluidPage(
              p('Now that we have the pre-test scores, we need to randomly assign each of the 100 students to one of the groups, treatment or control. 
              This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
              There are two possible values of the treatment assignment - treatment or control - and each student\'s assignment is independent of assignments of other students.  
-             Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success p.')
+             Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success (assigned to treatment group) p.'),
+             br(), br()
              ),
     
     
     tabPanel("Distribution",
              withMathJax(),
              h4('Normal Distribution'),
-             p('Normal distribution is a continuous probability distribution, 
-              and it is often used in simulation and teaching because it approximates to many natural events. 
-              There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
-             withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
-             br(),
+             withMathJax(paste0('As we\'ve seen in the example from the last section that normal distribution is an appropriate distribution to describe test score, 
+             we will assume the pre-test score and post-test score in our example also follow normal distribution. 
+             Normal distribution is commonly used to describe the probability distribution of a continuous random variable, X. 
+             There are two parameters in normal distribution, a mean \\(\\mu\\) and a standard deviation \\(\\sigma\\) of the variable. 
+             The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\).
+             The variance of the distribution of X is \\(E((X − \\mu_X )^2)\\), that is, the mean of the squared difference from the mean. 
+             The standard deviation is the square root of the variance.
+             In our example, we can view the pre-treatment score of a student as a continuous random variable, X, possibly taking any value between 0 and 100.
+             By specifying a mean and a standard deviation of the score that we expect to see if we repeatedly draw a student, 
+             we can simulate the pre-treatment scores for the students in our sample by a normal distribution. ')),
+          
+             br(),br(),
              h4('Bernoulli distribution'),
              p('Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
              Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
