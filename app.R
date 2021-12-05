@@ -1,6 +1,7 @@
 
 library(shiny)
 library(ggplot2)
+library(ggpubr)
 library(plotly)
 library(shinyjs)
 library(learnr)
@@ -177,7 +178,9 @@ ui <- fluidPage(
              ),
     tabPanel("Illustration",
              h4('Notations'),
-             p('Let\'s introduce some notation to help formalize the "data generating process". We can let X stand for the variable "pre-test score", Z stand for the variable "treatment assignment", and Y stand for the variable "post-test score".'),
+             p('Let\'s introduce some notation to help formalize the "data generating process". We can let X stand for the variable "pre-treatment score", Z stand for the variable "treatment assignment", 
+               Y0 stand for the potential outcome score if students are in the control group, Y1 stand for the potential outcome score if students are in the treatment group, 
+               and Y stand for the observed "post-treatment score" depending one\'s treatment assignment.'),
              fluidRow(column(width = 8,
                              h4('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
@@ -306,7 +309,11 @@ ui <- fluidPage(
              sliderInput(inputId = "tau_distribution", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
              plotOutput(outputId = "Y1_plot", height = "500px"),
              verbatimTextOutput('distribution_postscore_code'),
-             textOutput('distribution_postscore')),
+             textOutput('distribution_postscore'),
+             br(),
+             p('In real world, we are never be able to observe both Y0 and Y1 for a student. Thus, lastly, we need to generate the post-test scores for students based on which group they are assigned to.'),
+             verbatimTextOutput('distribution_postscore_code_observe'),
+             textOutput('distribution_postscore_observe')),
              
     tabPanel("Exercise",
              htmlOutput("Exercise_1")),
@@ -674,14 +681,28 @@ server <- function(input, output, session) {
   
 #### conditional distribution
   
+  X <- rnorm(100, 50, 5)
   y0_distribution <- reactive({
     input$select_b0_distribution + input$select_b1_distribution*X + 
       rnorm(100, mean = 0, sd = input$epsilon_error_distribution)
   }) 
   
+  y1_distribution <- reactive({
+    input$select_b0_distribution + input$select_b1_distribution*X + input$tau_distribution +
+      rnorm(100, mean = 0, sd = input$epsilon_error_distribution)
+  }) 
+  
   output$Y0_plot <- renderPlot({
-    df <- data.frame(y0 = y0_distribution())
-    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1)
+    df <- data.frame(x = X, y0 = y0_distribution(), y0_line = input$select_b0_distribution + input$select_b1_distribution*X)
+    p1 <- ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1)
+    colors <- c("Y0 (control)" = "blue", "Y1(treated)" = "red")
+    data <- paste0(" Y0 = ", input$select_b0_distribution, " + ", input$select_b1_distribution, "X + e, ", "e~N(0, ",input$epsilon_error_distribution,"^2)")
+    p2 <- ggplot(data = df) + geom_point(aes(x = x, y = y0, color = 'Y0 (control)')) +
+      geom_line(aes(x = x, y = y0_line, color = 'Y0 (control)')) + 
+      annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=1.7,label=as.character(data), fontface = "italic", size = 6) + 
+      scale_color_manual('Potential Outcomes', values = colors) + theme(legend.position="bottom")
+   
+    print(ggarrange(p1, p2, ncol = 2))
   })
   
   output$distribution_prescore_code <- renderText({
@@ -697,14 +718,19 @@ server <- function(input, output, session) {
     text
   })
   
-  y1_distribution <- reactive({
-    input$select_b0_distribution + input$select_b1_distribution*X + input$tau_distribution +
-      rnorm(100, mean = 0, sd = input$epsilon_error_distribution)
-  }) 
   
   output$Y1_plot <- renderPlot({
-    df <- data.frame(y0 = y1_distribution())
-    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1)
+    df <- data.frame(x = X, y1 = y1_distribution(), y1_line = input$select_b0_distribution + input$select_b1_distribution*X + input$tau_distribution)
+    p1 <- ggplot(data = df, aes(x = y1)) + geom_histogram(binwidth = 1)
+  
+    colors <- c("Y0 (control)" = "blue", "Y1(treated)" = "red")
+    data <- paste0("Y1 = ", input$select_b0_distribution, " + ", input$select_b1_distribution, "X + ", input$tau_distribution," + e, ", "e~N(0, ",input$epsilon_error_distribution,"^2)")
+    p2 <- ggplot(data = df) + geom_point(aes(x = x, y = y1, color = 'Y1(treated)')) +
+      geom_line(aes(x = x, y = y1_line, color = 'Y1(treated)')) + 
+      annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=1.7,label=as.character(data), fontface = "italic", size = 6) + 
+      scale_color_manual('Potential Outcomes', values = colors) + theme(legend.position="bottom")
+    
+    print(ggarrange(p1, p2, ncol = 2))
   })
   
   output$distribution_postscore_code <- renderText({
@@ -720,6 +746,20 @@ server <- function(input, output, session) {
     text
   }) 
   
+  output$distribution_postscore_code_observe <- renderText({
+    paste0('Y <- ifelse(Z == 1, Y1, Y0))')
+  })
+  
+  output$distribution_postscore_observe <- renderText({
+    y1 <- y1_distribution()
+    y0 <- y0_distribution()
+    y <- ifelse(Z_100$data == 1, round(y1), round(y0))
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', y[i]))
+    }
+    text
+  }) 
 
 ### Sampling distribution  
   
@@ -887,7 +927,9 @@ server <- function(input, output, session) {
     })
     
     output$mean_diff_reg_compare <- renderText({
-      paste0("mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:5000) {\n    X <- rnorm(N, mean = 50, sd = 5) \n    Z <- rbinom(N, 1, prob = 0.5) \n    Y0 <- ", input$select_b0," + ", input$select_b1, "*X + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \n    Y1 <- ", input$select_b0," + ", input$select_b1, "*X + ", input$tau, " + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \n    Y <- ifelse(Z == 1, Y1, Y0)
+      paste0("mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:5000) {\n    X <- rnorm(N, mean = 50, sd = 5) \n    Z <- rbinom(N, 1, prob = 0.5) \n    Y0 <- ", 
+      input$select_b0," + ", input$select_b1, "*X + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \n    Y1 <- ", input$select_b0," + ", input$select_b1, "*X + ", input$tau,
+      " + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \n    Y <- ifelse(Z == 1, Y1, Y0)
     \n    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)]) \n    fit_tmp <- lm(Y ~ X + Z) \n
     lm_estimate_tmp <- coef(fit_tmp)['Z'] \n    mean_diff <- c(mean_diff, mean_diff_tmp) \n    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
 }")
