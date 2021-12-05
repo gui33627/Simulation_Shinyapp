@@ -747,7 +747,7 @@ server <- function(input, output, session) {
   }) 
   
   output$distribution_postscore_code_observe <- renderText({
-    paste0('Y <- ifelse(Z == 1, Y1, Y0))')
+    paste0('Y <- ifelse(Z == 1, Y1, Y0)')
   })
   
   output$distribution_postscore_observe <- renderText({
