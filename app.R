@@ -471,28 +471,28 @@ server <- function(input, output, session) {
   #bookmark
 
   #mini-set dataset
-  pre=rnorm(n = 10, mean = 50, sd = 5)
-  y0=10 + pre + 0 + rnorm(10, mean = 0, sd = 1)
-  y1=10 + pre + 5 + rnorm(10, mean = 0, sd = 1)
-  treat=rbinom(n = 10, size = 1, prob = 0.5)
-  y=ifelse(treat == 1,  y1, y0)
-  rhdf<-data.frame(
-    students=sample(students,10),
-    pre=pre,
-    y0=y0,
-    y1=y1,
-    treat=treat,
-    y=y)
-  pbase<-ggplot(rhdf) +theme_bw()+theme(legend.position = "none")+ylim(40,80)
+  pre <- rnorm(n = 10, mean = 50, sd = 5)
+  y0 <- 10 + pre + 0 + rnorm(10, mean = 0, sd = 1)
+  y1 <- 10 + pre + 5 + rnorm(10, mean = 0, sd = 1)
+  treat <- rbinom(n = 10, size = 1, prob = 0.5)
+  y <- ifelse(treat == 1, y1, y0)
+  rhdf <- data.frame(
+    students = sample(students,10),
+    pre = pre,
+    y0 = y0,
+    y1 = y1,
+    treat = treat,
+    y = y)
+  pbase <- ggplot(rhdf) + theme_bw() + theme(legend.position = "none") + ylim(40,80)
   
-  p01<-pbase+geom_point(aes(students, y0)) +
-    geom_point(aes(students, y1),color = "red")
-  p1<-pbase+geom_point(data =rhdf, aes(students, y1),color = "red")
-  p0<-pbase+geom_point(aes(students, y0)) 
-  py<-pbase+geom_point(aes(students, y,colour= factor(treat)))+
+  p01 <- pbase + geom_point(aes(students, y0), size = 4) +
+    geom_point(aes(students, y1), color = "red", size = 4)
+  p1 <- pbase + geom_point(data =rhdf, aes(students, y1), color = "red", size = 4)
+  p0 <- pbase + geom_point(aes(students, y0), size = 4) 
+  py <- pbase + geom_point(aes(students, y, colour = factor(treat)), size = 4)+
     scale_color_manual(values=c("black","red"))
   
-  output$researcher_hat_plot<- renderPlot({
+  output$researcher_hat_plot <- renderPlot({
     potential_oc <- switch(input$potential_oc,
                            ally0y1 = p01,
                            ally1 = p1,
@@ -502,7 +502,7 @@ server <- function(input, output, session) {
     potential_oc
   })
 
-  output$researcher_hat_list<-renderText(paste0(rhdf$students, ': ', rhdf$treat))
+  output$researcher_hat_list <- renderText(paste0(rhdf$students, ': ', rhdf$treat))
   
   
   
