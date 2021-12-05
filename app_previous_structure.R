@@ -26,35 +26,35 @@ ui <- fluidPage(
                              img(src='researcher_hat.png',width="100%", height="150%")),
                       column(width = 6, align = 'center',
                              img(src='omniscient_hat.png', width="100%", height="150%")))
-             ),
-             
+    ),
+    
     tabPanel("Hypothetical Example", 
-      tags$div(
-      p('The following hypothetical example will link concepts step by step throughout the app:'),
-      h4('The Dreaded Global History Regents Exam'),
-      p('In New York State, the Global History regents is considered to be one of 
+             tags$div(
+               p('The following hypothetical example will link concepts step by step throughout the app:'),
+               h4('The Dreaded Global History Regents Exam'),
+               p('In New York State, the Global History regents is considered to be one of 
       the most difficult Regents exams. Regents exams are a series of exams that high 
       school students must take and pass in order to graduate.
         Students must score a 65 or higher to pass but may re-take as many times as necessary.  
         ')),
-      tags$div(
-      p("The Global History regents is hard primarily due to the sheer amount of memorization (it is fairly traumatizing). 
+             tags$div(
+               p("The Global History regents is hard primarily due to the sheer amount of memorization (it is fairly traumatizing). 
       Hypothetically, the New York State Education Department is starting an afterschool program to assist students who failed at the first attempt to take the exam again.
       Before the second attempt of the exam, half of them are randomly assigned to attend an afterschool program and the other half does not receive any additional help. 
       The half of students that receive extra tutoring in the afterschool program is defined as the treated group. 
       The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
-      tags$div(
-      p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect.  
+             tags$div(
+               p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect.  
         The simulation will help you understand the difference between the methods. When you simulate data, you wear the omniscient hat. 
         That is, you start from a position where you know and understand everything about how your data are generated and what is the true treatment effect of the afterschool program.")),
-      h4('The Whats and Whys of Simulation'),
-      p("With the randomized experiment design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the different treatments. 
+             h4('The Whats and Whys of Simulation'),
+             p("With the randomized experiment design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the different treatments. 
         Two methods are commonly used for estimating the average difference between the treated and control groups, difference in means and regression. 
         However, which method would be better in terms of bias and efficiency? To answer this question, simulation is the way to go."),
-      p("With simulation, you can have your omniscient hat on. You shall choose the rules with which your data is generated, including what is the true treatment effect. 
+             p("With simulation, you can have your omniscient hat on. You shall choose the rules with which your data is generated, including what is the true treatment effect. 
         By comparing against the true causal effect, you shall explore the properties of these two different approaches to estimating average treatment effects, i.e. whether they are unbiased and efficient. 
         This investigation is impossible when you are wearing your researcher hat because you would never know the true treatment effect in the real world. Therefore, simulation is a powerful learning tool when comparing different methods and examining how they might behave in practice.")
-      ),
+    ),
     tabPanel("What is simulation?",
              
              h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Scores'),
@@ -62,7 +62,7 @@ ui <- fluidPage(
                With this powerful hat, you know that you have a sample of 100 hypotehtical students (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
                'Treatment' in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, 
-               and those in the control group will receive normal tutoring. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
+               and those in the control group will receive normal tutoring. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome.")),
              p("These are fairly self-explanatory: ", tags$em("pre-treatment"), " test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$em("post-treatment"), 
                " test scores are the scores of the 100 sample students after the treatment period. 
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called", tags$em("potential outcomes.")),
@@ -70,22 +70,22 @@ ui <- fluidPage(
              p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
             For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student."),
              # new mini-simulation
-      sidebarLayout(
-             sidebarPanel(
-               radioButtons("potential_oc", "Potential Outcomes",
-                            c("All potential outcomes" = "ally0y1",
-                              "If everyone participates in the program" = "ally1",
-                              "If everyone does not participate in the program" = "ally0",
-                              "Researcher's point of view" = "obsy")
-                            )
+             sidebarLayout(
+               sidebarPanel(
+                 radioButtons("potential_oc", "Potential Outcomes",
+                              c("All potential outcomes" = "ally0y1",
+                                "If everyone participates in the program" = "ally1",
+                                "If everyone does not participate in the program" = "ally0",
+                                "Researcher's point of view" = "obsy")
+                 )
                ),
-             mainPanel(plotOutput('researcher_hat_plot') 
-                       )
-      ),
-      textOutput('researcher_hat_list'),
+               mainPanel(plotOutput('researcher_hat_plot') 
+               )
+             ),
+             textOutput('researcher_hat_list'),
              #bookmark
-          
-              p("The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
+             
+             p("The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
              p("For now, understand that simulation starts all the way at the beginning: who is in your sample, and what are their pre-treatment test scores?"),
              br(),
              h4('Example: Which students in your sample participate in the afterschool program?'),
@@ -106,67 +106,25 @@ ui <- fluidPage(
                since these really make up the core of your simulation study.")),
     
     
-    "Probability Distribution",
-    tabPanel('Example',
-             h4('Example: pre-test scores'),
-             p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). 
-             This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? 
-             Luckily we have access to test scores from another project.  
-             We plot them using a histogram and they look like the following.'),
+    "Probability Distributions",
+    tabPanel('Continuous Probability Distribution',
+             h3('Pre-test scores'),
+             p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? Luckily, if we plot them using a histogram, they look like the following:'),
              img(src = "Sesame.png", height="40%", width="80%", align="center"),
-             p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation."),
-             br(),
-             h4('Example: treatment assignment'),
-             p('Now that we have the pre-test scores, we need to randomly assign each of the 100 students to one of the groups, treatment or control. 
-             This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
-             There are two possible values of the treatment assignment - treatment or control - and each student\'s assignment is independent of assignments of other students.  
-             Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success p.')
-             ),
-    
-    
-    tabPanel("Distribution",
-             withMathJax(),
              h4('Normal Distribution'),
-             p('Normal distribution is a continuous probability distribution, 
-              and it is often used in simulation and teaching because it approximates to many natural events. 
-              There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
+             p('It turns out that test scores commonly approximate to a normal distribution. The normal distribution is a continuous probability distribution, and it is often used in simulation and teaching because it approximates to many natural events. There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
              withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
-             br(),
-             h4('Bernoulli distribution'),
-             p('Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
-             Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
-             Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
-             In our example, we take the value 1 (treatment group) as success, with probability p, 
-               the value 0 (control group) thus has a probability of (1-p).'),
-             br(),
-        
-             h4('Binomial distribution'),
-             p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
-               then you can use a binomial distribution to generate the data."),
-             p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
-               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
-               and the probability of success in each trial, p. 
-               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
-          
              br(), br(),
-             h4('In summary'),
-              
-             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
-             Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
-               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.
-               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
-             ),
-    tabPanel("Illustration",
-             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
+             
              fluidRow(column(width = 8,
-                             h4('Illustration for Normal Distribution')),
+                             h5('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              
              p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
                Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
                If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
-             p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
+             p('As you set different values for the mean and standard deviation of pre-test score, you may observe that the center (mean) of your graph shifts and the spread (variance) of your graph changes.'),
              
              sliderInput(inputId = "select_mean_normal",
                          label = "Select the expectation of the pre-treatment score (E(X)):",
@@ -192,10 +150,27 @@ ui <- fluidPage(
                )
              ),
              textOutput('normal_mean_var'),
+             br(), br(),
+             
+    ),
+    
+    tabPanel('Discrete Probability Distribution',
+             h3('Treatment assignment'),
+             p("Now that we have the pre-test scores, we need to randomly assign each of the 100 students to one of the groups, treatment or control. 
+               This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
+               There are two possible values of the treatment assignment - treatment or control - and each student's assignment is independent of assignments of other students. We are now going to look at two well-known distributions that can help us simulate treatment assignments."),
+             br(),
+             h4('1. Bernoulli distribution'),
+             p('The first is called a Bernoulli distribution, which is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+             Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
+             Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
+             In our example, we take the value 1 (treatment group) as success with probability p, and
+               the value 0 (control group) with a probability of (1-p).'),
+             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
              br(),
              
              fluidRow(column(width = 8,
-                             h4('Illustration for Bernoulli Distribution')),
+                             h5('Illustration for Bernoulli Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              
@@ -216,9 +191,18 @@ ui <- fluidPage(
              br(), br(),
              plotlyOutput('animation_bernoulli'),
              p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
+             br(), br(),
+             
+             h4('2. Binomial distribution'),
+             p("Now suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group. Then you can use a binomial distribution to generate the data."),
+             p("A binomial distribution is a set of Bernoulli trials (when each trial is independent).
+               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
+               and the probability of success in each trial, p. 
+               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n = 1 for a Binomial distribution. "),
+             br(),
              
              fluidRow(column(width = 8,
-                             h4('Illustration for Binomial Distribution')),
+                             h5('Illustration for Binomial Distribution')),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              p("Each click will simulate a result that assigns all the students in the sample to two groups. 
@@ -244,14 +228,167 @@ ui <- fluidPage(
                  )
                )
              ),
-             br()
+             br(),
+             
+             h4('In summary'),
+             
+             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
+             Both Bernoulli distribution and Binomial distributions are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+               such as treatment and control groups in an treatment assignment, or the number of students assigned to the treatment group.
+               Continuous random variables, on the other hand, can take on any real number or an uncountable amount of possibilities (i.e., to any amount of decimal places).'),
+             br(), br(),
     ),
-    tabPanel('Conditional Distribution',
-             h4('Post-test scores'),
-             p('Now that we have the pre-test scores and treatment assignments, we need to generate the post-test scores'),
-             p('The post-test scores of students depend on the scores before they participate in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a conditional distribution notated as f(post-test | pre-test, treatment).'),
-             p('Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
     
+    # tabPanel('Example',
+    #          h4('Example: treatment assignment'),
+    #          p('For this hypothetical study, you first need to randomly assign each of the 100 students to one of the groups, treatment group or control group. 
+    #            The random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
+    #            Since there are two possible values of the treatment assignment, treatment group or control group, and each assignment of a student is independent of assignments of other students. 
+    #            Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success p.'),
+    #          br(),
+    # h4('Example: pre-test scores'),
+    # p('You next need to generate pre-treatment scores and post-treatment scores. 
+    #   This will allow us to estimate the effect of the afterschool program in our hypothetical data. 
+    #   What kind of distribution is appropriate for test scores? Luckily we have access to test scores from another project.  
+    #   We plot them using a histogram and they look like the following'),
+    # img(src = "Sesame.png", height="40%", width="80%", align="center"),
+    # p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation.")),
+    
+    
+    # tabPanel("Distribution",
+    # h4('Bernoulli distribution'),
+    # p('Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+    # Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
+    # Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
+    # In our example, we take the value 1 (treatment group) as success, with probability p, 
+    #   the value 0 (control group) thus has a probability of (1-p).'),
+    # br(),
+    
+    # h4('Binomial distribution'),
+    # p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
+    #   then you can use a binomial distribution to generate the data."),
+    # p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
+    #   There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
+    #   and the probability of success in each trial, p. 
+    #   In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
+    # br(),
+    
+    ## TO REMOVE         
+    # withMathJax(),
+    # h4('Normal Distribution'),
+    # p('Normal distribution is a continuous probability distribution, 
+    #  and it is often used in simulation and teaching because it approximates to many natural events. 
+    #  There are two parameters in normal distribution, a mean and a standard deviation of the variable. '),
+    # withMathJax(paste0('The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\). The standard deviation of the distribution of X can be expressed as \\(\\sqrt(E((X − \\mu_X )^2))\\). ')),
+    # 
+    # br(), br(),
+    # h4('In summary'),
+    #  
+    # p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
+    # Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+    #   such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.
+    #   Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
+    # ),
+    # tabPanel("Illustration",
+    # p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
+    # fluidRow(column(width = 8,
+    #                 h4('Illustration for Bernoulli Distribution')),
+    #          column(width = 4, align = 'center',
+    #                 img(src='omniscient_hat.png', width="30%", height="50%"))),
+    # 
+    # p('Each click will show an assignment of a random student.
+    # Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
+    # p('(Hint: If you set p = 1, the students will be assigned to the treatment group.)'),
+    # sliderInput(inputId = "bernoulli_prob",
+    #             label = "Select the probability of assigning to the treatment group (p):",
+    #             min = 0, max = 1, value = 0.5, step = 0.1),
+    # actionButton("one_student_treatment", "Assign a student to a group"),
+    # br(),
+    # textOutput('one_student_treatment_plot'),
+    # br(), br(),
+    # p("Now let's run a Bernoulli trial for each of the 100 students. 
+    #   Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0)."),
+    # br(), 
+    # actionButton('reassign_100_treatment', "Assign 100 students"),
+    # br(), br(),
+    # plotlyOutput('animation_bernoulli'),
+    # p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
+    # 
+    # fluidRow(column(width = 8,
+    #                 h4('Illustration for Binomial Distribution')),
+    #          column(width = 4, align = 'center',
+    #                 img(src='omniscient_hat.png', width="30%", height="50%"))),
+    # p("Each click will simulate a result that assigns all the students in the sample to two groups. 
+    #  The table summarizes the total counts of students in each group based on your selected number of students and probability of assigning to the treatment group."),
+    # sliderInput(inputId = "select_n_binomial",
+    #             label = "Select the number of treatment assignments (n):",
+    #             min = 1, max = 100, value = 100, step = 1),
+    # sliderInput(inputId = "select_p_binomial",
+    #             label = "Select the probability of in the treatment group in one assignmnet (p):",
+    #             min = 0, max = 1, value = 0.5, step = 0.1),
+    # actionButton("hundred_student_treatment", "Assign students"),
+    # textOutput('hundreds_student_treatment_result'),
+    # #plotOutput('hundred_students_treatment_plot'),
+    # 
+    # tableOutput('hundreds_student_treatment_result_table'),
+    # br(),
+    # tags$div(
+    #   useShinyjs(),
+    #   actionButton("show_code_binomial", "Show me the R code of generating the distribution"),
+    #   hidden(
+    #     div(id='code_div_binomial',
+    #         verbatimTextOutput("code_binomial")
+    #     )
+    #   )
+    # ),
+    # br(),
+    
+    # fluidRow(column(width = 8,
+    #                 h4('Illustration for Normal Distribution')),
+    #          column(width = 4, align = 'center',
+    #                 img(src='omniscient_hat.png', width="30%", height="50%"))),
+    # 
+    # p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
+    #   Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
+    #   If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
+    # p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
+    # 
+    # sliderInput(inputId = "select_mean_normal",
+    #             label = "Select the expectation of the pre-treatment score (E(X)):",
+    #             min = 20, max = 80, value = 60, step = 1),
+    # sliderInput(inputId = "select_sd_normal",
+    #             label = "Select the standard deviation of the pre-treatment score:",
+    #             min = 0, max = 10, value = 5, step = 1),
+    # 
+    # actionButton("draw_hundred_student", "Simulate 100 students' scores"),
+    # br(),
+    # textOutput('hundred_student_score_print'),
+    # br(),
+    # plotOutput('hundred_students_scores'),
+    # br(),
+    # 
+    # tags$div(
+    #   useShinyjs(),
+    #   actionButton("show_code_normal", "Show me the R code of generating the distribution"),
+    #   hidden(
+    #     div(id='code_div_normal',
+    #         verbatimTextOutput("code_normal")
+    #     )
+    #   )
+    # ),
+    # textOutput('normal_mean_var'),
+    # br()
+    # ),
+    
+    tabPanel('Conditional Distribution',
+             h3('Post-test scores'),
+             p('Now that we have the pre-test scores and treatment assignments, we need to generate the', tags$strong("post-test"), 'scores.'),
+             p('The post-test scores of students depend on the scores before they participate in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a', tags$strong( "conditional distribution"), 'notated as f(post-test | pre-test, treatment).'),
+             p('Conditional distributions are important when simulating data, because data in the real world are rarely strictly independent. Therefore we need to have a way to', tags$em("condition"), 'certain data (such as outcomes) on other data that we have.'),
+             br(),
+             h4('Example'),
+             p('Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
+             
              fluidRow(column(width = 6,
                              sliderInput(inputId = "select_b0_distribution", label = "Intercept (b0):", min = 1, max = 20, value = 10, step = 1),
                              sliderInput(inputId = "select_b1_distribution", label = "Coefficient on X (b1):", min = 0.1, max = 1.2, value = 1, step = 0.1)
@@ -274,10 +411,10 @@ ui <- fluidPage(
              plotOutput(outputId = "Y1_plot", height = "500px"),
              verbatimTextOutput('distribution_postscore_code'),
              textOutput('distribution_postscore')),
-             
+    
     tabPanel("Exercise",
              htmlOutput("Exercise_1")),
-  #VZ-fix hints- window%
+    #VZ-fix hints- window%
     "Sampling Distribution",
     tabPanel("What is Sampling Distribution?",
              p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-treatment score in New York State.
@@ -332,15 +469,15 @@ ui <- fluidPage(
                each observation being randomly generated in a way that does not depend on the values of the other observations, 
                and that the arithmetic mean of the observed values is computed. If this procedure is performed many times, 
                the central limit theorem says that the probability distribution of the average will closely approximate a normal distribution. ')),
-            
-      tabPanel("Exercise",
-               htmlOutput("Exercise_2")),
-  
+    
+    tabPanel("Exercise",
+             htmlOutput("Exercise_2")),
+    
     "Simulation",
     tabPanel("Data Generation Process (DGP)",
              fluidRow(column(width = 8,
                              h3('The Data Generating Process (DGP)')),
-               column(width = 4, align = 'center',
+                      column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="40%", height="60%"))),
              p("In this final section, you will use what you've learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: 
                Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that omniscient hat? It's time to put it on."),
@@ -401,31 +538,31 @@ ui <- fluidPage(
              textOutput('simulation_postscore')
     ),
     tabPanel("Average Treatment Effect (ATE)",
-            h3("Average Treatment Effect (ATE)"),
-            p('Once you have simulated all the data necessary from our DGP, you can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  
-              'of the afterschool program using different causal inference methods. You would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', 
-              tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, you would compare the two to see how close our estimate is to the truth.'),
-            textOutput('simulation_ate'),
-            br(),
-            fluidRow(column(width = 8,
-                            h4('Calculate the true SATE')),
-                     column(width = 4, align = 'center',
-                            img(src='omniscient_hat.png', width="30%", height="50%"))),
-            verbatimTextOutput('simulation_sate_code'),
-            textOutput('simulation_sate'),
-            fluidRow(column(width = 8,
-                            h4('Use a difference in mean outcomes to estimate SATE')),
-                     column(width = 4, align = 'center',
-                            img(src='researcher_hat.png', width="30%", height="50%"))),
-            verbatimTextOutput('simulation_mean_diff_code'),
-            textOutput('simulation_mean_diff'),
-            fluidRow(column(width = 8,
-                            h4('Use Linear Regression to estimate SATE')),
-                     column(width = 4, align = 'center',
-                            img(src='researcher_hat.png', width="30%", height="50%"))),
-            verbatimTextOutput('simulation_reg_code'),
-            textOutput('simulation_reg')
-),
+             h3("Average Treatment Effect (ATE)"),
+             p('Once you have simulated all the data necessary from our DGP, you can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  
+               'of the afterschool program using different causal inference methods. You would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', 
+               tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, you would compare the two to see how close our estimate is to the truth.'),
+             textOutput('simulation_ate'),
+             br(),
+             fluidRow(column(width = 8,
+                             h4('Calculate the true SATE')),
+                      column(width = 4, align = 'center',
+                             img(src='omniscient_hat.png', width="30%", height="50%"))),
+             verbatimTextOutput('simulation_sate_code'),
+             textOutput('simulation_sate'),
+             fluidRow(column(width = 8,
+                             h4('Use a difference in mean outcomes to estimate SATE')),
+                      column(width = 4, align = 'center',
+                             img(src='researcher_hat.png', width="30%", height="50%"))),
+             verbatimTextOutput('simulation_mean_diff_code'),
+             textOutput('simulation_mean_diff'),
+             fluidRow(column(width = 8,
+                             h4('Use Linear Regression to estimate SATE')),
+                      column(width = 4, align = 'center',
+                             img(src='researcher_hat.png', width="30%", height="50%"))),
+             verbatimTextOutput('simulation_reg_code'),
+             textOutput('simulation_reg')
+    ),
     tabPanel("Estimator Comparisons",
              h3("Comparing Estimators"),
              p('Now you will further explore the properties of these two different approaches to estimating our ATEs by simulation. 
@@ -447,30 +584,30 @@ ui <- fluidPage(
              h5('Efficiency using regression method:'),
              verbatimTextOutput('reg_efficiency_code'),
              textOutput('reg_efficiency')
-          
              
-             ), # use sampling distribution to compare unbiasedness and efficiency
+             
+    ), # use sampling distribution to compare unbiasedness and efficiency
     tabPanel("Exercise",
-         htmlOutput("Exercise_3"))
-))
+             htmlOutput("Exercise_3"))
+  ))
 
 
 
 server <- function(input, output, session) {
   students <- sample(c('James','Robert', 'John',
-                'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
-                'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
-                'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
-                'Yeri', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Lee', 'Margaret', 'Sandra', 'Ashley',
-                'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Hee-jung',
-                'Yichen','Aarav', 'Mohammed',
-                'Sofía', 'Olivia', 'Lucas', 'Ben', 'Emma', 'Mia', 'Chloé', 'Gabriel', 'Raphaël', 
-                'Santiago', 'Francisco', 'Leonor', 'Leon', 'Maria', 'Himari', 'Nathaniel', 'Jacob', 'Dalisay', 'Analyn', 
-                'Nur', 'Yuxuan', 'Ahmad', 'Megan', 'Charlotte', 'Xinyi', 'Jack', 'Alex', 'Giulia',
-                'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
-                'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo'))
+                       'Michael', 'William', 'David', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Christopher', 'Daniel', 
+                       'Matthew', 'Anthony', 'Mark', 'Donald', 'Steven', 'Paul', 'Andrew', 'Joshua', 'Kenneth', 'Kevin', 
+                       'Brian', 'George', 'Edward', 'Mary', 'Patricia', 'Jennifer', 'Linda', 'Elizabeth', 'Barbara',
+                       'Yeri', 'Jessica', 'Sarah', 'Karen', 'Nancy', 'Lisa', 'Lee', 'Margaret', 'Sandra', 'Ashley',
+                       'Kimberly', 'Emily', 'Donna', 'Michelle', 'Dorothy', 'Carol', 'Amanda', 'Melissa', 'Hee-jung',
+                       'Yichen','Aarav', 'Mohammed',
+                       'Sofía', 'Olivia', 'Lucas', 'Ben', 'Emma', 'Mia', 'Chloé', 'Gabriel', 'Raphaël', 
+                       'Santiago', 'Francisco', 'Leonor', 'Leon', 'Maria', 'Himari', 'Nathaniel', 'Jacob', 'Dalisay', 'Analyn', 
+                       'Nur', 'Yuxuan', 'Ahmad', 'Megan', 'Charlotte', 'Xinyi', 'Jack', 'Alex', 'Giulia',
+                       'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
+                       'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo'))
   #bookmark
-
+  
   #mini-set dataset
   pre=rnorm(n = 10, mean = 50, sd = 5)
   y0=10 + pre + 0 + rnorm(10, mean = 0, sd = 1)
@@ -502,12 +639,12 @@ server <- function(input, output, session) {
                            p01)
     potential_oc
   })
-
+  
   output$researcher_hat_list<-renderText(paste0(rhdf$students, ': ', rhdf$treat))
   
   
   
-   observeEvent(input$draw_50_student, {
+  observeEvent(input$draw_50_student, {
     studentlist <- sample(students, size = 50)
     output$student_list <- renderText(toString(studentlist))
   })
@@ -521,7 +658,7 @@ server <- function(input, output, session) {
   df <- reactiveValues(treatment = c(), score = c())
   
   observeEvent(input$hundred_student_treatment, {
-   
+    
     df$treatment <- rbinom(1, size = input$select_n_binomial, prob = input$select_p_binomial)
     # df$treatment <- rbinom(sample_size, size = 1, prob = input$select_p_binomial)
     # text <- c()
@@ -570,7 +707,7 @@ server <- function(input, output, session) {
     The sample mean score of the 100 students is ", mean, ", and the sample standard deviation of students' scores is ", sd, ".")
     
   })
-
+  
   observeEvent(input$show_code_normal, {
     toggle('code_div_normal')
     output$code_normal <- renderText({
@@ -624,7 +761,7 @@ server <- function(input, output, session) {
         showlegend = FALSE)
   })
   
-#### conditional distribution
+  #### conditional distribution
   
   y0_distribution <- reactive({
     input$select_b0_distribution + input$select_b1_distribution*X + 
@@ -672,266 +809,265 @@ server <- function(input, output, session) {
     text
   }) 
   
-
-### Sampling distribution  
   
-    output$sampling_distr <- renderText(choose(100000,100))
-
-    output$sampling_distribution_normal <- renderPlot({
-      input$generate_sampling_distribution
-      select_n <- isolate(input$select_n_sampling_distribution)
-      select_mean <- isolate(input$select_mean_normal_sampling)
-      select_sd <- isolate(input$select_sd_normal_sampling)
-      all_means <- data.frame(data = rep(NA, select_n))
-      for (i in 1:select_n) {
-        sample <- rnorm(n = 100, mean = select_mean, sd = select_sd)
-        tmp <- mean(sample)
-        all_means$data[i] <- tmp
-      }
-      ggplot() + geom_histogram(data = all_means, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
-        geom_vline(xintercept = mean(all_means$data), color = 'blue') 
-      
-    })
-
+  ### Sampling distribution  
   
+  output$sampling_distr <- renderText(choose(100000,100))
   
-    output$sampling_distribution_bernoulli <- renderPlot({
-      input$generate_sampling_distribution_bernoulli
-      select_iter <- isolate(input$select_iter_bernoulli_sampling)
-      select_p <- isolate(input$select_prob_bernoulli_sampling)
-      select_n <- isolate(input$select_sample_size_bernoulli_sampling)
-      proportions <- data.frame(data = rep(NA, select_iter))
-      for (i in 1:select_iter) {
-        tmp <- rbinom(n = select_n, size = 1, prob = select_p)
-        proportions$data[i] <- mean(tmp)
-      }
-      ggplot() + geom_histogram(data = proportions, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
-        geom_vline(xintercept = mean(proportions$data), color = 'blue') 
-    })
+  output$sampling_distribution_normal <- renderPlot({
+    input$generate_sampling_distribution
+    select_n <- isolate(input$select_n_sampling_distribution)
+    select_mean <- isolate(input$select_mean_normal_sampling)
+    select_sd <- isolate(input$select_sd_normal_sampling)
+    all_means <- data.frame(data = rep(NA, select_n))
+    for (i in 1:select_n) {
+      sample <- rnorm(n = 100, mean = select_mean, sd = select_sd)
+      tmp <- mean(sample)
+      all_means$data[i] <- tmp
+    }
+    ggplot() + geom_histogram(data = all_means, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
+      geom_vline(xintercept = mean(all_means$data), color = 'blue') 
     
+  })
   
   
-    Z <- rbinom(n = 100, size = 1, prob = 0.5)
-    X <- rnorm(n = 100, mean = 50, sd = 5)
-    
-    Y0 <- reactive({
-      input$select_b0 + input$select_b1*X + rnorm(100, mean = 0, sd = input$epsilon_error)
-    }) 
-    Y1 <- reactive({input$select_b0 + input$select_b1*X + input$tau + rnorm(100, mean = 0, sd = input$epsilon_error) }) 
-    Y <- reactive({
-      ifelse(Z == 1,  Y1(), Y0())
-    })
-    
-    output$simulation_treatment_code <- renderText({
-      "rbinom(n = 100, size = 1, prob = 0.5)"
-    })
-    
-
-    output$simulation_prescore_code <- renderText({
-      "rnorm(n = 100, mean = 50, sd = 5)"
-    })
-
-    
-    observeEvent(input$simulation_treatment, {
-      toggle('simulation_treatment_list')
-      text <- c()
-      for (i in 1:100) {
-        text <- c(text, paste0(students[i], ': ', round(Z[i])))
-      }
-      output$simulation_treatment_assign <- renderText(toString(text))
-    })
-    observeEvent(input$simulation_prescore, {
-      toggle('simulation_prescore_list')
-      text <- c()
-      for (i in 1:100) {
-        text <- c(text, paste0(students[i], ': ', round(X[i])))
-      }
-      output$simulation_prescore_assign <- renderText(toString(text))
-    })
-    
-    output$simulation_dgp_outcome <- renderText({
-      paste0("As omniscient beings, you know that the treatment effect (or tau is ", input$tau, 
-        ". That is, you know that the post-treatment test scores of students who went through the afterschool program is on average ", input$tau, " points higher than the students who did not. 
+  
+  output$sampling_distribution_bernoulli <- renderPlot({
+    input$generate_sampling_distribution_bernoulli
+    select_iter <- isolate(input$select_iter_bernoulli_sampling)
+    select_p <- isolate(input$select_prob_bernoulli_sampling)
+    select_n <- isolate(input$select_sample_size_bernoulli_sampling)
+    proportions <- data.frame(data = rep(NA, select_iter))
+    for (i in 1:select_iter) {
+      tmp <- rbinom(n = select_n, size = 1, prob = select_p)
+      proportions$data[i] <- mean(tmp)
+    }
+    ggplot() + geom_histogram(data = proportions, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
+      geom_vline(xintercept = mean(proportions$data), color = 'blue') 
+  })
+  
+  
+  
+  Z <- rbinom(n = 100, size = 1, prob = 0.5)
+  X <- rnorm(n = 100, mean = 50, sd = 5)
+  
+  Y0 <- reactive({
+    input$select_b0 + input$select_b1*X + rnorm(100, mean = 0, sd = input$epsilon_error)
+  }) 
+  Y1 <- reactive({input$select_b0 + input$select_b1*X + input$tau + rnorm(100, mean = 0, sd = input$epsilon_error) }) 
+  Y <- reactive({
+    ifelse(Z == 1,  Y1(), Y0())
+  })
+  
+  output$simulation_treatment_code <- renderText({
+    "rbinom(n = 100, size = 1, prob = 0.5)"
+  })
+  
+  
+  output$simulation_prescore_code <- renderText({
+    "rnorm(n = 100, mean = 50, sd = 5)"
+  })
+  
+  
+  observeEvent(input$simulation_treatment, {
+    toggle('simulation_treatment_list')
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(Z[i])))
+    }
+    output$simulation_treatment_assign <- renderText(toString(text))
+  })
+  observeEvent(input$simulation_prescore, {
+    toggle('simulation_prescore_list')
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(X[i])))
+    }
+    output$simulation_prescore_assign <- renderText(toString(text))
+  })
+  
+  output$simulation_dgp_outcome <- renderText({
+    paste0("As omniscient beings, you know that the treatment effect (or tau is ", input$tau, 
+           ". That is, you know that the post-treatment test scores of students who went through the afterschool program is on average ", input$tau, " points higher than the students who did not. 
                To generate these outcome scores, you would simulate a dependency based on the treatment assignment variable from above. 
                In the interactive graph below, you can specify the true relationship between the pre-treatment test scores (X) and the outcome test scores by selecting the coefficients in the regression model.")
-    })
+  })
+  
+  # generate real relationship 
+  real_functional_relationship <- reactive({
+    data <- data.frame(x = X, z=Z)
+    data$y0_actual <-  with(data, x*input$select_b1 + input$select_b0)
+    data$y1_actual <-  with(data, x*input$select_b1 + input$tau + input$select_b0)
+    data
+  })
+  
+  sample_tibble <- reactive({
+    data <- data.frame(x = X, z = Z)
+    data$y0 <-  Y0()
+    data$y1 <-  Y1()
+    data
+  })
+  
+  output$result_plot <- renderPlot({
+    req(input$select_b0)
+    req(input$select_b1)
+    colors <- c("Y0 (control)" = "blue", "Y1(treated)" = "red")
+    data <- paste0(" Y0 = ", input$select_b0, " + ", input$select_b1, "X + e, ", "e~N(0, ",input$epsilon_error,"^2)\n", "Y1 = ", input$select_b0, " + ", input$select_b1, "X + ", input$tau," + e, ", "e~N(0, ",input$epsilon_error,"^2)")
+    final_plot <- ggplot() +
+      annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=1.7,label=as.character(data), fontface = "italic", size = 6) + scale_color_manual('Potential Outcomes', values = colors) 
+    if(input$include_y0){
+      final_plot <- final_plot + geom_point(data = sample_tibble(), aes(x = x, y = y0, color = 'Y0 (control)')) 
+    }
+    if(input$include_y1){
+      final_plot <- final_plot + geom_point(data = sample_tibble(), aes(x = x, y = y1, color = 'Y1(treated)')) 
+    }
+    if(input$include_y0_mean){
+      final_plot <- final_plot + geom_line(data = real_functional_relationship(), aes(x = x, y = y0_actual, color = 'Y0 (control)'))
+    }
+    if(input$include_y1_mean){
+      final_plot <- final_plot + geom_line(data = real_functional_relationship(), aes(x = x, y = y1_actual, color = 'Y1(treated)'))
+    }
     
-    # generate real relationship 
-    real_functional_relationship <- reactive({
-      data <- data.frame(x = X, z=Z)
-      data$y0_actual <-  with(data, x*input$select_b1 + input$select_b0)
-      data$y1_actual <-  with(data, x*input$select_b1 + input$tau + input$select_b0)
-      data
-    })
-    
-    sample_tibble <- reactive({
-      data <- data.frame(x = X, z = Z)
-      data$y0 <-  Y0()
-      data$y1 <-  Y1()
-      data
-    })
-    
-    output$result_plot <- renderPlot({
-      req(input$select_b0)
-      req(input$select_b1)
-      colors <- c("Y0 (control)" = "blue", "Y1(treated)" = "red")
-      data <- paste0(" Y0 = ", input$select_b0, " + ", input$select_b1, "X + e, ", "e~N(0, ",input$epsilon_error,"^2)\n", "Y1 = ", input$select_b0, " + ", input$select_b1, "X + ", input$tau," + e, ", "e~N(0, ",input$epsilon_error,"^2)")
-      final_plot <- ggplot() +
-        annotate("text",x=-Inf,y=Inf,hjust=-0.15,vjust=1.7,label=as.character(data), fontface = "italic", size = 6) + scale_color_manual('Potential Outcomes', values = colors) 
-      if(input$include_y0){
-        final_plot <- final_plot + geom_point(data = sample_tibble(), aes(x = x, y = y0, color = 'Y0 (control)')) 
-      }
-      if(input$include_y1){
-        final_plot <- final_plot + geom_point(data = sample_tibble(), aes(x = x, y = y1, color = 'Y1(treated)')) 
-      }
-      if(input$include_y0_mean){
-        final_plot <- final_plot + geom_line(data = real_functional_relationship(), aes(x = x, y = y0_actual, color = 'Y0 (control)'))
-      }
-      if(input$include_y1_mean){
-        final_plot <- final_plot + geom_line(data = real_functional_relationship(), aes(x = x, y = y1_actual, color = 'Y1(treated)'))
-      }
-      
-      final_plot
-    })
-    
-    output$simulation_postscore_code <- renderText({
-      paste0("tau <- ", input$tau," \nY0 <- ",input$select_b0," + ",input$select_b1,"X + 0 + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \nY1 <- ",input$select_b0, " + ", input$select_b1, "X + tau + rnorm(100, mean = 0, sd = ", input$epsilon_error,") \nY <- ifelse(Z == 1,  Y1, Y0)")
-    })
-    
-    output$simulation_postscore <- renderText({
-      text <- c()
-      for (i in 1:100) {
-        text <- c(text, paste0(students[i], ': ', round(Y()[i])))
-      }
-      toString(text)
-    })
-    
-    output$simulation_ate <- renderText({
-      paste0('Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
+    final_plot
+  })
+  
+  output$simulation_postscore_code <- renderText({
+    paste0("tau <- ", input$tau," \nY0 <- ",input$select_b0," + ",input$select_b1,"X + 0 + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \nY1 <- ",input$select_b0, " + ", input$select_b1, "X + tau + rnorm(100, mean = 0, sd = ", input$epsilon_error,") \nY <- ifelse(Z == 1,  Y1, Y0)")
+  })
+  
+  output$simulation_postscore <- renderText({
+    text <- c()
+    for (i in 1:100) {
+      text <- c(text, paste0(students[i], ': ', round(Y()[i])))
+    }
+    toString(text)
+  })
+  
+  output$simulation_ate <- renderText({
+    paste0('Note that we use "estimate" when you wear the researcher hat and use "calculate" when you wear the omniscient hat. 
                This is intentional because as a researcher, you will never know the truth (in this case, that the treatment effect is ', input$tau,') and thus you are always estimating the ATE (or any other estimand). 
                But when you are simulating and omniscient, you will always be calculating, since you know the true treatment effect.')
-    })
-    
-    output$simulation_sate_code <- renderText({
-      "mean(Y1 - Y0)"
-    })
-    
-    output$simulation_sate <- renderText({
-      round(mean(Y1() - Y0()), 2)
-    })
-    
-    
-    output$simulation_mean_diff_code <- renderText({
-      "mean(Y[Z == 1]) - mean(Y[Z == 0])"
-    })
-    
-    output$simulation_mean_diff <- renderText({
-      round(mean(Y()[Z == 1]) - mean(Y()[Z == 0]), 2)
-    })
-    
-    output$simulation_reg_code <- renderText({
-      "fit <- lm(Y ~ X + Z) \nsummary(fit)$coefficients['Z', 1]"
-    })
-    
-    output$simulation_reg <- renderText({
-      fit <- lm(Y() ~ X + Z)
-      round(summary(fit)$coefficients['Z', 1], 2)
-    })
-    
-    output$mean_diff_reg_compare <- renderText({
-      "mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:5000) {\n    Z <- rbinom(N, 1, prob = 0.5) \n    Y <- ifelse(Z == 1, Y_1, Y_0)
+  })
+  
+  output$simulation_sate_code <- renderText({
+    "mean(Y1 - Y0)"
+  })
+  
+  output$simulation_sate <- renderText({
+    round(mean(Y1() - Y0()), 2)
+  })
+  
+  
+  output$simulation_mean_diff_code <- renderText({
+    "mean(Y[Z == 1]) - mean(Y[Z == 0])"
+  })
+  
+  output$simulation_mean_diff <- renderText({
+    round(mean(Y()[Z == 1]) - mean(Y()[Z == 0]), 2)
+  })
+  
+  output$simulation_reg_code <- renderText({
+    "fit <- lm(Y ~ X + Z) \nsummary(fit)$coefficients['Z', 1]"
+  })
+  
+  output$simulation_reg <- renderText({
+    fit <- lm(Y() ~ X + Z)
+    round(summary(fit)$coefficients['Z', 1], 2)
+  })
+  
+  output$mean_diff_reg_compare <- renderText({
+    "mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:5000) {\n    Z <- rbinom(N, 1, prob = 0.5) \n    Y <- ifelse(Z == 1, Y_1, Y_0)
     \n    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)]) \n    fit_tmp <- lm(Y ~ X + Z) \n
     lm_estimate_tmp <- coef(fit_tmp)['Z'] \n    mean_diff <- c(mean_diff, mean_diff_tmp) \n    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
 }"
-    })
-    
-    
-    
-    
-    comparison <- reactive({
-      mean_diff <- c()
-      lm_estimate <- c()
-      N <- 100
-      for (i in 1:5000) {
-        Z <- rbinom(N, 1, prob = 0.5)
-        Y <- ifelse(Z == 1, Y1(), Y0())
-        mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)])
-        fit_tmp <- lm(Y ~ X + Z)
-        lm_estimate_tmp <- coef(fit_tmp)['Z']
-        mean_diff <- c(mean_diff, mean_diff_tmp)
-        lm_estimate <- c(lm_estimate, lm_estimate_tmp)
-      }
-      result <- list(mean_diff, lm_estimate)
-    })
-    
-    SATE <- reactive({mean(Y1() - Y0())})
-    
-    output$mean_diff_compare <- renderPlot({
-      cols <- c("True SATE" = "red", "Mean" = "blue")
-      mean_diff_df <- data.frame(data = comparison()[[1]])
-      ggplot() + geom_histogram(data = mean_diff_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
-        geom_vline(aes(xintercept = mean(as.numeric(mean_diff_df$data)), color = 'Mean')) +
-        geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(mean_diff_df$data) - 0.1, max(mean_diff_df$data) + 0.1) +
-        labs(title = 'Distribution of Mean Difference', x = 'Mean Difference', y = 'Frequency') +
-        scale_color_manual(values = cols) +
-        theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
-    })
-    
-    output$reg_compare <- renderPlot({
-      cols <- c("True SATE" = "red", "Mean" = "blue")
-      lm_estimate_df <- data.frame(data = comparison()[[2]])
-      ggplot() + geom_histogram(data = lm_estimate_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
-        geom_vline(aes(xintercept = mean(as.numeric(lm_estimate_df$data)), color = 'Mean')) +
-        geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(comparison()[[1]]) - 0.1, max(comparison()[[1]]) + 0.1) +
-        labs(title = 'Distribution of Regression Estimate', x = 'Regression Estimate', y = 'Frequency') +
-        scale_color_manual(values = cols) +
-        theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
-    })
-    
-    output$mean_diff_biasedness_code <- renderText({
-      '(mean(mean_diff)-SATE)/sd(Y)'
-    })
-    output$mean_diff_biasedness <- renderText({
-      (mean(comparison()[[1]])-SATE())/sd(Y())
-    })
-    
-    output$reg_biasedness_code <- renderText({
-      '(mean(lm_estimate)-SATE)/sd(Y)'
-    })
-    output$reg_biasedness <- renderText({
-      (mean(comparison()[[2]])-SATE())/sd(Y())
-    })
-    
-    output$mean_diff_efficiency_code <- renderText({
-      'sd(mean_diff)'
-    })
-    output$mean_diff_efficiency <- renderText({
-      sd(comparison()[[1]])
-    })
-    
-    output$reg_efficiency_code <- renderText({
-      'sd(lm_estimate)'
-    })
-    output$reg_efficiency <- renderText({
-      sd(comparison()[[2]])
-    })
-    
-    output$Exercise_1<- renderUI({
-      tags$iframe(width = "1000", height = "900",
-             src = "https://verazhouty.shinyapps.io/Exercise-ProbDist/")
-    })
+  })
   
-    output$Exercise_2<- renderUI({
-      tags$iframe(width = "1000", height = "900",
-             src = " https://verazhouty.shinyapps.io/Exercise-SamplingDist/")
-    })
-    
-    output$Exercise_3<- renderUI({
-      tags$iframe(width = "1000", height = "900",
-             src = "https://verazhouty.shinyapps.io/Exercise-Simulation/")
-    })
+  
+  
+  
+  comparison <- reactive({
+    mean_diff <- c()
+    lm_estimate <- c()
+    N <- 100
+    for (i in 1:5000) {
+      Z <- rbinom(N, 1, prob = 0.5)
+      Y <- ifelse(Z == 1, Y1(), Y0())
+      mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)])
+      fit_tmp <- lm(Y ~ X + Z)
+      lm_estimate_tmp <- coef(fit_tmp)['Z']
+      mean_diff <- c(mean_diff, mean_diff_tmp)
+      lm_estimate <- c(lm_estimate, lm_estimate_tmp)
+    }
+    result <- list(mean_diff, lm_estimate)
+  })
+  
+  SATE <- reactive({mean(Y1() - Y0())})
+  
+  output$mean_diff_compare <- renderPlot({
+    cols <- c("True SATE" = "red", "Mean" = "blue")
+    mean_diff_df <- data.frame(data = comparison()[[1]])
+    ggplot() + geom_histogram(data = mean_diff_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
+      geom_vline(aes(xintercept = mean(as.numeric(mean_diff_df$data)), color = 'Mean')) +
+      geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(mean_diff_df$data) - 0.1, max(mean_diff_df$data) + 0.1) +
+      labs(title = 'Distribution of Mean Difference', x = 'Mean Difference', y = 'Frequency') +
+      scale_color_manual(values = cols) +
+      theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
+  })
+  
+  output$reg_compare <- renderPlot({
+    cols <- c("True SATE" = "red", "Mean" = "blue")
+    lm_estimate_df <- data.frame(data = comparison()[[2]])
+    ggplot() + geom_histogram(data = lm_estimate_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
+      geom_vline(aes(xintercept = mean(as.numeric(lm_estimate_df$data)), color = 'Mean')) +
+      geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(comparison()[[1]]) - 0.1, max(comparison()[[1]]) + 0.1) +
+      labs(title = 'Distribution of Regression Estimate', x = 'Regression Estimate', y = 'Frequency') +
+      scale_color_manual(values = cols) +
+      theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
+  })
+  
+  output$mean_diff_biasedness_code <- renderText({
+    '(mean(mean_diff)-SATE)/sd(Y)'
+  })
+  output$mean_diff_biasedness <- renderText({
+    (mean(comparison()[[1]])-SATE())/sd(Y())
+  })
+  
+  output$reg_biasedness_code <- renderText({
+    '(mean(lm_estimate)-SATE)/sd(Y)'
+  })
+  output$reg_biasedness <- renderText({
+    (mean(comparison()[[2]])-SATE())/sd(Y())
+  })
+  
+  output$mean_diff_efficiency_code <- renderText({
+    'sd(mean_diff)'
+  })
+  output$mean_diff_efficiency <- renderText({
+    sd(comparison()[[1]])
+  })
+  
+  output$reg_efficiency_code <- renderText({
+    'sd(lm_estimate)'
+  })
+  output$reg_efficiency <- renderText({
+    sd(comparison()[[2]])
+  })
+  
+  output$Exercise_1<- renderUI({
+    tags$iframe(width = "1000", height = "900",
+                src = "https://verazhouty.shinyapps.io/Exercise-ProbDist/")
+  })
+  
+  output$Exercise_2<- renderUI({
+    tags$iframe(width = "1000", height = "900",
+                src = " https://verazhouty.shinyapps.io/Exercise-SamplingDist/")
+  })
+  
+  output$Exercise_3<- renderUI({
+    tags$iframe(width = "1000", height = "900",
+                src = "https://verazhouty.shinyapps.io/Exercise-Simulation/")
+  })
 }
 
 shinyApp(ui, server)
-
 
