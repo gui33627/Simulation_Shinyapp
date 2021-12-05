@@ -45,8 +45,7 @@ ui <- fluidPage(
       The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
       tags$div(
       p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect.  
-        The simulation will help you understand the difference between the methods. When you simulate data, you wear the omniscient hat. 
-        That is, you start from a position where you know and understand everything about how your data are generated and what is the true treatment effect of the afterschool program.")),
+        By using simulation, your will be able to find out the answers.")), br(),
       h4('The Whats and Whys of Simulation'),
       p("With the randomized experiment design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the different treatments. 
         Two methods are commonly used for estimating the average difference between the treated and control groups, difference in means and regression. 
