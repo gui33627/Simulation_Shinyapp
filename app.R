@@ -313,17 +313,12 @@ ui <- fluidPage(
   #VZ-fix hints- window%
     "Sampling Distribution",
     tabPanel("What is Sampling Distribution?",
-             p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-treatment score in New York State.
-             A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true population mean. 
+             p('Suppose you simulated pre-test scores from a normal distribution for many samples, each consisting of 100 students. 
+             Then within each sample you calculate a sample mean for 100 pre-treatment scores.
+             A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true mean parameter of the normal distribution that generate the pre-test scores. 
              The sampling distribution of sample mean is the set of possible sample means estimated from all samples of size 100 that could have been observed if the data simulation process had been re-done, along with the probabilities of these possible values.'),
-             withMathJax(paste0("However, the combinations of 100 students from all students in New York State is an extraordinarily large number, and can even exceed the computation capacity of your computer. 
-               For example, say there are 100,000 high school students in New York State and we randomly select 100 students. Here we have population size of 100,000 and sample size of 100. 
-               How many samples of size 100 are possible out of a population of size 100,000? That's 100,000 choose 100, \\(100,000 \\choose100\\), and the number is so large that even R only returns Inf.")),
-             br(),
-             code("choose(100000,100)"),
-             br(),
-             verbatimTextOutput('sampling_distr'),
-             p('Therefore, we usually use a large number of samples to get an approximate sampling distribution of statistics. 
+            
+             p('Although we can draw infinite number of samples from the normal distribution, in practice, to generate a sampling distribution, we usually use a large number of samples to get an approximate sampling distribution of statistics. 
                For example, below you can simulate a sampling distribution of sample mean by choosing the number of samples, and the population mean and standard deviation of the pre-treatement score.'),
              fluidRow(column(width = 8),
                       column(width = 4, align = 'center',
@@ -441,30 +436,36 @@ ui <- fluidPage(
             textOutput('simulation_ate'),
             br(),
             fluidRow(column(width = 8,
-                            h4('Calculate the true SATE')),
+                            h4('Calculate the true SATE'),
+                            p('When you know both post-treatment scores had students in the treatment group and in the control group, you are wearing the omniscient hat. 
+                              We can calculate the exact sample average treatment effect by taking average of the differences between Y1 and Y0 for all students in the sample.')),
                      column(width = 4, align = 'center',
                             img(src='omniscient_hat.png', width="30%", height="50%"))),
+            
             verbatimTextOutput('simulation_sate_code'),
             textOutput('simulation_sate'),
+            h4(""),
             fluidRow(column(width = 8,
-                            h4('Use a difference in mean outcomes to estimate SATE')),
-                     column(width = 4, align = 'center',
-                            img(src='researcher_hat.png', width="30%", height="50%"))),
+                            h4('Estimate the SATE'),
+                            p('When you only know one post-treatment score in either treatment or control group for each student, you can only 
+              estimate the sample average treatment effect. By the design of randomized experiment, you can safely attribute the average outcome difference between the treatment and control groups to the afterschool treatment effect.')),
+            column(width = 4, align = 'center',
+                   img(src='researcher_hat.png', width="30%", height="50%"))),
+            
+           
+            h5('1. Use a difference in mean outcomes to estimate SATE'),
             verbatimTextOutput('simulation_mean_diff_code'),
             textOutput('simulation_mean_diff'),
-            fluidRow(column(width = 8,
-                            h4('Use Linear Regression to estimate SATE')),
-                     column(width = 4, align = 'center',
-                            img(src='researcher_hat.png', width="30%", height="50%"))),
+            
+            h5('2. Use Linear Regression to estimate SATE'),
             verbatimTextOutput('simulation_reg_code'),
             textOutput('simulation_reg')
 ),
     tabPanel("Estimator Comparisons",
              h3("Comparing Estimators"),
              p('Now you will further explore the properties of these two different approaches to estimating our ATEs by simulation. 
-               For now we will only consider the variability in estimates that would manifest as a result of the randomness in who is assigned to receive the treatment (this is sometimes referred to as “randomization based inference”). 
-               Since you are wearing an omniscient hat you can see how the observed outcomes and estimates would change across a distribution of possible treatment assignments. 
-               You simulate this by repeatedly drawing a new vector of treatment assignments and then for each new dataset calculating estimates using our two estimators above.'),
+               You simulate this by repeatedly drawing new vectors of pre-test scores and treatment assignments, and then for each new dataset calculating estimates using our two estimators above.
+               Since you are wearing an omniscient hat you can see how the observed outcomes and estimates would change across different distributions of pre-test scores and treatment assignments.'),
              verbatimTextOutput('mean_diff_reg_compare'),
              plotOutput('mean_diff_compare'),
              plotOutput('reg_compare'),
@@ -886,10 +887,10 @@ server <- function(input, output, session) {
     })
     
     output$mean_diff_reg_compare <- renderText({
-      "mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:5000) {\n    Z <- rbinom(N, 1, prob = 0.5) \n    Y <- ifelse(Z == 1, Y_1, Y_0)
+      paste0("mean_diff <- c() \nlm_estimate <- c() \nN <- 100 \nfor (i in 1:5000) {\n    X <- rnorm(N, mean = 50, sd = 5) \n    Z <- rbinom(N, 1, prob = 0.5) \n    Y0 <- ", input$select_b0," + ", input$select_b1, "*X + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \n    Y1 <- ", input$select_b0," + ", input$select_b1, "*X + ", input$tau, " + rnorm(100, mean = 0, sd = ", input$epsilon_error, ") \n    Y <- ifelse(Z == 1, Y1, Y0)
     \n    mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)]) \n    fit_tmp <- lm(Y ~ X + Z) \n
     lm_estimate_tmp <- coef(fit_tmp)['Z'] \n    mean_diff <- c(mean_diff, mean_diff_tmp) \n    lm_estimate <- c(lm_estimate, lm_estimate_tmp)
-}"
+}")
     })
     
     
@@ -900,25 +901,29 @@ server <- function(input, output, session) {
       lm_estimate <- c()
       N <- 100
       for (i in 1:5000) {
+        X <- rnorm(N, mean = 50, sd = 5)
         Z <- rbinom(N, 1, prob = 0.5)
-        Y <- ifelse(Z == 1, Y1(), Y0())
+        Y0_spl <- input$select_b0 + input$select_b1*X + rnorm(100, mean = 0, sd = input$epsilon_error)
+        Y1_spl <- input$select_b0 + input$select_b1*X + input$tau + rnorm(100, mean = 0, sd = input$epsilon_error)
+        Y <- ifelse(Z == 1, Y1_spl, Y0_spl)
         mean_diff_tmp <- mean(Y[which(Z == 1)]) - mean(Y[which(Z == 0)])
         fit_tmp <- lm(Y ~ X + Z)
         lm_estimate_tmp <- coef(fit_tmp)['Z']
         mean_diff <- c(mean_diff, mean_diff_tmp)
         lm_estimate <- c(lm_estimate, lm_estimate_tmp)
       }
+      # SATE <- mean(Y1_spl - Y0_spl)
       result <- list(mean_diff, lm_estimate)
     })
     
-    SATE <- reactive({mean(Y1() - Y0())})
+    
     
     output$mean_diff_compare <- renderPlot({
       cols <- c("True SATE" = "red", "Mean" = "blue")
       mean_diff_df <- data.frame(data = comparison()[[1]])
       ggplot() + geom_histogram(data = mean_diff_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
         geom_vline(aes(xintercept = mean(as.numeric(mean_diff_df$data)), color = 'Mean')) +
-        geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(mean_diff_df$data) - 0.1, max(mean_diff_df$data) + 0.1) +
+        geom_vline(aes(xintercept = input$tau, color = 'True SATE')) + xlim(min(mean_diff_df$data) - 0.1, max(mean_diff_df$data) + 0.1) +
         labs(title = 'Distribution of Mean Difference', x = 'Mean Difference', y = 'Frequency') +
         scale_color_manual(values = cols) +
         theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
@@ -929,7 +934,7 @@ server <- function(input, output, session) {
       lm_estimate_df <- data.frame(data = comparison()[[2]])
       ggplot() + geom_histogram(data = lm_estimate_df, aes(x = data, y = ..density..), bins = 30, alpha = 0.5, col = 'black') +
         geom_vline(aes(xintercept = mean(as.numeric(lm_estimate_df$data)), color = 'Mean')) +
-        geom_vline(aes(xintercept = SATE(), color = 'True SATE')) + xlim(min(comparison()[[1]]) - 0.1, max(comparison()[[1]]) + 0.1) +
+        geom_vline(aes(xintercept = input$tau, color = 'True SATE')) + xlim(min(comparison()[[1]]) - 0.1, max(comparison()[[1]]) + 0.1) +
         labs(title = 'Distribution of Regression Estimate', x = 'Regression Estimate', y = 'Frequency') +
         scale_color_manual(values = cols) +
         theme(legend.position="bottom", plot.title = element_text(hjust = 0.5))
@@ -939,14 +944,14 @@ server <- function(input, output, session) {
       '(mean(mean_diff)-SATE)/sd(Y)'
     })
     output$mean_diff_biasedness <- renderText({
-      (mean(comparison()[[1]])-SATE())/sd(Y())
+      (mean(comparison()[[1]])-input$tau)/sd(Y())
     })
     
     output$reg_biasedness_code <- renderText({
       '(mean(lm_estimate)-SATE)/sd(Y)'
     })
     output$reg_biasedness <- renderText({
-      (mean(comparison()[[2]])-SATE())/sd(Y())
+      (mean(comparison()[[2]])-input$tau)/sd(Y())
     })
     
     output$mean_diff_efficiency_code <- renderText({
