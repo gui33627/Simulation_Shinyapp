@@ -120,7 +120,7 @@ ui <- fluidPage(
              p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation."),
              br(),
              h4('Example: treatment assignment'),
-             p('Now that we have the pre-test scores, we need to randomly assign each of the 100 students to one of the groups, treatment or control. 
+             p('We also need to randomly assign each of the 100 students to one of the groups, treatment or control. 
              This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
              There are two possible values of the treatment assignment - treatment or control - and each student\'s assignment is independent of assignments of other students.  
              Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success (assigned to treatment group) p.'),
@@ -144,11 +144,11 @@ ui <- fluidPage(
           
              br(),br(),
              h4('Bernoulli distribution'),
-             p('Bernoulli distribution is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
-             Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question. 
-             Such questions lead to outcomes that are boolean-valued: a single bit whose value is success/yes/true/one with probability p and failure/no/false/zero with probability 1-p. 
-             In our example, we take the value 1 (treatment group) as success, with probability p, 
-               the value 0 (control group) thus has a probability of (1-p).'),
+             p('Now that we have the pre-test scores, we need to randomly assign each student to either participating in the afterschool program or not participating, or in another word, treatment group or control group. 
+             Bernoulli distribution is the probability distribution for a discrete random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+             It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads.
+             In our example, we take the value 1 (treatment group) as success, with probability p, the value 0 (control group) thus has a probability of (1-p). 
+             By specifying p = 0.5, students will have an equal chance of being assigned to either group.'),
              br(),
         
              h4('Binomial distribution'),
