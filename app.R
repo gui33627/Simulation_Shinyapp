@@ -111,7 +111,7 @@ ui <- fluidPage(
     
     "Probability Distribution",
     tabPanel('Example',
-             h4('Example: pre-test scores'),
+             h4('Example: test scores'),
              p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). 
              This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? 
              Luckily we have access to test scores from another project.  
@@ -176,7 +176,8 @@ ui <- fluidPage(
                The normal distribution is the most often used probability distribution for continuous random variables because it approximates many natural events.')
              ),
     tabPanel("Illustration",
-             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
+             h4('Notations'),
+             p('Let\'s introduce some notation to help formalize the "data generating process". We can let X stand for the variable "pre-test score", Z stand for the variable "treatment assignment", and Y stand for the variable "post-test score".'),
              fluidRow(column(width = 8,
                              h4('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
@@ -228,7 +229,7 @@ ui <- fluidPage(
              br(),
              textOutput('one_student_treatment_plot'),
              br(), br(),
-             p("Now let's run a Bernoulli trial for each of the 100 students. 
+             p("Now let's run a Bernoulli trial with p = 0.5 for each of the 100 students. 
                Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0)."),
              br(), 
              actionButton('reassign_100_treatment', "Assign 100 students"),
@@ -267,7 +268,7 @@ ui <- fluidPage(
     ),
     tabPanel('Conditional Distribution',
              h4('Post-test scores'),
-             p('Now that we have the pre-test scores and treatment assignments, we need to generate the post-test scores'),
+             p('Now that we have the pre-test scores and treatment assignments, we need to generate the post-test scores.'),
              p('The post-test scores of students depend on the scores before they participate in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a conditional distribution notated as f(post-test | pre-test, treatment).'),
              p('Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
     
@@ -579,8 +580,8 @@ server <- function(input, output, session) {
       sd <- paste0('Sample Standard Deviation: ', round(sd(as.numeric(tmp$score)),1))
       ggplot() + geom_histogram(data = tmp, aes(x = score, y = ..density..), bins = 30, alpha = 0.5) + 
         geom_vline(xintercept = mean(as.numeric(tmp$score)), color = 'blue') +
-        annotate("text",x=input$select_mean_normal + 10,y=0.095,label= mean, fontface = "italic", size = 5) +
-        annotate("text",x=input$select_mean_normal + 10,y=0.085,label= sd, fontface = "italic", size = 5) 
+        annotate("text",x=-Inf,y=Inf,hjust = -0.15,vjust = 1.9,label= mean, fontface = "italic", size = 5) +
+        annotate("text",x=-Inf,y=Inf,hjust = -0.09,vjust = 3.7,label= sd, fontface = "italic", size = 5)
     })
   })
   
