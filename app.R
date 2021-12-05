@@ -129,11 +129,14 @@ ui <- fluidPage(
     
     
     tabPanel("Distribution",
+             h4('Continuous and Discrete Probability Distributions'),
+             p('We can formalize the generation of pre-test/post-test scores and the treatment assignment with probability distributions. Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take, and come in two forms:', tags$strong("discrete"), 'and', tags$strong("continuous"),'. In the following section, we will explore several well-known discrete and continuous distributions that will help us generate the necessary data for our hypothetical example. '),
+             br(),
              withMathJax(),
              h4('Normal Distribution'),
              withMathJax(paste0('As we\'ve seen in the example from the last section that normal distribution is an appropriate distribution to describe test score, 
              we will assume the pre-test score and post-test score in our example also follow normal distribution. 
-             Normal distribution is commonly used to describe the probability distribution of a continuous random variable, X. 
+             A normal distribution is commonly used to describe the probability distribution of a continuous random variable, X. 
              There are two parameters in normal distribution, a mean \\(\\mu\\) and a standard deviation \\(\\sigma\\) of the variable. 
              The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\).
              The variance of the distribution of X is \\(E((X − \\mu_X )^2)\\), that is, the mean of the squared difference from the mean. 
@@ -143,7 +146,7 @@ ui <- fluidPage(
              we can simulate the pre-treatment scores for the students in our sample by a normal distribution. ')),
           
              br(),br(),
-             h4('Bernoulli distribution'),
+             h4('Bernoulli Distribution'),
              p('Now that we have the pre-test scores, we need to randomly assign each student to either participating in the afterschool program or not participating, or in another word, treatment group or control group. 
              Bernoulli distribution is the probability distribution for a discrete random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
              It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads.
@@ -151,7 +154,7 @@ ui <- fluidPage(
              By specifying p = 0.5, students will have an equal chance of being assigned to either group.'),
              br(),
         
-             h4('Binomial distribution'),
+             h4('Binomial Distribution'),
              p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
                then you can use a binomial distribution to generate the data."),
              p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
