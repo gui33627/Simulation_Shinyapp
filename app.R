@@ -94,7 +94,11 @@ ui <- fluidPage(
                 By combining all these samples or all possible senarios, we will be able to know the population trend.
                 Try it for yourself!"),
              br(),
-             p('All 100 students: Afiq, Leonor, Himari, Mary, Andrew, Dalisay, Michael, Sarah, Karen, John, Nancy, Lee, Mohammed, Ahmad, Aadya, Mark, Matthew, Daniel, Nur, Francisco, Analyn, Michelle, James, Emma, Camila, Lisa, Elizabeth, Hee-jung, Leon, Joshua, Nathan, Edward, Akari, Aarav, Joseph, Emily, William, Jacob, Ashley, Patricia, Ben, Salomé, Donna, Lucas, Juan, Anthony, Raphaël, Brian, Jennifer, Jessica, Sofía, Dorothy, Ren, Charles, Marco, Paul, George, Kevin, Kenneth, Megan, Andrea, Gabriel, Robert, Sandra, Mia, Yinuo, Steven, Maria, Hannah, Simon, Donald, Richard, Margaret, Chloé, Charlotte, Yichen, Kimberly, Melissa, Haruto, David, Olivia, Nathaniel, Barbara, Nurul, Oliver, Amanda, Giulia, Yuxuan, Carol, Yeri, Linda, Chiara, Saanvi, Thomas, Samantha, Alex, Xinyi, Jack, Christopher, Santiago.'),
+             verbatimTextOutput("all_students"),
+             # p('All 100 students: Afiq, Leonor, Himari, Mary, Andrew, Dalisay, Michael, Sarah, Karen, John, Nancy, Lee, Mohammed, Ahmad, Aadya, Mark, Matthew, Daniel, Nur, Francisco, Analyn, Michelle, James,
+             #    Emma, Camila, Lisa, Elizabeth, Hee-jung, Leon, Joshua, Nathan, Edward, Akari, Aarav, Joseph, Emily, William, Jacob, Ashley, Patricia, Ben, Salomé, Donna, Lucas, Juan, Anthony, Raphaël, Brian, 
+             #   Jennifer, Jessica, Sofía, Dorothy, Ren, Charles, Marco, Paul, George, Kevin, Kenneth, Megan, Andrea, Gabriel, Robert, Sandra, Mia, Yinuo, Steven, Maria, Hannah, Simon, Donald, Richard, Margaret, 
+             #   Chloé, Charlotte, Yichen, Kimberly, Melissa, Haruto, David, Olivia, Nathaniel, Barbara, Nurul, Oliver, Amanda, Giulia, Yuxuan, Carol, Yeri, Linda, Chiara, Saanvi, Thomas, Samantha, Alex, Xinyi, Jack, Christopher, Santiago.'),
              actionButton("draw_50_student", "Draw 50 students for treatment"),
              textOutput('student_list'),
              br(),
@@ -470,6 +474,12 @@ server <- function(input, output, session) {
                 'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo'))
   #bookmark
 
+  output$all_students <- renderText("All 100 students: Afiq, Leonor, Himari, Mary, Andrew, Dalisay, Michael, Sarah, Karen, John, Nancy, Lee, Mohammed, Ahmad, Aadya, Mark, Matthew, Daniel, Nur, Francisco, Analyn, 
+  Michelle, James, Emma, Camila, Lisa, Elizabeth, Hee-jung, Leon, Joshua, Nathan, Edward, Akari, Aarav, Joseph, Emily, William, Jacob, Ashley, Patricia, Ben, Salomé, Donna, Lucas, 
+  Juan, Anthony, Raphaël, Brian, Jennifer, Jessica, Sofía, Dorothy, Ren, Charles, Marco, Paul, George, Kevin, Kenneth, Megan, Andrea, Gabriel, Robert, Sandra, Mia, Yinuo, Steven, 
+  Maria, Hannah, Simon, Donald, Richard, Margaret, Chloé, Charlotte, Yichen, Kimberly, Melissa, Haruto, David, Olivia, Nathaniel, Barbara, Nurul, Oliver, Amanda, Giulia, Yuxuan, 
+  Carol, Yeri, Linda, Chiara, Saanvi, Thomas, Samantha, Alex, Xinyi, Jack, Christopher, Santiago")
+  
   #mini-set dataset
   pre <- rnorm(n = 10, mean = 50, sd = 5)
   y0 <- 10 + pre + 0 + rnorm(10, mean = 0, sd = 1)
