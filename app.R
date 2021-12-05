@@ -130,11 +130,14 @@ ui <- fluidPage(
     
     tabPanel("Distribution",
              h4('Continuous and Discrete Probability Distributions'),
-             p('We can formalize the generation of pre-test/post-test scores and the treatment assignment with probability distributions. Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take, and come in two forms:', tags$strong("discrete"), 'and', tags$strong("continuous"),'. In the following section, we will explore several well-known discrete and continuous distributions that will help us generate the necessary data for our hypothetical example. '),
+             p('We can formalize the generation of pre-test/post-test scores and the treatment assignment with probability distributions. 
+               Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take, 
+               and come in two forms:', tags$strong("discrete"), 'and', tags$strong("continuous"),'. In the following section, 
+               we will explore several well-known discrete and continuous distributions that will help us generate the necessary data for our hypothetical example. '),
              br(),
              withMathJax(),
              h4('Normal Distribution'),
-             withMathJax(paste0('As we\'ve seen in the example from the last section that normal distribution is an appropriate distribution to describe test score, 
+             withMathJax(paste0('As we\'ve seen in the example from the last section that normal distribution is an appropriate distribution to describe test scores, 
              we will assume the pre-test score and post-test score in our example also follow normal distribution. 
              A normal distribution is commonly used to describe the probability distribution of a continuous random variable, X. 
              There are two parameters in normal distribution, a mean \\(\\mu\\) and a standard deviation \\(\\sigma\\) of the variable. 
@@ -150,25 +153,27 @@ ui <- fluidPage(
              p('Now that we have the pre-test scores, we need to randomly assign each student to either participating in the afterschool program or not participating, or in another word, treatment group or control group. 
              Bernoulli distribution is the probability distribution for a discrete random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
              It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads.
-             In our example, we take the value 1 (treatment group) as success, with probability p, the value 0 (control group) thus has a probability of (1-p). 
-             By specifying p = 0.5, students will have an equal chance of being assigned to either group.'),
+             In our example of treatment assignment, we take the value 1 (treatment group) as success, with probability p, the value 0 (control group) thus has a probability of (1-p). 
+             By specifying p = 0.5, a student will have an equal chance of being assigned to either group.'),
              br(),
         
              h4('Binomial Distribution'),
              p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
-               then you can use a binomial distribution to generate the data."),
-             p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
-               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
-               and the probability of success in each trial, p. 
-               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
+               then you can use a binomial distribution to generate the data. A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
+               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, and the probability of success in each trial, p. 
+               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n = 1 for a Binomial distribution. 
+               If we specify n = 100 and p = 0.5, every student has an equal chance of being assigned to either group, 
+               and thus we expect to see the number of students in the treatment group in a sequence of 100 independent treatment assignments is approximately 50."),
           
              br(), br(),
              h4('In summary'),
               
-             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
-             Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
-               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.
-               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
+             p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.', 
+             'Discrete random variables can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group. 
+               Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.
+               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places). 
+               The normal distribution is the most often used probability distribution for continuous random variables because it approximates many natural events.')
              ),
     tabPanel("Illustration",
              p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
