@@ -69,7 +69,6 @@ ui <- fluidPage(
              h4('Reality vs. Simulation'),
              p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
             For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student."),
-             # new mini-simulation
       sidebarLayout(
              sidebarPanel(
                radioButtons("potential_oc", "Potential Outcomes",
@@ -82,9 +81,9 @@ ui <- fluidPage(
              mainPanel(plotOutput('researcher_hat_plot') 
                        )
       ),
+                  p("Treatment Assignments:"),
       textOutput('researcher_hat_list'),
-             #bookmark
-          
+
               p("The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
              p("For now, understand that simulation starts all the way at the beginning: who is in your sample, and what are their pre-treatment test scores?"),
              br(),

@@ -17,28 +17,6 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 ### Exercise
 
-You need to generate *Y* that represents the post-treatment scores for our sample of 100 students，if the program is not implemented.
-Write the code to generate the post-treatment scores. You shall check the hint if you are unfamiliar with R functions:
-
-```{r frq, exercise=TRUE, exercise.eval=TRUE}
-
-```
-
-```{r frq-hint}
-Y<-rnorm(n = 100, mean = ..., sd = ...)
-print(Y)
-```
-
-```{r frq-solution}
-#This is just one example of simulating Y; You shall pick any reasonable expected average post-treatment score and the standard deviation
-Y<-rnorm(n = 100, mean = 60, sd = 5)
-print(Y)
-
- 
-#r frq-code-check
-#grade_code()
-#I delete the code check section, since we would like the students to simulate the dataset as they wish.
-```
 
 ```{r quiz}
 quiz(
@@ -49,6 +27,57 @@ quiz(
     answer("Commute time of students")
   )
 )
+```
+
+As you have already seen in the last section, we shall assume students' post-treatment scores depend on their pre-treatment scores, regardless of their assigned groups. You shall try to generate pre-treatment scores and post-treatment scores that resembles the dataset you generated previously.
+
+You need to first generate *X*, "pre-treatment score", based on the mean and standard deviation you selected previously in *Illustration for Normal Distribution (Illustration-Probability Distribution)*.Write the code to generate the pre-treatment scores. You shall check the hint if you are unfamiliar with R functions:
+
+```{r dgpx, exercise=TRUE, exercise.eval=TRUE}
+
+```
+
+```{r dgpx-hint}
+#use rnorm function; n is number of observations
+X<-rnorm(n = 100, mean = ..., sd = ...)
+#Check the distribution of X- is it similar to the graph you've seen previously?
+hist(X, breaks = 30)
+
+#Store your X for the next step
+assign("X", X, envir=globalenv())
+
+```
+
+
+Now, you shall generate *Y0* and *Y1* that represent the post-treatment scores for our sample of 100 students，if they participate in control group or treatment group. Your data should mimic the post-treatment scores you generated previously in *(Conditional Distribution-Probability Distribution)*.       
+
+```{r y, exercise=TRUE, exercise.eval=TRUE, exercise.setup ="dgpx"}
+
+```
+
+
+```{r y-hint-1}
+#Y0 <- beta_0 + beta_1*X + rnorm(N, mean = 0, sd = 1)        
+
+
+#Y1 <- beta_0 + beta_1*X + tau + rnorm(N, mean = 0, sd = 1)
+
+
+#Check the distribution of Y0 and Y1- are they similar to the graph you've seen previously?
+
+
+
+```
+
+
+```{r y-hint-2}
+#Y0 <- beta_0 + beta_1*X + rnorm(N, mean = 0, sd = 1)        
+Y0 <- ... + ...*X + rnorm(100, mean = 0, sd = 1)
+#Y1 <- beta_0 + beta_1*X + tau + rnorm(N, mean = 0, sd = 1)
+Y1 <- ... + ...*X + ... + rnorm(100, mean = 0, sd = 1)
+#Check the distribution of Y0 and Y1- are they similar to the graph you've seen previously?
+hist(Y0, breaks = 30)
+hist(Y1, breaks = 30)
 ```
 
 
