@@ -17,16 +17,16 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ### Exercise
-You should use this exercise to test if different treatment effect would effect the bias of different causal inference methods. Remember:        
+You should use this exercise to test if different treatment effects would affect the bias of different causal inference methods. Remember:              
 1. Wearing the omniscient hat, you know the post-program scores of each student, if they are selected to the program and if they aren't.       
 2. As a researcher, you are only able to observe the post-program score, conditioning on students' group.
 
-After generating the data, you shall use the difference in mean method and regression to estimate the causal effect. Since you had omniscient hat while you were generating the data, you can compare estimated effect to the true causal effect. 
+After generating the data, you shall use the difference in mean method and regression to estimate the causal effect. Since you had an omniscient hat while you were generating the data, you can compare the estimated effect to the true causal effect. 
 
 Last but not least, you should simulate the dataset multiple times to compare the bias and efficiency of these estimators. Feel free to change different properties of your data generating process to see how that may change the estimators.
 
 **Step 1: Data Generating Process (DGP)**       
-(The hints are based on the setting of our example: 1. There are 100 students in our sample. Each student is randomly assigned to a group. 2. The expectation of the pre-treatment score is 50, and the standard deviation is 5. The true treatment effect is 5, and every student should have a better score (increase of 10) on their second attempts.)
+(The hints are based on the setting of our example: 1. There are 100 students in our sample. Each student is randomly assigned to a group. 2. The expectation of the pre-treatment score is 50, and the standard deviation is 5. The true treatment effect is 5, and every student should have a better score on their second attempt.)
 ```{r simprac, exercise=TRUE, exercise.eval=TRUE}
 
 
@@ -80,7 +80,8 @@ Y <- ifelse(Z == 1,  Y1, Y0)
 
 ```
 
-**Step 2: Calculate SATE**
+**Step 2: Estimate SATE**
+Use two methods to estimate SATE
 ```{r simprac2, exercise=TRUE, exercise.eval=TRUE, exercise.setup = "simprac-solution"}
 #difference in mean to estimate SATE
 
@@ -112,7 +113,8 @@ summary(fit)$coefficients['Z', 1]
 mean(Y1 - Y0)
 ```
 
-**Step 3: Comparing Estimators**
+**Step 3: Comparing Estimators**                
+Which estimator is closer to the truth?             
 ```{r simprac3, exercise=TRUE, exercise.eval=TRUE , exercise.setup = "simprac-solution"}
 #create vectors to store values & define how many iteration you need to run
 
