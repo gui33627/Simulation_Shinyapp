@@ -17,16 +17,15 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ### Exercise
-You need to generate pre-treatment test scores with two different distribution, normal distribution and uniform distribution. Then, compare two sampling distributions of test scores generated with plots.        
+In the previous section, you have seen that we repeat the data simulation process several times and calculate the mean value of each dataset generated, then we collect a dataset of sample means. And the distribution of sample mean seems to be bell-shaped regardless the distribution of original dataset.
+
+Let's try to generate pre-treatment test scores with two different distribution, normal distribution and uniform distribution. Then, let's compare two sampling distributions of test scores generated with plots, to see if the histograms look alike.       
 
 For normal distribution, we assume the expectation of the pre-treatment score (E(X)) is 50, the standard deviation of the pre-treatment score is 5, and we sample 1000 times. We also assume the test scores in the uniform distribution runs from 35 to 65.
 
-First, let's generate the sampling distribution of test scores using normal distribution and uniform distribution. Modify the following code to generate the data:
+First, let's generate the sampling distribution of test scores using normal distribution and uniform distribution.         
+Modify the following code to generate the data:
     
-        
-          
-          
-          
 ```{r clt1, exercise=TRUE}
 #1. define how many iteration you need to run
 
@@ -102,7 +101,7 @@ for (i in 1:iter) {
         uni_means$data[i]  <- mean(sample)}
 ```
  
-Now, generate the histogram for both sampling distribution. Do you spot any difference?
+Now, generate the histogram for both sampling distribution.  Do you spot any similarities? Do you spot any difference?
 
 ```{r clt2, exercise=TRUE, exercise.eval=TRUE, exercise.setup ="clt1-solution"}
 

@@ -5,9 +5,10 @@ account: verazhouty
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5123502
-bundleId: 5251610
+bundleId: 5332145
 url: https://verazhouty.shinyapps.io/Exercise-SamplingDist/
-when: 1636935153.53431
-lastSyncTime: 1636935153.53432
+when: 1638767660.95696
+lastSyncTime: 1638767660.95697
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: .RData|Exercise-Sampling-Distribution.html

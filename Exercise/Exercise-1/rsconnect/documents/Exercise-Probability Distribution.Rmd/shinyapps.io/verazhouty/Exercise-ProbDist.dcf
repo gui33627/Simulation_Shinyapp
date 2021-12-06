@@ -5,10 +5,10 @@ account: verazhouty
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5123436
-bundleId: 5332080
+bundleId: 5332097
 url: https://verazhouty.shinyapps.io/Exercise-ProbDist/
-when: 1638766406.35208
-lastSyncTime: 1638766406.3521
+when: 1638766708.2025
+lastSyncTime: 1638766708.20251
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: .RData|Exercise-Probability-Distribution.html

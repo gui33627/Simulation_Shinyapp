@@ -49,7 +49,7 @@ assign("X", X, envir=globalenv())
 ```
 
 
-Now, you shall generate *Y0* and *Y1* that represent the post-treatment scores for our sample of 100 students，if they participate in control group or treatment group. Your data should mimic the post-treatment scores you generated previously in *(Conditional Distribution-Probability Distribution)*.       
+Now, you shall generate *Y0* and *Y1* that represent the post-treatment scores for our sample of 100 students. Your data should mimic the post-treatment scores you generated previously in *(Conditional Distribution-Probability Distribution)*.       
 
 ```{r y, exercise=TRUE, exercise.eval=TRUE, exercise.setup ="dgpx"}
 
