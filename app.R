@@ -433,7 +433,8 @@ ui <- fluidPage(
              ),
              plotOutput(outputId = "result_plot", height = "500px"), 
              verbatimTextOutput('simulation_postscore_code'),
-             textOutput('simulation_postscore')
+             #textOutput('simulation_postscore')
+             #It seems tedious to display all scores in here. By this point, we should trust our users can already establish the sense that each dot is an individual student.-vz
     ),
     tabPanel("Average Treatment Effect (ATE)",
             h3("Average Treatment Effect (ATE)"),
