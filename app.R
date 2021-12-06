@@ -297,7 +297,7 @@ ui <- fluidPage(
                                 min = 0, max = 3, value = 1, step = 0.1))),
              plotOutput(outputId = "Y0_plot", height = "500px"),
              verbatimTextOutput('distribution_prescore_code'),
-             textOutput('distribution_prescore'),
+             #textOutput('distribution_prescore'),
              
              br(), br(),
              p('What would be the post-test scores for the 100 students if they all received the extra tutoring? 
@@ -308,15 +308,16 @@ ui <- fluidPage(
              sliderInput(inputId = "tau_distribution", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
              plotOutput(outputId = "Y1_plot", height = "500px"),
              verbatimTextOutput('distribution_postscore_code'),
-             textOutput('distribution_postscore'),
+             #textOutput('distribution_postscore'),
              br(),
              p('In real world, we are never be able to observe both Y0 and Y1 for a student. Thus, lastly, we need to generate the post-test scores for students based on which group they are assigned to.'),
              verbatimTextOutput('distribution_postscore_code_observe'),
-             textOutput('distribution_postscore_observe')),
+             p('You shall check Y0, Y1, and Y for every student in your data generated above:'),
+             DT::dataTableOutput('scoretable')),
+             #textOutput('distribution_postscore_observe')),
              
     tabPanel("Exercise",
              htmlOutput("Exercise_1")),
-  #VZ-fix hints- window%
     "Sampling Distribution",
     tabPanel("What is Sampling Distribution?",
              p('Suppose you simulated pre-test scores from a normal distribution for many samples, each consisting of 100 students. 
@@ -430,7 +431,7 @@ ui <- fluidPage(
                                   label = "Show the mean function for Y1", value = T))
              
              ),
-             plotOutput(outputId = "result_plot", height = "500px"), #VZ -fix mean/sd location
+             plotOutput(outputId = "result_plot", height = "500px"), 
              verbatimTextOutput('simulation_postscore_code'),
              textOutput('simulation_postscore')
     ),
@@ -509,7 +510,6 @@ server <- function(input, output, session) {
                 'Nur', 'Yuxuan', 'Ahmad', 'Megan', 'Charlotte', 'Xinyi', 'Jack', 'Alex', 'Giulia',
                 'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
                 'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo'))
-  #bookmark
 
   output$all_students <- renderText("All 100 students: Afiq, Leonor, Himari, Mary, Andrew, Dalisay, Michael, Sarah, Karen, John, Nancy, Lee, Mohammed, Ahmad, Aadya, Mark, Matthew, Daniel, Nur, Francisco, Analyn, 
   Michelle, James, Emma, Camila, Lisa, Elizabeth, Hee-jung, Leon, Joshua, Nathan, Edward, Akari, Aarav, Joseph, Emily, William, Jacob, Ashley, Patricia, Ben, Salomé, Donna, Lucas, 
@@ -759,7 +759,15 @@ server <- function(input, output, session) {
     }
     text
   }) 
-
+  output$scoretable <-  DT::renderDataTable(DT::datatable({
+    y1 <- round(y1_distribution())
+    y0 <- round(y0_distribution())
+    y <- ifelse(Z_100$data == 1, round(y1), round(y0))
+    df<-data.frame(cbind(students,Z_100$data,y0,y1,y))
+    colnames(df)[c(1,2)] <- c("Student","Assigned Group")
+    df
+  }) )
+  
 ### Sampling distribution  
   
     output$sampling_distr <- renderText(choose(100000,100))
