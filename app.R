@@ -374,7 +374,7 @@ ui <- fluidPage(
                For the purposes of this study, we will use what we learned in previous sections to walk through our DGP, and introduce some notation to help formalize it: Let", tags$strong("X"), " stand for pre-test scores,", tags$strong("Z"), " stand for the treatment assignments (0/1),", tags$strong("Y0"), " stand for the potential outcomes of the control group,", tags$strong("Y1"), " stand for potential outcomes of the treatment group, and", tags$strong("Y"), " stand for the observed outcomes."),
              br(),
              h4('Treatment Assignment'),
-             p("You already know how to simulate treatment assignments from Section 2 (Probability Distribution - Distribution) using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
+             p("You already know how to simulate treatment assignments from Section 2.2 using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
              verbatimTextOutput('simulation_treatment_code'),
              tags$div(
                useShinyjs(),
@@ -387,7 +387,7 @@ ui <- fluidPage(
              ),
              br(),
              h4("Pre-treatment test scores"),
-             p("You also know that you can use the Normal distribution from Section 2 (Probability Distribution - Distribution) to simulate our pre-treatment test scores. 
+             p("You also know that you can use the Normal distribution from Section 2.2 to simulate our pre-treatment test scores. 
                Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
              verbatimTextOutput('simulation_prescore_code'),
              tags$div(
@@ -426,14 +426,18 @@ ui <- fluidPage(
              ),
              plotOutput(outputId = "result_plot", height = "500px"), #VZ -fix mean/sd location
              verbatimTextOutput('simulation_postscore_code'),
-             textOutput('simulation_postscore')
+             textOutput('simulation_postscore'),
+             br(),
+             br(),
     ),
     tabPanel("4.2 - Average Treatment Effect (ATE)",
             h3("Average Treatment Effect (ATE)"),
-            p('Once you have simulated all the data necessary from our DGP, you can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  
+            p('Once you have simulated all the data necessary from your DGP, you can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  
               'of the afterschool program using different causal inference methods. You would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', 
               tags$em("calculating"), 'the true ATE while wearing the omniscient hat. Afterwards, you would compare the two to see how close our estimate is to the truth.'),
             textOutput('simulation_ate'),
+            br(),
+            p('For the purposes of our original research question, we are re-introducing two estimators that we briefly discussed in Section 1.2 to estimate the ATE:', tags$strong("difference in means"), " and ", tags$strong("regression"),'.  We will then determine how well these methods estimate the treatment effect, and whether they are unbiased and efficient.'),
             br(),
             fluidRow(column(width = 8,
                             h4('Calculate the true SATE')),
@@ -442,7 +446,7 @@ ui <- fluidPage(
             verbatimTextOutput('simulation_sate_code'),
             textOutput('simulation_sate'),
             fluidRow(column(width = 8,
-                            h4('Use a difference in mean outcomes to estimate SATE')),
+                            h4('Use difference in mean outcomes to estimate SATE')),
                      column(width = 4, align = 'center',
                             img(src='researcher_hat.png', width="30%", height="50%"))),
             verbatimTextOutput('simulation_mean_diff_code'),
@@ -459,7 +463,7 @@ ui <- fluidPage(
              p('Now you will further explore the properties of these two different approaches to estimating our ATEs by simulation. 
                For now we will only consider the variability in estimates that would manifest as a result of the randomness in who is assigned to receive the treatment (this is sometimes referred to as “randomization based inference”). 
                Since you are wearing an omniscient hat you can see how the observed outcomes and estimates would change across a distribution of possible treatment assignments. 
-               You simulate this by repeatedly drawing a new vector of treatment assignments and then for each new dataset calculating estimates using our two estimators above.'),
+               You simulate this by repeatedly drawing a new vector of treatment assignments and then for each new dataset calculating estimates using the two estimators in Secton 4.2 (difference in means and linear regression).'),
              verbatimTextOutput('mean_diff_reg_compare'),
              plotOutput('mean_diff_compare'),
              plotOutput('reg_compare'),
@@ -786,7 +790,7 @@ server <- function(input, output, session) {
     output$simulation_dgp_outcome <- renderText({
       paste0("As omniscient beings, you know that the treatment effect (or tau) is ", input$tau, 
         ". That is, you know that the post-treatment test scores of students who went through the afterschool program is on average ", input$tau, " points higher than the students who did not. 
-               To generate these outcome scores, you would simulate a dependency based on the treatment assignment variable from above. 
+               To generate these outcome scores, you would simulate a dependency based on the treatment assignment variable from above (like we did in Section 2.4). 
                In the interactive graph below, you can specify the true relationship between the pre-treatment test scores (X) and the outcome test scores by selecting the coefficients in the regression model.")
     })
     
