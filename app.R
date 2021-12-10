@@ -461,8 +461,9 @@ ui <- fluidPage(
     tabPanel("4.3 - Estimator Comparisons",
              h3("Comparing Estimators"),
              p('Now you will further explore the properties of these two different approaches to estimating our ATEs by simulation. 
-               For now we will only consider the variability in estimates that would manifest as a result of the randomness in who is assigned to receive the treatment (this is sometimes referred to as “randomization based inference”). 
-               Since you are wearing an omniscient hat you can see how the observed outcomes and estimates would change across a distribution of possible treatment assignments. 
+               For now we will only consider the variability in estimates that would manifest as a result of the randomness in who is assigned to receive the treatment (this is sometimes referred to as “randomization based inference”). '),
+             
+             p('Since you are wearing an omniscient hat you can see how the observed outcomes and estimates would change across a distribution of possible treatment assignments. 
                You simulate this by repeatedly drawing a new vector of treatment assignments and then for each new dataset calculating estimates using the two estimators in Secton 4.2 (difference in means and linear regression).'),
              verbatimTextOutput('mean_diff_reg_compare'),
              plotOutput('mean_diff_compare'),
