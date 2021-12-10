@@ -54,16 +54,17 @@ ui <- fluidPage(
              
              h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Scores'),
              p("Let's decompose the description of the hypothetical example, and put the ", tags$em("omniscient hat"), " on, since it feels good to know everything. 
-               With this powerful hat, you know that you have a sample of 100 hypotehtical students (that you will generate), 
+               With this powerful hat, you know that you have a", tags$strong("sample of 100 hypothetical students")," (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
                'Treatment' in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, 
-               and those in the control group will receive normal tutoring. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
-             p("These are fairly self-explanatory: ", tags$em("pre-treatment"), " test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$em("post-treatment"), 
+               and those in the control group will not receive additional help. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
+             p("These are fairly self-explanatory: ", tags$strong("pre-treatment"), " test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$strong("post-treatment"), 
                " test scores are the scores of the 100 sample students after the treatment period. 
-               The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment - these are called", tags$em("potential outcomes.")),
+               The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment (i.e., don't go through the afterschool program) - these are called", tags$strong("potential outcomes.")),
+             br(),
              h4('Reality vs. Simulation'),
              p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
-            For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student."),
+            For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student. (Red points are treatment group, black points are control group.)"),
              # new mini-simulation
       sidebarLayout(
              sidebarPanel(
@@ -79,7 +80,7 @@ ui <- fluidPage(
       ),
       textOutput('researcher_hat_list'),
              #bookmark
-          
+              br(), br(),
               p("The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
              p("For now, understand that simulation starts all the way at the beginning: who is in your sample, and what are their pre-treatment test scores?"),
              br(),
@@ -102,7 +103,9 @@ ui <- fluidPage(
                and represents the characteristics of the model(s) you defined. 
                Now that you have a taste of what simulation looks like in its simplest form, 
                let's take a short step back to really understand the underlying models and their distributional properties, 
-               since these really make up the core of your simulation study.")),
+               since these really make up the core of your simulation study."),
+             br(), br(),
+      ),
     
     
     "Probability Distribution",
