@@ -12,8 +12,8 @@ ui <- fluidPage(
   titlePanel("Simulation"),
   
   navlistPanel(
-    "Introduction",
-    tabPanel('Get Started!',
+    "1. Introduction",
+    tabPanel('1.1 - Get Started!',
              h3('Welcome to the simulation app!'),
              p("This app will walk you through simulating a hypothetical intervention study, with the goal of helping you understand how to use simulation to examine whether different causal inference methods are unbiased and efficient in estimating a treatment effect."),
              p("Throughout the app, we will use a hypothetical real-world example to build your intuition and knowledge about the joys of simulation."), 
@@ -28,7 +28,7 @@ ui <- fluidPage(
                              img(src='omniscient_hat.png', width="100%", height="150%")))
              ),
              
-    tabPanel("Hypothetical Example", 
+    tabPanel("1.2 - Hypothetical Example", 
       tags$div(
       p('The following hypothetical example will link concepts step by step throughout the app:'),
       h4('The Dreaded Global History Regents Exam'),
@@ -50,7 +50,7 @@ ui <- fluidPage(
         By comparing against this true causal effect, you will be able to explore the properties of these two different approaches to estimating average treatment effects, i.e., whether they are unbiased and efficient. 
         This investigation is impossible when you are wearing your researcher hat because you would never know the true treatment effect in the real world. Therefore, simulation is a powerful learning tool when comparing different methods and examining how they might behave in practice.")
       ),
-    tabPanel("What is simulation?",
+    tabPanel("1.3 - What is simulation?",
              
              h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Test Scores'),
              p("Let's decompose the description of the hypothetical example, and put the ", tags$em("omniscient hat"), " on, since it feels good to know everything. 
@@ -108,8 +108,8 @@ ui <- fluidPage(
       ),
     
     
-    "Probability Distribution",
-    tabPanel('Example',
+    "2. Probability Distribution",
+    tabPanel('2.1 - Example',
              h4('Example: Pre-test scores'),
              p('For this hypothetical study, you will first need to generate pre-test scores (you will generate post-test scores later). 
              This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? 
@@ -128,7 +128,7 @@ ui <- fluidPage(
              ),
     
     
-    tabPanel("Distribution",
+    tabPanel("2.2 - Distributions",
              h4('Continuous and Discrete Probability Distributions'),
              p('We can formalize the generation of pre-test/post-test scores and the treatment assignment with probability distributions. Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take, and come in two forms:', tags$strong("discrete"), 'and', tags$strong("continuous"),'. In the following section, we will explore several well-known discrete and continuous distributions that will help us generate the necessary data for our hypothetical example. '),
              br(),
@@ -171,7 +171,7 @@ ui <- fluidPage(
                Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).'),
              br(), br()
              ),
-    tabPanel("Illustration",
+    tabPanel("2.3 - Illustration",
              h4('See it in action: Illustrations'),
              p('In this section, you will have the opportunity to simulate what we covered in the previous section - feel free to play around, and pay attention to your hats!'),
              fluidRow(column(width = 8,
@@ -263,7 +263,7 @@ ui <- fluidPage(
              ),
              br()
     ),
-    tabPanel('Conditional Distribution',
+    tabPanel('2.4 - Conditional Distribution',
              h4('Post-test scores'),
              p('Now that we have the pre-test scores and treatment assignments, we need to generate the post-test scores.'),
              p('The post-test scores of students depend on the scores they received before they participated in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a conditional distribution notated as f(post-test | pre-test, treatment).'),
@@ -294,11 +294,11 @@ ui <- fluidPage(
              br(),
              ),
              
-    tabPanel("Exercise",
+    tabPanel("2.5 - Exercise",
              htmlOutput("Exercise_1")),
   #VZ-fix hints- window%
-    "Sampling Distribution",
-    tabPanel("What is a Sampling Distribution?",
+    "3. Sampling Distribution",
+    tabPanel("3.1 - What is a Sampling Distribution?",
              h4('Taking a step back: Sampling Distributions'),
              
              p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-test scores in New York State.'),
@@ -357,11 +357,11 @@ ui <- fluidPage(
              br()
              ),
             
-      tabPanel("Exercise",
+      tabPanel("3.2 - Exercise",
                htmlOutput("Exercise_2")),
   
-    "Simulation",
-    tabPanel("Data Generation Process (DGP)",
+    "4. Simulation",
+    tabPanel("4.1 - Data Generation Process (DGP)",
              fluidRow(column(width = 8,
                              h3('The Data Generating Process (DGP)')),
                column(width = 4, align = 'center',
@@ -374,7 +374,7 @@ ui <- fluidPage(
                For the purposes of this study, we will use what we learned in previous sections to walk through our DGP, and introduce some notation to help formalize it: Let", tags$strong("X"), " stand for pre-test scores,", tags$strong("Z"), " stand for the treatment assignments (0/1),", tags$strong("Y0"), " stand for the potential outcomes of the control group,", tags$strong("Y1"), " stand for potential outcomes of the treatment group, and", tags$strong("Y"), " stand for the observed outcomes."),
              br(),
              h4('Treatment Assignment'),
-             p("You already know how to simulate treatment assignments from Section 2 (Probability Distribution - Discrete Random Variables) using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
+             p("You already know how to simulate treatment assignments from Section 2 (Probability Distribution - Distribution) using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
              verbatimTextOutput('simulation_treatment_code'),
              tags$div(
                useShinyjs(),
@@ -385,19 +385,21 @@ ui <- fluidPage(
                  )
                )
              ),
+             br(),
              h4("Pre-treatment test scores"),
-             p("You also know that you can use the Normal distribution from Section 2 (Probability Distribution - Continuous Random Variables) to simulate our pre-treatment test scores. 
+             p("You also know that you can use the Normal distribution from Section 2 (Probability Distribution - Distribution) to simulate our pre-treatment test scores. 
                Remember: these are the original test scores of all the students prior to any of them attending the afterschool program."),
              verbatimTextOutput('simulation_prescore_code'),
              tags$div(
                useShinyjs(),
-               actionButton("simulation_prescore", "Show every prescore"),
+               actionButton("simulation_prescore", "Show every pre-test score"),
                hidden(
                  div(id='simulation_prescore_list',
                      textOutput("simulation_prescore_assign")
                  )
                )
              ),
+             br(),
              h4('Treatment Effect'),
              sliderInput(inputId = "tau", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
              
@@ -426,7 +428,7 @@ ui <- fluidPage(
              verbatimTextOutput('simulation_postscore_code'),
              textOutput('simulation_postscore')
     ),
-    tabPanel("Average Treatment Effect (ATE)",
+    tabPanel("4.2 - Average Treatment Effect (ATE)",
             h3("Average Treatment Effect (ATE)"),
             p('Once you have simulated all the data necessary from our DGP, you can move on to estimating the', tags$strong("Average Treatment Effect (ATE)"),  
               'of the afterschool program using different causal inference methods. You would do this first by', tags$em("estimating"), 'the ATE while wearing the researcher hat, and then', 
@@ -452,7 +454,7 @@ ui <- fluidPage(
             verbatimTextOutput('simulation_reg_code'),
             textOutput('simulation_reg')
 ),
-    tabPanel("Estimator Comparisons",
+    tabPanel("4.3 - Estimator Comparisons",
              h3("Comparing Estimators"),
              p('Now you will further explore the properties of these two different approaches to estimating our ATEs by simulation. 
                For now we will only consider the variability in estimates that would manifest as a result of the randomness in who is assigned to receive the treatment (this is sometimes referred to as “randomization based inference”). 
@@ -476,7 +478,7 @@ ui <- fluidPage(
           
              
              ), # use sampling distribution to compare unbiasedness and efficiency
-    tabPanel("Exercise",
+    tabPanel("4.4 - Exercise",
          htmlOutput("Exercise_3"))
 ))
 
