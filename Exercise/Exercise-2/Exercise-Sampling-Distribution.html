@@ -120,7 +120,7 @@ $(document).ready(function () {
 <h3>Exercise</h3>
 <p>In the previous section, you have seen that we repeat the data simulation process several times and calculate the mean value of each dataset generated, then we collect a dataset of sample means. And the distribution of sample mean seems to be bell-shaped regardless the distribution of original dataset.</p>
 <p>Let’s try to generate pre-treatment test scores with two different distribution, normal distribution and uniform distribution. Then, let’s compare two sampling distributions of test scores generated with plots, to see if the histograms look alike.</p>
-<p>For normal distribution, we assume the expectation of the pre-treatment score (E(X)) is 50, the standard deviation of the pre-treatment score is 5, and we sample 1000 times. We also assume the test scores in the uniform distribution runs from 35 to 65.</p>
+<p>For normal distribution, we assume the expectation of the pre-treatment score (E(X)) is 50, the standard deviation of the pre-treatment score is 5, and we sample 1000 times. We also assume the test scores in the uniform distribution runs from 35 to 65. Under such conditions, since you know all the true distribution, you are again wearing the <em>omniscient hat</em> again ! <img src="https://github.com/gui33627/Simulation_Shinyapp/blob/master/www/omniscient_hat.png?raw=true" style="width:10.0%" /></p>
 <p>First, let’s generate the sampling distribution of test scores using normal distribution and uniform distribution.<br />
 Modify the following code to generate the data:</p>
 <div class="tutorial-exercise" data-label="clt1" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
@@ -192,7 +192,7 @@ for (i in 1:iter) {
   #calculate and store the the mean value
         uni_means$data[i]  &lt;- mean(sample)}</code></pre>
 </div>
-<p>Now, generate the histogram for both sampling distribution. Do you spot any difference?</p>
+<p>Now, generate the histogram for both sampling distribution. Do you spot any similarities? Do you spot any difference?</p>
 <div class="tutorial-exercise" data-label="clt2" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.setup":"clt1-solution","exercise.checker":"NULL"}</script>
 </div>

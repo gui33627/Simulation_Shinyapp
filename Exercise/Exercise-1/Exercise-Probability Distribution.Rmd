@@ -11,9 +11,11 @@ library(shiny)
 library(tidyverse)
 library(plotly)
 library(shinyjs)
+library(knitr)
 library(rsconnect)
 theme_set(theme_bw())
 knitr::opts_chunk$set(echo = FALSE)
+#knitr::include_graphics("omniscient_hat.png")
 ```
 ### Exercise
 
@@ -49,7 +51,10 @@ assign("X", X, envir=globalenv())
 ```
 
 
-Now, you shall generate *Y0* and *Y1* that represent the post-treatment scores for our sample of 100 students. Your data should mimic the post-treatment scores you generated previously in *(Conditional Distribution-Probability Distribution)*.       
+Now, you shall generate *Y0* and *Y1* that represent the post-treatment scores for our sample of 100 students. Your data should mimic the post-treatment scores you generated previously in *(Conditional Distribution-Probability Distribution)*.     
+
+Remember, you are wearing your *omniscient hat* now! 
+![](https://github.com/gui33627/Simulation_Shinyapp/blob/master/www/omniscient_hat.png?raw=true){ width=10% }
 
 ```{r y, exercise=TRUE, exercise.eval=TRUE, exercise.setup ="dgpx"}
 

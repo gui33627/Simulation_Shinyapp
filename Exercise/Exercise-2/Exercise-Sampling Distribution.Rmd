@@ -21,7 +21,7 @@ In the previous section, you have seen that we repeat the data simulation proces
 
 Let's try to generate pre-treatment test scores with two different distribution, normal distribution and uniform distribution. Then, let's compare two sampling distributions of test scores generated with plots, to see if the histograms look alike.       
 
-For normal distribution, we assume the expectation of the pre-treatment score (E(X)) is 50, the standard deviation of the pre-treatment score is 5, and we sample 1000 times. We also assume the test scores in the uniform distribution runs from 35 to 65.
+For normal distribution, we assume the expectation of the pre-treatment score (E(X)) is 50, the standard deviation of the pre-treatment score is 5, and we sample 1000 times. We also assume the test scores in the uniform distribution runs from 35 to 65. Under such conditions, since you know all the true distribution, you are again wearing the *omniscient hat* again ! ![](https://github.com/gui33627/Simulation_Shinyapp/blob/master/www/omniscient_hat.png?raw=true){ width=10% }
 
 First, let's generate the sampling distribution of test scores using normal distribution and uniform distribution.         
 Modify the following code to generate the data:

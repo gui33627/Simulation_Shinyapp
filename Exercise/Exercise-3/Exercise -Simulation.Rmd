@@ -18,8 +18,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### Exercise
 You should use this exercise to test if different treatment effects would affect the bias of different causal inference methods. Remember:              
-1. Wearing the omniscient hat, you know the post-program scores of each student, if they are selected to the program and if they aren't.       
+1. Wearing the omniscient hat, you know the post-program scores of each student, if they are selected to the program and if they aren't. ![](https://github.com/gui33627/Simulation_Shinyapp/blob/master/www/omniscient_hat.png?raw=true){ width=10% }       
 2. As a researcher, you are only able to observe the post-program score, conditioning on students' group.
+![](https://github.com/gui33627/Simulation_Shinyapp/blob/master/www/researcher_hat.png?raw=true){ width=10% }
 
 After generating the data, you shall use the difference in mean method and regression to estimate the causal effect. Since you had an omniscient hat while you were generating the data, you can compare the estimated effect to the true causal effect. 
 
