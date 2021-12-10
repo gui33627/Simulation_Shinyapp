@@ -32,26 +32,22 @@ ui <- fluidPage(
       tags$div(
       p('The following hypothetical example will link concepts step by step throughout the app:'),
       h4('The Dreaded Global History Regents Exam'),
-      p('In New York State, the Global History regents is considered to be one of 
-      the most difficult Regents exams. Regents exams are a series of exams that high 
-      school students must take and pass in order to graduate.
-        Students must score a 65 or higher to pass but may re-take as many times as necessary.  
+      p('In New York State, the Regents exams are a series of exams in different subjects that high school students must take and pass in order to graduate. Students must score a 65 or higher to pass but may re-take as many times as necessary. Among these, the Global History regents is considered to be one of the most difficult, primarily due to the sheer amount of memorization required (it is fairly traumatizing).  
         ')),
       tags$div(
-      p("The Global History regents is hard primarily due to the sheer amount of memorization (it is fairly traumatizing). 
-      Hypothetically, the New York State Education Department is starting an afterschool program to assist students who failed at the first attempt to take the exam again.
-      Before the second attempt of the exam, half of them are randomly assigned to attend an afterschool program and the other half does not receive any additional help. 
-      The half of students that receive extra tutoring in the afterschool program is defined as the treated group. 
+      p("Suppose that the New York State Education Department is starting an afterschool program to assist students who failed at their first attempt at taking the Global History regents exam.
+      Before the second attempt of the exam, half of the students are randomly assigned to attend this afterschool program and the other half do not receive any additional help. 
+      Within the context of this hypothetical intervention study, the half of students that receive extra tutoring in the afterschool program is known as the treated (or treatment) group, with the other group of students known as the control group. 
       The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
       tags$div(
-      p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect.  
-        By using simulation, your will be able to find out the answers.")), br(),
+      p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect of this afterschool program.  
+        In the real world this wouldn't be possible, but luckily, we can use simulation to help answer this question.")), br(),
       h4('The Whats and Whys of Simulation'),
-      p("With the randomized experiment design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the different treatments. 
-        Two methods are commonly used for estimating the average difference between the treated and control groups, difference in means and regression. 
+      p("With the randomized experiment design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the treatment (the afterschool program). 
+        Two methods are commonly used for estimating the average difference between the treated and control groups - ", tags$strong("difference in means")," and", tags$strong("regression"),".
         However, which method would be better in terms of bias and efficiency? To answer this question, simulation is the way to go."),
-      p("With simulation, you can have your omniscient hat on. You shall choose the rules with which your data is generated, including what is the true treatment effect. 
-        By comparing against the true causal effect, you shall explore the properties of these two different approaches to estimating average treatment effects, i.e. whether they are unbiased and efficient. 
+      p("With simulation, you can have your omniscient hat on. You will choose the rules with which your data are generated, including what the true treatment effect is. 
+        By comparing against this true causal effect, you will be able to explore the properties of these two different approaches to estimating average treatment effects, i.e., whether they are unbiased and efficient. 
         This investigation is impossible when you are wearing your researcher hat because you would never know the true treatment effect in the real world. Therefore, simulation is a powerful learning tool when comparing different methods and examining how they might behave in practice.")
       ),
     tabPanel("What is simulation?",
