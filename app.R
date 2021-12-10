@@ -110,15 +110,16 @@ ui <- fluidPage(
     
     "Probability Distribution",
     tabPanel('Example',
-             h4('Example: pre-test scores'),
+             h4('Example: Pre-test scores'),
              p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). 
              This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? 
-             Luckily we have access to test scores from another project.  
+             Luckily we have access to test scores from another study.  
              We plot them using a histogram and they look like the following.'),
+             br(),
              img(src = "Sesame.png", height="40%", width="80%", align="center"),
              p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation."),
              br(),
-             h4('Example: treatment assignment'),
+             h4('Example: Treatment assignment'),
              p('We also need to randomly assign each of the 100 students to one of the groups, treatment or control. 
              This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
              There are two possible values of the treatment assignment - treatment or control - and each student\'s assignment is independent of assignments of other students.  
