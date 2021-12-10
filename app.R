@@ -274,8 +274,6 @@ ui <- fluidPage(
                                 min = 0, max = 3, value = 1, step = 0.1))),
              plotOutput(outputId = "Y0_plot", height = "500px"),
              verbatimTextOutput('distribution_prescore_code'),
-             textOutput('distribution_prescore'),
-             
              br(), br(),
              p('On the other hand, what would be the post-test scores for the 100 students if they had all been in the treatment group (i.e., participated in the afterschool program)? 
                Suppose on average the treatment effect of the afterschool program is the same for everyone. 
@@ -284,8 +282,9 @@ ui <- fluidPage(
              sliderInput(inputId = "tau_distribution", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
              plotOutput(outputId = "Y1_plot", height = "500px"),
              verbatimTextOutput('distribution_postscore_code'),
-             textOutput('distribution_postscore'),
-             br(),
+             p('In real world, we are never be able to observe both Y0 and Y1 for a student. Thus, lastly, we need to generate the post-test scores for students based on which group they are assigned to.'),
+             verbatimTextOutput('distribution_postscore_code_observe'),
+             p('You shall check Y0, Y1, and Y for every student in your data generated in the following table:'),
              br(),
              ),
              
@@ -295,7 +294,7 @@ ui <- fluidPage(
     tabPanel("3.1 - What is a Sampling Distribution?",
              h4('Taking a step back: Sampling Distributions'),
              
-             p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-test scores in New York State.'),
+             p('Suppose you simulate many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-test scores in New York State.'),
              p('A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true population mean. 
              The sampling distribution of a sample mean is the distribution of a set of possible sample means estimated from all samples of size 100 that could have been observed if the data simulation process had been repeated, along with the probabilities of these possible values. This sampling distribution then helps us determine how close this sample mean is from the true population mean. '),
              withMathJax(paste0("However, the combinations of 100 students from all students in New York State is an extraordinarily large number, and can even exceed the computational capacity of your computer. 
@@ -415,7 +414,7 @@ ui <- fluidPage(
                                   label = "Show the mean function for Y1", value = T))
              
              ),
-             plotOutput(outputId = "result_plot", height = "500px"), #VZ -fix mean/sd location
+             plotOutput(outputId = "result_plot", height = "500px"), 
              verbatimTextOutput('simulation_postscore_code'),
              textOutput('simulation_postscore'),
              br(),
@@ -500,7 +499,6 @@ server <- function(input, output, session) {
                 'Nur', 'Yuxuan', 'Ahmad', 'Megan', 'Charlotte', 'Xinyi', 'Jack', 'Alex', 'Giulia',
                 'Andrea', 'Chiara', 'Marco', 'Hannah', 'Samantha', 'Nathan', 'Simon', 'Camila', 'Juan', 'Afiq',
                 'Nurul', 'Haruto', 'Ren', 'Akari', 'Salomé', 'Oliver', 'Aadya', 'Saanvi', 'Yinuo'))
-  #bookmark
 
   output$all_students <- renderText("All 100 students: Afiq, Leonor, Himari, Mary, Andrew, Dalisay, Michael, Sarah, Karen, John, Nancy, Lee, Mohammed, Ahmad, Aadya, Mark, Matthew, Daniel, Nur, Francisco, Analyn, 
   Michelle, James, Emma, Camila, Lisa, Elizabeth, Hee-jung, Leon, Joshua, Nathan, Edward, Akari, Aarav, Joseph, Emily, William, Jacob, Ashley, Patricia, Ben, Salomé, Donna, Lucas, 
@@ -508,7 +506,6 @@ server <- function(input, output, session) {
   Maria, Hannah, Simon, Donald, Richard, Margaret, Chloé, Charlotte, Yichen, Kimberly, Melissa, Haruto, David, Olivia, Nathaniel, Barbara, Nurul, Oliver, Amanda, Giulia, Yuxuan, 
   Carol, Yeri, Linda, Chiara, Saanvi, Thomas, Samantha, Alex, Xinyi, Jack, Christopher, Santiago")
   
-  #mini-set dataset
   pre <- rnorm(n = 10, mean = 50, sd = 5)
   y0 <- 10 + pre + 0 + rnorm(10, mean = 0, sd = 1)
   y1 <- 10 + pre + 5 + rnorm(10, mean = 0, sd = 1)
@@ -728,6 +725,10 @@ server <- function(input, output, session) {
     }
     text
   }) 
+  
+  output$distribution_postscore_code_observe <- renderText({
+    paste0('Y <- ifelse(Z == 1, Y1, Y0)')
+  })
   
   
 
