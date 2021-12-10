@@ -129,7 +129,7 @@ ui <- fluidPage(
     
     
     tabPanel("2.2 - Distributions",
-             h4('Continuous and Discrete Probability Distributions'),
+             h3('Continuous and Discrete Probability Distributions'),
              p('We can formalize the generation of pre-test/post-test scores and the treatment assignment with probability distributions. Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take, and come in two forms:', tags$strong("discrete"), 'and', tags$strong("continuous"),'. In the following section, we will explore several well-known discrete and continuous distributions that will help us generate the necessary data for our hypothetical example. '),
              br(),
              withMathJax(),
@@ -172,7 +172,7 @@ ui <- fluidPage(
              br(), br()
              ),
     tabPanel("2.3 - Illustration",
-             h4('See it in action: Illustrations'),
+             h3('See it in action: Illustrations'),
              p('In this section, you will have the opportunity to simulate what we covered in the previous section - feel free to play around, and pay attention to your hats!'),
              fluidRow(column(width = 8,
                              h4('Illustration for Normal Distribution')),
@@ -528,11 +528,19 @@ server <- function(input, output, session) {
   pbase <- ggplot(rhdf) + theme_bw() + theme(legend.position = "none") + ylim(40,80)
   
   p01 <- pbase + geom_point(aes(students, y0), size = 4) +
-    geom_point(aes(students, y1), color = "red", size = 4)
-  p1 <- pbase + geom_point(data =rhdf, aes(students, y1), color = "red", size = 4)
-  p0 <- pbase + geom_point(aes(students, y0), size = 4) 
+    geom_point(aes(students, y1), color = "red", size = 4) + 
+    labs(x = "Students",
+         y = "Potential Outcomes")
+  p1 <- pbase + geom_point(data =rhdf, aes(students, y1), color = "red", size = 4) +
+    labs(x = "Students",
+         y = "Potential Outcome of Treatment Group")
+  p0 <- pbase + geom_point(aes(students, y0), size = 4) +
+    labs(x = "Students",
+         y = "Potential Outcomes of Control Group")
   py <- pbase + geom_point(aes(students, y, colour = factor(treat)), size = 4)+
-    scale_color_manual(values=c("black","red"))
+    scale_color_manual(values=c("black","red")) +
+    labs(x = "Students",
+         y = "Observed Outcomes")
   
   output$researcher_hat_plot <- renderPlot({
     potential_oc <- switch(input$potential_oc,
@@ -544,7 +552,7 @@ server <- function(input, output, session) {
     potential_oc
   })
 
-  output$researcher_hat_list <- renderText(paste0(rhdf$students, ': ', rhdf$treat))
+  output$researcher_hat_list <- renderText(paste0(rhdf$students, ': ', rhdf$treat, ','))
   
   
   
