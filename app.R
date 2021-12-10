@@ -172,7 +172,7 @@ ui <- fluidPage(
              br(), br()
              ),
     tabPanel("Illustration",
-             p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
+             p(),
              fluidRow(column(width = 8,
                              h4('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
@@ -361,7 +361,8 @@ ui <- fluidPage(
                Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that omniscient hat? It's time to put it on."),
              p("As with any simulation study, you need to first establish the", tags$strong("Data Generating Process (DGP)."), "
                This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. 
-               For the purposes of this study, we will use what we learned in previous sections to walk through our DGP."),
+               For the purposes of this study, we will use what we learned in previous sections to walk through our DGP, and introduce some notation to help formalize it: Let", tags$strong("X"), " stand for pre-test scores,", tags$strong("Z"), " stand for the treatment assignments (0/1),", tags$strong("Y0"), " stand for the potential outcomes of the control group,", tags$strong("Y1"), " stand for potential outcomes of the treatment group, and", tags$strong("Y"), " stand for the observed outcomes."),
+             br(),
              h4('Treatment Assignment'),
              p("You already know how to simulate treatment assignments from Section 2 (Probability Distribution - Discrete Random Variables) using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
              verbatimTextOutput('simulation_treatment_code'),
