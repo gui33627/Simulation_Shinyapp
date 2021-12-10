@@ -298,10 +298,12 @@ ui <- fluidPage(
              htmlOutput("Exercise_1")),
   #VZ-fix hints- window%
     "Sampling Distribution",
-    tabPanel("What is Sampling Distribution?",
-             p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-treatment score in New York State.
-             A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true population mean. 
-             The sampling distribution of sample mean is the set of possible sample means estimated from all samples of size 100 that could have been observed if the data simulation process had been re-done, along with the probabilities of these possible values.'),
+    tabPanel("What is a Sampling Distribution?",
+             h4('Taking a step back: Sampling Distributions'),
+             
+             p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-test scores in New York State.'),
+             p('A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true population mean. 
+             The sampling distribution of a sample mean is the distribution of a set of possible sample means estimated from all samples of size 100 that could have been observed if the data simulation process had been repeated, along with the probabilities of these possible values. This sampling distribution then helps us determine how close this sample mean is from the true population mean. '),
              withMathJax(paste0("However, the combinations of 100 students from all students in New York State is an extraordinarily large number, and can even exceed the computation capacity of your computer. 
                For example, say there are 100,000 high school students in New York State and we randomly select 100 students. Here we have population size of 100,000 and sample size of 100. 
                How many samples of size 100 are possible out of a population of size 100,000? That's 100,000 choose 100, \\(100,000 \\choose100\\), and the number is so large that even R only returns Inf.")),
@@ -350,7 +352,10 @@ ui <- fluidPage(
                This is actually summarized as a theorem called "Central Limit Theorem". Suppose that a sample is obtained containing many observations, 
                each observation being randomly generated in a way that does not depend on the values of the other observations, 
                and that the arithmetic mean of the observed values is computed. If this procedure is performed many times, 
-               the central limit theorem says that the probability distribution of the average will closely approximate a normal distribution. ')),
+               the central limit theorem says that the probability distribution of the average will closely approximate a normal distribution. '),
+             br(),
+             br()
+             ),
             
       tabPanel("Exercise",
                htmlOutput("Exercise_2")),
@@ -362,7 +367,8 @@ ui <- fluidPage(
                column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="40%", height="60%"))),
              p("In this final section, you will use what you've learned and simulated in the previous sections to answer the question you were initially tasked with at the beginning: 
-               Is the afterschool program effective in improving high school students' scores on the Global History regents exam? Remember that omniscient hat? It's time to put it on."),
+               How do we evaluate whether different causal inference methods are unbiased and efficient in estimating a treatment effect?"), 
+             p("Remember that omniscient hat? It's time to put it on."),
              p("As with any simulation study, you need to first establish the", tags$strong("Data Generating Process (DGP)."), "
                This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. 
                For the purposes of this study, we will use what we learned in previous sections to walk through our DGP, and introduce some notation to help formalize it: Let", tags$strong("X"), " stand for pre-test scores,", tags$strong("Z"), " stand for the treatment assignments (0/1),", tags$strong("Y0"), " stand for the potential outcomes of the control group,", tags$strong("Y1"), " stand for potential outcomes of the treatment group, and", tags$strong("Y"), " stand for the observed outcomes."),
