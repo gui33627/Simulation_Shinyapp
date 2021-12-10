@@ -584,7 +584,7 @@ server <- function(input, output, session) {
     #   tmp <- data.frame(treatment = df$treatment)
     #   ggplot() + geom_histogram(data = tmp, aes(x = treatment, y = ..density..), bins = 30, alpha = 0.5) 
     # })
-    table <- data.frame(Group = c('treatment (1)','control (0)'), Frequence = c(as.integer(df$treatment), as.integer(input$select_n_binomial - df$treatment)))
+    table <- data.frame(Group = c('Treatment (1)','Control (0)'), Frequency = c(as.integer(df$treatment), as.integer(input$select_n_binomial - df$treatment)))
     output$hundreds_student_treatment_result_table <- renderTable(table)
   })
   
@@ -604,7 +604,11 @@ server <- function(input, output, session) {
       ggplot() + geom_histogram(data = tmp, aes(x = score, y = ..density..), bins = 30, alpha = 0.5) + 
         geom_vline(xintercept = mean(as.numeric(tmp$score)), color = 'blue') +
         annotate("text",x=input$select_mean_normal + 10,y=0.095,label= mean, fontface = "italic", size = 5) +
-        annotate("text",x=input$select_mean_normal + 10,y=0.085,label= sd, fontface = "italic", size = 5) 
+        annotate("text",x=input$select_mean_normal + 10,y=0.085,label= sd, fontface = "italic", size = 5) +
+        labs(x = "Pre-test scores",
+             y = "Density") +
+        ggtitle("Simulated Pre-test Scores") +
+        theme(plot.title = element_text(hjust = 0.5))
     })
   })
   
@@ -631,7 +635,7 @@ server <- function(input, output, session) {
   observeEvent(input$show_code_binomial, {
     toggle('code_div_binomial')
     output$code_binomial <- renderText({
-      paste0('# n specifies the number of Binomial distribution \n# size defines how many Bernoulli trials in a Binomial distribution \n# prob prescribes the probability of success in one Bernoulli trial \nrbinom(n = 1, size = ', input$select_n_binomial, ', porb = ', input$select_p_binomial, ')')
+      paste0('# n specifies the number of observations from Binomial distribution \n# size defines how many Bernoulli trials in a Binomial distribution \n# prob prescribes the probability of success in one Bernoulli trial \nrbinom(n = 1, size = ', input$select_n_binomial, ', prob = ', input$select_p_binomial, ')')
     })
     
   })
@@ -682,7 +686,11 @@ server <- function(input, output, session) {
   
   output$Y0_plot <- renderPlot({
     df <- data.frame(y0 = y0_distribution())
-    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1)
+    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1) +
+      ggtitle("Simulated post-test scores if everyone was in the control group") +
+      theme(plot.title = element_text(hjust = 0.5)) +
+      labs(x = "Potential outcomes for control group (Y0)",
+           y = "Count")
   })
   
   output$distribution_prescore_code <- renderText({
@@ -693,7 +701,7 @@ server <- function(input, output, session) {
     scores <- y0_distribution()
     text <- c()
     for (i in 1:100) {
-      text <- c(text, paste0(students[i], ': ', round(scores[i])))
+      text <- c(text, paste0(students[i], ': ', round(scores[i]), ', '))
     }
     text
   })
@@ -705,7 +713,11 @@ server <- function(input, output, session) {
   
   output$Y1_plot <- renderPlot({
     df <- data.frame(y0 = y1_distribution())
-    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1)
+    ggplot(data = df, aes(x = y0)) + geom_histogram(binwidth = 1) +
+      ggtitle("Simulated post-test scores if everyone was in the treatment group") +
+      theme(plot.title = element_text(hjust = 0.5)) +
+      labs(x = "Potential outcomes for treatment group (Y1)",
+           y = "Count")
   })
   
   output$distribution_postscore_code <- renderText({
@@ -716,7 +728,7 @@ server <- function(input, output, session) {
     scores <- y1_distribution()
     text <- c()
     for (i in 1:100) {
-      text <- c(text, paste0(students[i], ': ', round(scores[i])))
+      text <- c(text, paste0(students[i], ': ', round(scores[i]), ', '))
     }
     text
   }) 
@@ -738,7 +750,11 @@ server <- function(input, output, session) {
         all_means$data[i] <- tmp
       }
       ggplot() + geom_histogram(data = all_means, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
-        geom_vline(xintercept = mean(all_means$data), color = 'blue') 
+        geom_vline(xintercept = mean(all_means$data), color = 'blue') +
+        ggtitle("Sampling Distribution of Sample Means of Pre-test Scores") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        labs(x = "Sample means of pre-test scores",
+             y = "Density")
       
     })
 
@@ -755,7 +771,11 @@ server <- function(input, output, session) {
         proportions$data[i] <- mean(tmp)
       }
       ggplot() + geom_histogram(data = proportions, aes(x = data, y = ..density..), bins = 30, alpha = 0.5) +
-        geom_vline(xintercept = mean(proportions$data), color = 'blue') 
+        geom_vline(xintercept = mean(proportions$data), color = 'blue') +
+        ggtitle("Sampling Distribution of Sample Proportions of Treatment Group") +
+        theme(plot.title = element_text(hjust = 0.5)) +
+        labs(x = "Sample proportions of treatment group",
+             y = "Density")
     })
     
   
