@@ -78,7 +78,6 @@ ui <- fluidPage(
                        )
       ),
       textOutput('researcher_hat_list'),
-             #bookmark
               br(), br(),
               p("The beauty of simulation is that it allows you to overcome this meta-physical roadblock to create a sort of 'parallel universe' where, everything else being exactly the same, students in the treatment group never received the treatment. This is key to making causal inference."),
              p("For now, understand that simulation starts all the way at the beginning: who is in your sample, and what are their pre-treatment test scores?"),
@@ -122,29 +121,27 @@ ui <- fluidPage(
              p('We also need to randomly assign each of the 100 students to one of the groups, treatment or control. 
              This random assignment will create two groups that are virtually identical to each other on average, and allow us to estimate the effect of the afterschool program by the difference in outcomes between the two groups. 
              There are two possible values of the treatment assignment - treatment or control - and each student\'s assignment is independent of assignments of other students.  
-             Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success (assigned to treatment group) p.'),
-             br(), br()
+             Such a probability distribution can be described by a Bernoulli distribution. There is one parameter in Bernoulli distribution, probability of success (for our study, we shall define success as being assigned to treatment group) p.'),
+             br()
              ),
     
     
     tabPanel("2.2 - Distributions",
              h3('Continuous and Discrete Probability Distributions'),
              p('We can formalize the generation of pre-test/post-test scores and the treatment assignment with probability distributions. Probability distributions are statistical functions that describe the likelihood of obtaining possible values that a random variable can take, and come in two forms:', tags$strong("discrete"), 'and', tags$strong("continuous"),'. In the following section, we will explore several well-known discrete and continuous distributions that will help us generate the necessary data for our hypothetical example. '),
-             br(),
              withMathJax(),
              h4('Normal Distribution'),
-             withMathJax(paste0('As we\'ve seen in the Sesame Street study example from the last section, we know that a Normal distribution is an appropriate distribution to describe test scores. Thus, for the purposes of our simulation study, we will also assume the pre- and post-test scores in our example are distributed normally.'),
+             withMathJax(paste0('As we\'ve seen in the Sesame Street study example, we know that a Normal distribution is an appropriate distribution to describe test scores. Thus, for the purposes of our simulation study, we will also assume the pre- and post-test scores in our example are distributed normally.'),
 
-             p('The Normal distribution is commonly used to describe the probability distribution of a continuous random variable, X. 
+             p('The Normal distribution is commonly used to describe the probability distribution of a continuous random variable. 
              There are two parameters in a Normal distribution: a mean \\(\\mu\\), and a standard deviation \\(\\sigma\\) of the variable. 
              The mean is also called the', tags$em("expectation"), 'or', tags$em(" expected value"), 'and is written as E(X) or \\(\\mu_X\\).
              The variance of the distribution of X is \\(E((X − \\mu_X )^2)\\), that is, the mean of the squared difference from the mean. 
              The standard deviation is the square root of the variance.'),
-             p('In our example, we can view the pre-test score of a student as a continuous random variable, X, taking on any possible value between 0 and 100.
+             p('In our example, we can view the pre-test scores of students as a continuous random variable, taking on any possible value between 0 and 100.
              By specifying a mean and a standard deviation of the score that we expect to see if we repeatedly draw a student, 
              we can simulate the pre-treatment scores for the students in our sample by a Normal distribution. ')),
           
-             br(),
              h4('Bernoulli Distribution'),
              p('Now that we have the pre-test scores, we need to randomly assign each student to either receive the afterschool program or not. In other words, treatment or control group.'),
              
@@ -152,8 +149,7 @@ ui <- fluidPage(
              It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, with p being the probability of the coin landing heads.'),
              p('In our example, we take the value 1 (treatment group) as success with probability p, and the value 0 (control group) with a probability of (1-p). 
              Thus, by specifying p = 0.5, students will have an equal chance of being assigned to either group.'),
-             br(),
-        
+
              h4('Binomial Distribution'),
              p("Now suppose you want to randomly assign treatment status to 100 students, but do not need to know the exact roster of each group. In this case, you can use a Binomial distribution to generate the data."),
              p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
@@ -161,18 +157,18 @@ ui <- fluidPage(
                and the probability of success in each trial, p. 
                In other words, a Binomial distribution is the number of successes in a given set of Bernoulli trials, and a Bernoulli distribution is when n = 1 for a Binomial distribution. "),
           
-             br(),
              h4('In summary'),
               
              p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
              Both Bernoulli and Binomial distributions are examples of probability distribtions of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
-               such as treated and control group in a treatment assignment, or the number of students assigned to the treatment group.
-               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).'),
+               such as treatment and control group in a treatment assignment, or the number of students assigned to the treatment group.
+               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., scores one may receive in a test).'),
              br(), br()
              ),
     tabPanel("2.3 - Illustration",
              h3('See it in action: Illustrations'),
-             p('In this section, you will have the opportunity to simulate what we covered in the previous section - feel free to play around, and pay attention to your hats!'),
+             p("In this section, you will have the opportunity to simulate what we covered in the previous section - feel free to play around, and pay attention to your hats!
+             Let's introduce some notation to help with this process: Let", tags$strong("X"), " = pre-test scores,", tags$strong("Z"), " = treatment assignments (0/1),", tags$strong("Y0"), " = potential outcomes of the control group,", tags$strong("Y1"), " = potential outcomes of the treatment group, and", tags$strong("Y"), " = observed outcomes."),
              fluidRow(column(width = 8,
                              h4('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
@@ -295,7 +291,6 @@ ui <- fluidPage(
              
     tabPanel("2.5 - Exercise",
              htmlOutput("Exercise_1")),
-  #VZ-fix hints- window%
     "3. Sampling Distribution",
     tabPanel("3.1 - What is a Sampling Distribution?",
              h4('Taking a step back: Sampling Distributions'),
@@ -329,8 +324,6 @@ ui <- fluidPage(
              
              actionButton("generate_sampling_distribution", "Generate the Sampling Distribution"),
              plotOutput('sampling_distribution_normal'),
-             
-             ## TODO: possibly talk about the mean and sd of sampling distribution
              
              p('If you are interested in the proportion of students who got into the treatment group, 
                 you can also generate a sampling distribution for it by calculating the proportions for each of the many 100-student samples. 
@@ -370,8 +363,7 @@ ui <- fluidPage(
              p("Remember that omniscient hat? It's time to put it on."),
              p("As with any simulation study, you need to first establish the", tags$strong("Data Generating Process (DGP)."), "
                This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. 
-               For the purposes of this study, we will use what we learned in previous sections to walk through our DGP, and introduce some notation to help formalize it: Let", tags$strong("X"), " = pre-test scores,", tags$strong("Z"), " = treatment assignments (0/1),", tags$strong("Y0"), " = potential outcomes of the control group,", tags$strong("Y1"), " = potential outcomes of the treatment group, and", tags$strong("Y"), " = observed outcomes."),
-             br(),
+               For the purposes of this study, we will use what we learned in previous sections to walk through our DGP. "),
              h4('Treatment Assignment'),
              p("You already know how to simulate treatment assignments from Section 2.2 using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
              verbatimTextOutput('simulation_treatment_code'),
@@ -588,7 +580,7 @@ server <- function(input, output, session) {
     #   tmp <- data.frame(treatment = df$treatment)
     #   ggplot() + geom_histogram(data = tmp, aes(x = treatment, y = ..density..), bins = 30, alpha = 0.5) 
     # })
-    table <- data.frame(Group = c('Treatment (1)','Control (0)'), Frequency = c(as.integer(df$treatment), as.integer(input$select_n_binomial - df$treatment)))
+    table <- data.frame(Group = c('Treatment (1)','Control (0)'), Counts = c(as.integer(df$treatment), as.integer(input$select_n_binomial - df$treatment)))
     output$hundreds_student_treatment_result_table <- renderTable(table)
   })
   
@@ -736,6 +728,7 @@ server <- function(input, output, session) {
     }
     text
   }) 
+  
   
 
 ### Sampling distribution  
