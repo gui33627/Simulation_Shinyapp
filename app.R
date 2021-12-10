@@ -134,41 +134,42 @@ ui <- fluidPage(
              br(),
              withMathJax(),
              h4('Normal Distribution'),
-             withMathJax(paste0('As we\'ve seen in the example from the last section that normal distribution is an appropriate distribution to describe test score, 
-             we will assume the pre-test score and post-test score in our example also follow normal distribution. 
-             A normal distribution is commonly used to describe the probability distribution of a continuous random variable, X. 
-             There are two parameters in normal distribution, a mean \\(\\mu\\) and a standard deviation \\(\\sigma\\) of the variable. 
-             The mean is also called the expectation or expected value and is written as E(X) or \\(\\mu_X\\).
+             withMathJax(paste0('As we\'ve seen in the Sesame Street study example from the last section, we know that a Normal distribution is an appropriate distribution to describe test scores. Thus, for the purposes of our simulation study, we will also assume the pre- and post-test scores in our example are distributed normally.'),
+
+             p('The Normal distribution is commonly used to describe the probability distribution of a continuous random variable, X. 
+             There are two parameters in a Normal distribution: a mean \\(\\mu\\), and a standard deviation \\(\\sigma\\) of the variable. 
+             The mean is also called the', tags$em("expectation"), 'or', tags$em(" expected value"), 'and is written as E(X) or \\(\\mu_X\\).
              The variance of the distribution of X is \\(E((X − \\mu_X )^2)\\), that is, the mean of the squared difference from the mean. 
-             The standard deviation is the square root of the variance.
-             In our example, we can view the pre-treatment score of a student as a continuous random variable, X, possibly taking any value between 0 and 100.
+             The standard deviation is the square root of the variance.'),
+             p('In our example, we can view the pre-treatment score of a student as a continuous random variable, X, taking on any possible value between 0 and 100.
              By specifying a mean and a standard deviation of the score that we expect to see if we repeatedly draw a student, 
-             we can simulate the pre-treatment scores for the students in our sample by a normal distribution. ')),
+             we can simulate the pre-treatment scores for the students in our sample by a Normal distribution. ')),
           
-             br(),br(),
+             br(),
              h4('Bernoulli Distribution'),
-             p('Now that we have the pre-test scores, we need to randomly assign each student to either participating in the afterschool program or not participating, or in another word, treatment group or control group. 
-             Bernoulli distribution is the probability distribution for a discrete random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
-             It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads.
-             In our example, we take the value 1 (treatment group) as success, with probability p, the value 0 (control group) thus has a probability of (1-p). 
-             By specifying p = 0.5, students will have an equal chance of being assigned to either group.'),
+             p('Now that we have the pre-test scores, we need to randomly assign each student to either receive the afterschool program or not. In other words, treatment or control group.'),
+             
+             p('The Bernoulli distribution is the probability distribution for a discrete random variable which takes the value 1 with probability p and the value 0 with probability 1-p. 
+             It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, with p being the probability of the coin landing heads.'),
+             p('In our example, we take the value 1 (treatment group) as success with probability p, and the value 0 (control group) with a probability of (1-p). 
+             Thus, by specifying p = 0.5, students will have an equal chance of being assigned to either group.'),
              br(),
         
              h4('Binomial Distribution'),
-             p("Suppose you want to randomly assign treatments to 100 students, but do not need to know the exact roster for each group, 
-               then you can use a binomial distribution to generate the data."),
+             p("Now suppose you want to randomly assign treatment status to 100 students, but do not need to know the exact roster of each group. In this case, you can use a binomial distribution to generate the data."),
              p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
-               There are two parameters in Binomial distribution, the number of Bernoulli trials, n, 
+               There are two parameters in a Binomial distribution: the number of Bernoulli trials, n, 
                and the probability of success in each trial, p. 
-               In other words, a Binomial distribution is the number of successes in Bernoulli trials, and a Bernoulli distribution is when n=1 for a Binomial distribution. "),
+               In other words, a Binomial distribution is the number of successes in a given set of Bernoulli trials, and a Bernoulli distribution is when n = 1 for a Binomial distribution. "),
           
-             br(), br(),
+             br(),
              h4('In summary'),
               
              p("We've learned that there are two types of random variables: ", tags$strong("discrete"), ' and ', tags$strong("continuous"), '.
-             Both Bernoulli distribution and Binomial distribution are examples of probability distrubtion of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
-               such as treted to control group in an treatment assignment, or the number of students assigned to the treatment group.
-               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).')
+             Both Bernoulli and Binomial distributions are examples of probability distribtions of discrete variables.', tags$strong('Discrete random variables'), ' can only take on a countable number of values (possibly infinite, but oftentimes finite), 
+               such as treated and control group in a treatment assignment, or the number of students assigned to the treatment group.
+               Continuous random variables can take on any real number, an uncountable amount of possibilities (i.e., to any amount of decimal places).'),
+             br(), br()
              ),
     tabPanel("Illustration",
              p('Let\'s introduce some notation to help formalize the "data generating process." We can let Z stand for the variable "treatment assignment".'),
