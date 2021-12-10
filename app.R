@@ -17,9 +17,9 @@ ui <- fluidPage(
              h3('Welcome to the simulation app!'),
              p("This app will walk you through simulating a hypothetical intervention study, with the goal of helping you understand how to use simulation to examine whether different causal inference methods are unbiased and efficient in estimating a treatment effect."),
              p("Throughout the app, we will use a hypothetical real-world example to build your intuition and knowledge about the joys of simulation."), 
-             p("You will have access to two very important hats: the ", tags$em("researcher hat"), " and the ", tags$em("omniscient hat"),". 
+             p("You will also have access to two very important hats: the ", tags$em("researcher hat"), " and the ", tags$em("omniscient hat"),". 
                The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), "  where you will transcend your feeble human mind and become an all-knowing and powerful being. 
-               These two hats are very important when we simulate, and will come into play quite often throughout our journey - so keep an eye out for these friendly faces!"),
+               These two hats are very important when we simulate, and will come into play quite often throughout our journey - so keep an eye out for the friendly faces below!"),
              p("Ready? Okay, let's get started."),
              br(),br(),br(),
              fluidRow(column(width = 6, align = 'center',
@@ -37,14 +37,14 @@ ui <- fluidPage(
       tags$div(
       p("Suppose that the New York State Education Department is starting an afterschool program to assist students who failed at their first attempt at taking the Global History regents exam.
       Before the second attempt of the exam, half of the students are randomly assigned to attend this afterschool program and the other half do not receive any additional help. 
-      Within the context of this hypothetical intervention study, the half of students that receive extra tutoring in the afterschool program is known as the treated (or treatment) group, with the other group of students known as the control group. 
+      Within the context of this hypothetical intervention study, the half of students that receive extra tutoring in the afterschool program is known as the treatment group, with the other group of students known as the control group. 
       The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
       tags$div(
       p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect of this afterschool program.  
         In the real world this wouldn't be possible, but luckily, we can use simulation to help answer this question.")), br(),
       h4('The Whats and Whys of Simulation'),
-      p("With the randomized experiment design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the treatment (the afterschool program). 
-        Two methods are commonly used for estimating the average difference between the treated and control groups - ", tags$strong("difference in means")," and", tags$strong("regression"),".
+      p("With the randomized experimental design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the treatment (the afterschool program). 
+        Two methods are commonly used for estimating the average difference between the treatment and control groups - ", tags$strong("difference in means")," and", tags$strong("regression"),".
         However, which method would be better in terms of bias and efficiency? To answer this question, simulation is the way to go."),
       p("With simulation, you can have your omniscient hat on. You will choose the rules with which your data are generated, including what the true treatment effect is. 
         By comparing against this true causal effect, you will be able to explore the properties of these two different approaches to estimating average treatment effects, i.e., whether they are unbiased and efficient. 
@@ -53,8 +53,8 @@ ui <- fluidPage(
     tabPanel("1.3 - What is simulation?",
              
              h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Test Scores'),
-             p("Let's decompose the description of the hypothetical example, and put the ", tags$em("omniscient hat"), " on, since it feels good to know everything. 
-               With this powerful hat, you know that you have a", tags$strong("sample of 100 hypothetical students")," (that you will generate), 
+             p("Let's put the ", tags$em("omniscient hat"), " on (since it feels good to know everything), and decompose the description of the hypothetical example."),
+             p("With this powerful hat, you know that you have a", tags$strong("sample of 100 hypothetical students")," (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
                'Treatment' in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, 
                and those in the control group will not receive additional help. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
@@ -87,7 +87,7 @@ ui <- fluidPage(
              h4('Example: Which students in your sample participate in the afterschool program?'),
              p("Click the button below to randomly select 50 students into the treatment group. 
                 If you click again, you will select a different group of 50 students who participate in the program. 
-                Each of your click generates a simulated sample of students. If you click many times, you can generate many simulated samples. 
+                Each click generates a different simulated sample of students. If you click many times, you can generate many simulated samples. 
                 By combining all these samples or all possible senarios, we will be able to know the population trend.
                 Try it for yourself!"),
              br(),
@@ -114,7 +114,7 @@ ui <- fluidPage(
              p('For this hypothetical study, you will first need to generate pre-test scores (you will generate post-test scores later). 
              This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? 
              Luckily we have access to test scores from another study.  
-             We plot them using a histogram and they look like the following.'),
+             When we plot them using a histogram, they look like this:'),
              br(),
              img(src = "Sesame.png", height="40%", width="80%", align="center"),
              p("It turns out that it's common for test scores to approximately follow a normal distribution. There are two parameters in normal distribution, a mean and a standard deviation."),
@@ -156,7 +156,7 @@ ui <- fluidPage(
              br(),
         
              h4('Binomial Distribution'),
-             p("Now suppose you want to randomly assign treatment status to 100 students, but do not need to know the exact roster of each group. In this case, you can use a binomial distribution to generate the data."),
+             p("Now suppose you want to randomly assign treatment status to 100 students, but do not need to know the exact roster of each group. In this case, you can use a Binomial distribution to generate the data."),
              p("A Binomial distribution is a set of Bernoulli trials (when each trial is independent).
                There are two parameters in a Binomial distribution: the number of Bernoulli trials, n, 
                and the probability of success in each trial, p. 
@@ -181,7 +181,7 @@ ui <- fluidPage(
              
              p("You can pick the mean value, (or the expectation, E(X)) and standard deviation of pre-test scores. 
                Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
-               If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
+               If we knew the sample was randomly selected from all high school students in New York State, we could use the average test score for the state in the appropriate year as the mean for this distribution."),
              p('As you set different values for the mean and standard deviation of the pre-test scores, you may notice that the center of your graph shifts and the spread of your graph changes.'),
              
              sliderInput(inputId = "select_mean_normal",
@@ -220,7 +220,7 @@ ui <- fluidPage(
              Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
              p('(Hint: If you set p = 1, the student will always be assigned to the treatment group.)'),
              sliderInput(inputId = "bernoulli_prob",
-                         label = "Select the probability of assigning to the treatment group (p):",
+                         label = "Select the probability of being assigned to the treatment group (p):",
                          min = 0, max = 1, value = 0.5, step = 0.1),
              actionButton("one_student_treatment", "Assign a student to a group"),
              br(),
@@ -239,12 +239,12 @@ ui <- fluidPage(
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              p("Each click will simulate a result that assigns all the students in the sample to two groups. 
-              The table summarizes the total counts of students in each group based on your selected number of students and probability of assigning to the treatment group."),
+              The resulting table summarizes the total counts of students in each group based on your selected number of students and probability of being assigned to the treatment group."),
              sliderInput(inputId = "select_n_binomial",
                          label = "Select the number of treatment assignments (n):",
                          min = 1, max = 100, value = 100, step = 1),
              sliderInput(inputId = "select_p_binomial",
-                         label = "Select the probability of in the treatment group in one assignmnet (p):",
+                         label = "Select the probability of being in the treatment group in one assignmnet (p):",
                          min = 0, max = 1, value = 0.5, step = 0.1),
              actionButton("hundred_student_treatment", "Assign students"),
              textOutput('hundreds_student_treatment_result'),
@@ -267,7 +267,7 @@ ui <- fluidPage(
              h4('Post-test scores'),
              p('Now that we have the pre-test scores and treatment assignments, we need to generate the post-test scores.'),
              p('The post-test scores of students depend on the scores they received before they participated in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a conditional distribution notated as f(post-test | pre-test, treatment).'),
-             p('Suppose the relationship between the pre-test score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
+             p('Suppose the relationship between the pre-test score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores as if all 100 students in your sample had been in the control group (i.e., did not participate in the afterschool program).'),
     
              fluidRow(column(width = 6,
                              sliderInput(inputId = "select_b0_distribution", label = "Intercept (b0):", min = 1, max = 20, value = 10, step = 1),
@@ -282,9 +282,9 @@ ui <- fluidPage(
              textOutput('distribution_prescore'),
              
              br(), br(),
-             p('What would be the post-test scores for the 100 students if they all received the extra tutoring? 
+             p('On the other hand, what would be the post-test scores for the 100 students if they had all been in the treatment group (i.e., participated in the afterschool program)? 
                Suppose on average the treatment effect of the afterschool program is the same for everyone. 
-               Then the post-test score is simply adding a constant value of the treatment effect to their post-test scores had they not received the treatment (Y0). In the code and illustration below, this constant (or \"tau\") is currently set to 5. Now try changing this \"true\" treatment effect!'),
+               Then the post-test score is simply adding a constant value of the treatment effect to their post-test scores had they not received the treatment (Y0). In the code and illustration below, this constant (or \"tau\") is currently set to 5. Now try changing this \"true\" treatment effect.'),
              
              sliderInput(inputId = "tau_distribution", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
              plotOutput(outputId = "Y1_plot", height = "500px"),
@@ -304,15 +304,15 @@ ui <- fluidPage(
              p('Suppose you simulated many samples consisting of 100 students randomly drawn from all the students from New York State, and with each sample you calculate a sample mean for 100 pre-treatment scores in order to estimate the population mean or expectation of pre-test scores in New York State.'),
              p('A sample mean estimate from one sample is likely to be different from the sample mean estimate from another sample, and these sample means might be higher and lower than the true population mean. 
              The sampling distribution of a sample mean is the distribution of a set of possible sample means estimated from all samples of size 100 that could have been observed if the data simulation process had been repeated, along with the probabilities of these possible values. This sampling distribution then helps us determine how close this sample mean is from the true population mean. '),
-             withMathJax(paste0("However, the combinations of 100 students from all students in New York State is an extraordinarily large number, and can even exceed the computation capacity of your computer. 
+             withMathJax(paste0("However, the combinations of 100 students from all students in New York State is an extraordinarily large number, and can even exceed the computational capacity of your computer. 
                For example, say there are 100,000 high school students in New York State and we randomly select 100 students. Here we have population size of 100,000 and sample size of 100. 
-               How many samples of size 100 are possible out of a population of size 100,000? That's 100,000 choose 100, \\(100,000 \\choose100\\), and the number is so large that even R only returns Inf.")),
+               How many samples of size 100 are possible out of a population of size 100,000? That's 100,000 choose 100, \\(100,000 \\choose100\\), and the number is so large that even R only returns \"Inf\".")),
              br(),
              code("choose(100000,100)"),
              br(),
              verbatimTextOutput('sampling_distr'),
-             p('Therefore, we usually use a large number of samples to get an approximate sampling distribution of statistics. 
-               For example, below you can simulate a sampling distribution of sample mean by choosing the number of samples, and the population mean and standard deviation of the pre-treatement score.'),
+             p('Therefore, we usually use a large number of samples to get an approximate sampling distribution of different statistics. 
+               For example, below you can simulate a sampling distribution of sample mean by choosing the number of samples, and the population mean and standard deviation of the pre-treatment scores.'),
              fluidRow(column(width = 8),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
@@ -322,10 +322,10 @@ ui <- fluidPage(
                                          min = 1000, max = 10000, value = 5000, step = 10)),
                       column(width = 6,
                              sliderInput(inputId = "select_mean_normal_sampling",
-                                         label = "Select the expectation of the pre-treatment score (E(X)):",
+                                         label = "Select the expectation of the pre-test score (E(X)):",
                                          min = 20, max = 80, value = 60, step = 1),
                              sliderInput(inputId = "select_sd_normal_sampling",
-                                         label = "Select the standard deviation of the pre-treatment score:",
+                                         label = "Select the standard deviation of the pre-test score:",
                                          min = 0, max = 10, value = 5, step = 1))),
              
              actionButton("generate_sampling_distribution", "Generate the Sampling Distribution"),
@@ -334,8 +334,8 @@ ui <- fluidPage(
              ## TODO: possibly talk about the mean and sd of sampling distribution
              
              p('If you are interested in the proportion of students who got into the treatment group, 
-                you can also generate a sampling distribution for it by calculating the proportions for each of the many 100 students samples. 
-                A proportion is a special case of an average in which the data are 1’s and 0’s (in the afterschool program/not in the afterschool program).'),
+                you can also generate a sampling distribution for it by calculating the proportions for each of the many 100-student samples. 
+                A proportion is a special case of an average in which the data are 1’s and 0’s (treatment/control).'),
              fluidRow(column(width = 8),
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
@@ -348,10 +348,10 @@ ui <- fluidPage(
                actionButton("generate_sampling_distribution_bernoulli", "Generate the Sampling Distribution"),
                plotOutput('sampling_distribution_bernoulli')),
              
-             p('You may notice that the sampling distributions are all bell-curve no matter which distribution the statistics are originally calculated from. 
-               This is actually summarized as a theorem called "Central Limit Theorem". Suppose that a sample is obtained containing many observations, 
-               each observation being randomly generated in a way that does not depend on the values of the other observations, 
-               and that the arithmetic mean of the observed values is computed. If this procedure is performed many times, 
+             p('You may notice that the sampling distributions are all bell-curves no matter which distribution the statistics are originally calculated from. 
+               This is actually summarized as a theorem called the "Central Limit Theorem", which states that the probability distribution of a statistic will eventually converge to a Normal distribution, given a large enough sample size.'),
+             p('So for example, suppose that a sample is obtained containing many observations, and the following two things happen: each observation is randomly generated in a way that does not depend on the values of the other observations, 
+               and the arithmetic mean of the observed values is computed. If this procedure is repeated many times, 
                the central limit theorem says that the probability distribution of the average will closely approximate a normal distribution. '),
              br(),
              br()
@@ -371,7 +371,7 @@ ui <- fluidPage(
              p("Remember that omniscient hat? It's time to put it on."),
              p("As with any simulation study, you need to first establish the", tags$strong("Data Generating Process (DGP)."), "
                This means explicitly stating how you will be generating all of the data you need to estimate the treatment effect later on. 
-               For the purposes of this study, we will use what we learned in previous sections to walk through our DGP, and introduce some notation to help formalize it: Let", tags$strong("X"), " stand for pre-test scores,", tags$strong("Z"), " stand for the treatment assignments (0/1),", tags$strong("Y0"), " stand for the potential outcomes of the control group,", tags$strong("Y1"), " stand for potential outcomes of the treatment group, and", tags$strong("Y"), " stand for the observed outcomes."),
+               For the purposes of this study, we will use what we learned in previous sections to walk through our DGP, and introduce some notation to help formalize it: Let", tags$strong("X"), " = pre-test scores,", tags$strong("Z"), " = treatment assignments (0/1),", tags$strong("Y0"), " = potential outcomes of the control group,", tags$strong("Y1"), " = potential outcomes of the treatment group, and", tags$strong("Y"), " = observed outcomes."),
              br(),
              h4('Treatment Assignment'),
              p("You already know how to simulate treatment assignments from Section 2.2 using the Bernoulli distribution. The probability of assignment will be 0.5 for each of the 100 students."),
@@ -479,7 +479,9 @@ ui <- fluidPage(
              textOutput('mean_diff_efficiency'),
              h5('Efficiency using regression method:'),
              verbatimTextOutput('reg_efficiency_code'),
-             textOutput('reg_efficiency')
+             textOutput('reg_efficiency'),
+             br(),
+             br(),
           
              
              ), # use sampling distribution to compare unbiasedness and efficiency
