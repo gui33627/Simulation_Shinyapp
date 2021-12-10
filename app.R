@@ -172,7 +172,8 @@ ui <- fluidPage(
              br(), br()
              ),
     tabPanel("Illustration",
-             p(),
+             h4('See it in action: Illustrations'),
+             p('In this section, you will have the opportunity to simulate what we covered in the previous section - feel free to play around, and pay attention to your hats!'),
              fluidRow(column(width = 8,
                              h4('Illustration for Normal Distribution')),
                       column(width = 4, align = 'center',
