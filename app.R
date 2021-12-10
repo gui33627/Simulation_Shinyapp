@@ -17,8 +17,8 @@ ui <- fluidPage(
              h3('Welcome to the simulation app!'),
              p("This app will walk you through simulating a hypothetical intervention study, with the goal of helping you understand how to use simulation to examine whether different causal inference methods are unbiased and efficient in estimating a treatment effect."),
              p("Throughout the app, we will use a hypothetical real-world example to build your intuition and knowledge about the joys of simulation."), 
-             p("You will also have access to two very important hats: the ", tags$em("researcher hat"), " and the ", tags$em("omniscient hat"),". 
-               The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), "  where you will transcend your feeble human mind and become an all-knowing and powerful being. 
+             p("You will also have access to two very important hats: the ", tags$em("researcher hat"), " and the ", tags$em("omniscient hat."),
+             "The",  tags$em("researcher hat"), " is one you wear daily - you are in the real world and have normal human limitations. However, every once in a while, you will get to wear the ", tags$em("omniscient hat"), "  where you will transcend your feeble human mind and become an all-knowing and powerful being. 
                These two hats are very important when we simulate, and will come into play quite often throughout our journey - so keep an eye out for the friendly faces below!"),
              p("Ready? Okay, let's get started."),
              br(),br(),br(),
@@ -32,23 +32,23 @@ ui <- fluidPage(
       tags$div(
       p('The following hypothetical example will link concepts step by step throughout the app:'),
       h4('The Dreaded Global History Regents Exam'),
-      p('In New York State, the Regents exams are a series of exams in different subjects that high school students must take and pass in order to graduate. Students must score a 65 or higher to pass but may re-take as many times as necessary. Among these, the Global History regents is considered to be one of the most difficult, primarily due to the sheer amount of memorization required (it is fairly traumatizing).  
+      p('In New York State, the Regents exams are a series of exams in different subjects that high school students must take and pass in order to graduate. Students must score a 65 or higher to pass but may re-take as many times as necessary. The Global History regents is considered to be one of the most difficult among these exams, primarily due to the sheer amount of memorization required (it is fairly traumatizing).  
         ')),
       tags$div(
       p("Suppose that the New York State Education Department is starting an afterschool program to assist students who failed at their first attempt at taking the Global History regents exam.
       Before the second attempt of the exam, half of the students are randomly assigned to attend this afterschool program and the other half do not receive any additional help. 
-      Within the context of this hypothetical intervention study, the half of students that receive extra tutoring in the afterschool program is known as the treatment group, with the other group of students known as the control group. 
-      The goal is to estimate the effect of the afterschool program on average test scores for the retake of the Global History regents.")),
+      Within the context of this hypothetical intervention study, the group of students that receive extra tutoring in the afterschool program is known as the treatment group, with the other group of students known as the control group. 
+      The goal is to estimate the effect of the afterschool program on average test scores for the retakers of the Global History regents.")),
       tags$div(
       p("You know you will be performing a randomized experiment but want to understand what method is better to use with the experimental data to estimate the treatment effect of this afterschool program.  
-        In the real world this wouldn't be possible, but luckily, we can use simulation to help answer this question.")), br(),
+        In the real world this would be hard to assess, but luckily, we can use simulation to help answer this question.")), br(),
       h4('The Whats and Whys of Simulation'),
       p("With the randomized experimental design set for our study of the afterschool program on average test scores, you can safely attribute any difference in outcomes to the treatment (the afterschool program). 
         Two methods are commonly used for estimating the average difference between the treatment and control groups - ", tags$strong("difference in means")," and", tags$strong("regression"),".
         However, which method would be better in terms of bias and efficiency? To answer this question, simulation is the way to go."),
-      p("With simulation, you can have your omniscient hat on. You will choose the rules with which your data are generated, including what the true treatment effect is. 
-        By comparing against this true causal effect, you will be able to explore the properties of these two different approaches to estimating average treatment effects, i.e., whether they are unbiased and efficient. 
-        This investigation is impossible when you are wearing your researcher hat because you would never know the true treatment effect in the real world. Therefore, simulation is a powerful learning tool when comparing different methods and examining how they might behave in practice.")
+      p("With simulation, you can have your ", tags$em("omniscient hat"), " on. You will choose the rules with which your data are generated, including what the true treatment effect is. 
+        By comparing against the true causal effect, you will be able to explore the properties of these two different approaches in estimating average treatment effects, i.e., whether they are unbiased and efficient. 
+        This investigation is impossible when you are wearing your ", tags$em("researcher hat"), " because you would never know the true treatment effect in the real world. Therefore, simulation is a powerful learning tool when comparing different methods and examining how they might behave in practice.")
       ),
     tabPanel("1.3 - What is simulation?",
              
@@ -57,15 +57,14 @@ ui <- fluidPage(
              p("With this powerful hat, you know that you have a", tags$strong("sample of 100 hypothetical students")," (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
                'Treatment' in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, 
-               and those in the control group will not receive additional help. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
+               and those in the control group will not receive additional help. You will also generate all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
              p("These are fairly self-explanatory: ", tags$strong("pre-treatment"), " test (or \"pre-test\") scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$strong("post-treatment"), 
                " test (or \"post-test\") scores are the scores of the 100 sample students after the treatment period. 
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment (i.e., don't go through the afterschool program) - these are called", tags$strong("potential outcomes.")),
              br(),
              h4('Reality vs. Simulation'),
              p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
-            For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student. (Red points are treatment group, black points are control group.)"),
-             # new mini-simulation
+            For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student. (Red points are post-treatment scores if they are in the treatment group, black points are post-treatment scores if they are in the control group.)"),
       sidebarLayout(
              sidebarPanel(
                radioButtons("potential_oc", "Potential Outcomes",
