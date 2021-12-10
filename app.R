@@ -482,6 +482,11 @@ ui <- fluidPage(
              textOutput('reg_efficiency'),
              br(),
              br(),
+             
+             h3('So what\'s the verdict?'),
+             p('Recall that we initially set out to evaluate whether these two causal inference methods produce unbiased and efficient treatment estimates. Based on the simulated outputs above, we see that the bias for both methods are relatively similar (i.e., close to zero), but that the linear regression method returns a more efficient treatment estimate. In other words, the sampling distribution we see above for the regression estimate has a much lower variance (and therefore standard deviation).'),
+             br(),
+             br()
           
              
              ), # use sampling distribution to compare unbiasedness and efficiency
