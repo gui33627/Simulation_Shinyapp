@@ -52,18 +52,18 @@ ui <- fluidPage(
       ),
     tabPanel("What is simulation?",
              
-             h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Scores'),
+             h4('Outcomes, Potential Outcomes, and Pre- and Post-Treatment Test Scores'),
              p("Let's decompose the description of the hypothetical example, and put the ", tags$em("omniscient hat"), " on, since it feels good to know everything. 
                With this powerful hat, you know that you have a", tags$strong("sample of 100 hypothetical students")," (that you will generate), 
                who must be randomly assigned (by some model you will specify) into treatment and control groups. 
                'Treatment' in this case is the afterschool program, and thus those in the treatment group will go through the afterschool program, 
                and those in the control group will not receive additional help. You will also be generating all of these students' 'pre-treatment' test scores (again, through models), as well as their 'post-treatment' test scores, otherwise known as the ", tags$em("outcome."),),
-             p("These are fairly self-explanatory: ", tags$strong("pre-treatment"), " test scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$strong("post-treatment"), 
-               " test scores are the scores of the 100 sample students after the treatment period. 
+             p("These are fairly self-explanatory: ", tags$strong("pre-treatment"), " test (or \"pre-test\") scores are the scores of the 100 sample students prior to any of them going through the afterschool program, and ", tags$strong("post-treatment"), 
+               " test (or \"post-test\") scores are the scores of the 100 sample students after the treatment period. 
                The great thing about being omniscient is that you will also be able to see what the treatment group students' scores are if they don't receive the treatment (i.e., don't go through the afterschool program) - these are called", tags$strong("potential outcomes.")),
              br(),
              h4('Reality vs. Simulation'),
-             p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment test scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
+             p("For comparison, let's switch to the ", tags$em("researcher hat"), " for a moment to see the difference. As a mere researcher, you would still see the post-treatment scores for everyone, but you cannot know what the post-treatment scores of the same treatment group students would be ", tags$em("if they hadn't received the treatment"), " (unless you can time travel, which you obviously can't do). 
             For instance, the plots below show the post-treatment scores for each student if they participate in the program and if they do not. As a researcher, you can only observe one of those potential outcomes for each student. (Red points are treatment group, black points are control group.)"),
              # new mini-simulation
       sidebarLayout(
@@ -111,7 +111,7 @@ ui <- fluidPage(
     "Probability Distribution",
     tabPanel('Example',
              h4('Example: Pre-test scores'),
-             p('For this hypothetical study, you will first need to generate pre-treatment (or "pre-test") scores (you will generate post-treatment ("post-test") scores later). 
+             p('For this hypothetical study, you will first need to generate pre-test scores (you will generate post-test scores later). 
              This will allow us to estimate the effect of the afterschool program in our hypothetical data. What kind of distribution is appropriate for test scores? 
              Luckily we have access to test scores from another study.  
              We plot them using a histogram and they look like the following.'),
@@ -141,7 +141,7 @@ ui <- fluidPage(
              The mean is also called the', tags$em("expectation"), 'or', tags$em(" expected value"), 'and is written as E(X) or \\(\\mu_X\\).
              The variance of the distribution of X is \\(E((X − \\mu_X )^2)\\), that is, the mean of the squared difference from the mean. 
              The standard deviation is the square root of the variance.'),
-             p('In our example, we can view the pre-treatment score of a student as a continuous random variable, X, taking on any possible value between 0 and 100.
+             p('In our example, we can view the pre-test score of a student as a continuous random variable, X, taking on any possible value between 0 and 100.
              By specifying a mean and a standard deviation of the score that we expect to see if we repeatedly draw a student, 
              we can simulate the pre-treatment scores for the students in our sample by a Normal distribution. ')),
           
@@ -179,16 +179,16 @@ ui <- fluidPage(
                       column(width = 4, align = 'center',
                              img(src='omniscient_hat.png', width="30%", height="50%"))),
              
-             p("You can pick the mean value, the expectation of the pre-treatment score (E(X)), and standard deviation of pre-treatment scores. 
+             p("You can pick the mean value, (or the expectation, E(X)) and standard deviation of pre-test scores. 
                Optimally we'd like these to reflect what we know about the actual distribution of test scores for this sample.  
                If we knew the sample was randomly selected from all high school students in New York State we could use the average test score for the state in the appropriate year as the mean for this distribution."),
-             p('As you set different values for the mean and standard deviation of pre-treatment score, you may observe the center of your graph shifts and the spread of your graph changes.'),
+             p('As you set different values for the mean and standard deviation of the pre-test scores, you may notice that the center of your graph shifts and the spread of your graph changes.'),
              
              sliderInput(inputId = "select_mean_normal",
-                         label = "Select the expectation of the pre-treatment score (E(X)):",
+                         label = "Select the expectation (E(X)) of the pre-test score :",
                          min = 20, max = 80, value = 60, step = 1),
              sliderInput(inputId = "select_sd_normal",
-                         label = "Select the standard deviation of the pre-treatment score:",
+                         label = "Select the standard deviation of the pre-test score:",
                          min = 0, max = 10, value = 5, step = 1),
              
              actionButton("draw_hundred_student", "Simulate 100 students' scores"),
@@ -207,6 +207,7 @@ ui <- fluidPage(
                  )
                )
              ),
+             br(),
              textOutput('normal_mean_var'),
              br(),
              
@@ -217,7 +218,7 @@ ui <- fluidPage(
              
              p('Each click will show an assignment of a random student.
              Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
-             p('(Hint: If you set p = 1, the students will be assigned to the treatment group.)'),
+             p('(Hint: If you set p = 1, the student will always be assigned to the treatment group.)'),
              sliderInput(inputId = "bernoulli_prob",
                          label = "Select the probability of assigning to the treatment group (p):",
                          min = 0, max = 1, value = 0.5, step = 0.1),
@@ -231,7 +232,7 @@ ui <- fluidPage(
              actionButton('reassign_100_treatment', "Assign 100 students"),
              br(), br(),
              plotlyOutput('animation_bernoulli'),
-             p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
+             p('See what happens if you click multiple times with p = 0.1.  Now what happens with p = 0.9?'),
              
              fluidRow(column(width = 8,
                              h4('Illustration for Binomial Distribution')),
@@ -587,8 +588,8 @@ server <- function(input, output, session) {
     mean <- round(mean(as.numeric(tmp$score)),1)
     sd <- round(sd(as.numeric(tmp$score)),1)
     
-    text <- paste0("The plot above shows the distribution of the pre-treatment test scores of students in the 100 students sample. 
-    When you wear omnicient hat, you specify and hence know the true expectation and standard deviation of the pre-treatment score of all students in New York State. 
+    text <- paste0("The plot above shows the distribution of the pre-treatment test scores of 100 students in your sample. 
+    When you wear the omniscient hat, you specify and therefore know the true expectation and standard deviation of the pre-treatment scores of all students in New York State. 
     However, in reality we only have a sample of 100 students and can only estimate the expectation by the sample mean of the 100 pre-treatment scores and estimate the standard deviation by the sample standard deviation of the 100 pre-treatment scores.
     The sample mean score of the 100 students is ", mean, ", and the sample standard deviation of students' scores is ", sd, ".")
     
@@ -773,7 +774,7 @@ server <- function(input, output, session) {
     })
     
     output$simulation_dgp_outcome <- renderText({
-      paste0("As omniscient beings, you know that the treatment effect (or tau is ", input$tau, 
+      paste0("As omniscient beings, you know that the treatment effect (or tau) is ", input$tau, 
         ". That is, you know that the post-treatment test scores of students who went through the afterschool program is on average ", input$tau, " points higher than the students who did not. 
                To generate these outcome scores, you would simulate a dependency based on the treatment assignment variable from above. 
                In the interactive graph below, you can specify the true relationship between the pre-treatment test scores (X) and the outcome test scores by selecting the coefficients in the regression model.")
