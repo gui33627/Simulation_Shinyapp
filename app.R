@@ -265,9 +265,9 @@ ui <- fluidPage(
     ),
     tabPanel('Conditional Distribution',
              h4('Post-test scores'),
-             p('Now that we have the pre-test scores and treatment assignments, we need to generate the post-test scores'),
-             p('The post-test scores of students depend on the scores before they participate in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a conditional distribution notated as f(post-test | pre-test, treatment).'),
-             p('Suppose the relationship between the pretest score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
+             p('Now that we have the pre-test scores and treatment assignments, we need to generate the post-test scores.'),
+             p('The post-test scores of students depend on the scores they received before they participated in the afterschool program (pre-test score) and whether they received extra tutoring in the afterschool program (treatment or control group). Because these scores depend on the distribution of their pre-test scores and their treatment assignment, we call this a conditional distribution notated as f(post-test | pre-test, treatment).'),
+             p('Suppose the relationship between the pre-test score and the post-test score is linear. You can select the intercept and slope parameters below to generate the post-test scores had all students in the 100 size sample in the control group (not received the extra tutoring).'),
     
              fluidRow(column(width = 6,
                              sliderInput(inputId = "select_b0_distribution", label = "Intercept (b0):", min = 1, max = 20, value = 10, step = 1),
@@ -284,13 +284,15 @@ ui <- fluidPage(
              br(), br(),
              p('What would be the post-test scores for the 100 students if they all received the extra tutoring? 
                Suppose on average the treatment effect of the afterschool program is the same for everyone. 
-               Then the post-test is simply adding a constant indicating the treatment effect to their post-test scores had they not received the treatment. 
-               Below, you can select the true treatment effect.'),
+               Then the post-test score is simply adding a constant value of the treatment effect to their post-test scores had they not received the treatment (Y0). In the code and illustration below, this constant (or \"tau\") is currently set to 5. Now try changing this \"true\" treatment effect!'),
              
              sliderInput(inputId = "tau_distribution", label = "Treatment effect:", min = -10, max = 10, value = 5, step = 1),
              plotOutput(outputId = "Y1_plot", height = "500px"),
              verbatimTextOutput('distribution_postscore_code'),
-             textOutput('distribution_postscore')),
+             textOutput('distribution_postscore'),
+             br(),
+             br(),
+             ),
              
     tabPanel("Exercise",
              htmlOutput("Exercise_1")),
