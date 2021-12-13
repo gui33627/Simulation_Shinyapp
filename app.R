@@ -222,8 +222,9 @@ ui <- fluidPage(
              br(),
              textOutput('one_student_treatment_plot'),
              br(), br(),
-             p("Now let's run a Bernoulli trial for each of the 100 students. 
-               Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0)."),
+             p("Now let's run a Bernoulli trial with p = 0.5 for each of the 100 students. 
+               Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0). 
+               Then click the 'play' button below the plot to see the result of your random assignment."),
              br(), 
              actionButton('reassign_100_treatment', "Assign 100 students"),
              br(), br(),
