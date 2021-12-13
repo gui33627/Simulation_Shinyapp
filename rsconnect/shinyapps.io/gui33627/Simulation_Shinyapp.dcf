@@ -5,10 +5,10 @@ account: gui33627
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5127809
-bundleId: 5364506
+bundleId: 5364536
 url: https://gui33627.shinyapps.io/Simulation_Shinyapp/
-when: 1639362590.40519
-lastSyncTime: 1639362590.4052
+when: 1639363059.74692
+lastSyncTime: 1639363059.74694
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: app_final.R|app_previous_structure.R|README.md|Rplots.pdf|simulation_app.Rmd

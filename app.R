@@ -214,13 +214,15 @@ ui <- fluidPage(
              
              p('Each click will show an assignment of a random student.
              Set the probability of the treatment group from 0 to 1 to see how often a student is in the treatment group.'),
-             p('(Hint: If you set p = 1, the student will always be assigned to the treatment group.)'),
+             p('(Hint: If you set p = 1, the students will be assigned to the treatment group.)'),
              sliderInput(inputId = "bernoulli_prob",
-                         label = "Select the probability of being assigned to the treatment group (p):",
+                         label = "Select the probability of assigning to the treatment group (p):",
                          min = 0, max = 1, value = 0.5, step = 0.1),
              actionButton("one_student_treatment", "Assign a student to a group"),
              br(),
              textOutput('one_student_treatment_plot'),
+             br(),
+             p('See what happens if you click multiple times with p=.1.  Now what happens with p=.9?'),
              br(), br(),
              p("Now let's run a Bernoulli trial with p = 0.5 for each of the 100 students. 
                Each of your clicks on the button 'Assign 100 students' will randomly re-assign each student to either treatment group (1) or control group (0). 
@@ -229,7 +231,17 @@ ui <- fluidPage(
              actionButton('reassign_100_treatment', "Assign 100 students"),
              br(), br(),
              plotlyOutput('animation_bernoulli'),
-             p('See what happens if you click multiple times with p = 0.1.  Now what happens with p = 0.9?'),
+             br(),
+             tags$div(
+               useShinyjs(),
+               actionButton("show_code_bernoulli", "Show me the R code of generating the 100 assignments"),
+               hidden(
+                 div(id='code_div_bernoulli',
+                     verbatimTextOutput("code_bernoulli")
+                 )
+               )
+             ),
+             br(),
              
              fluidRow(column(width = 8,
                              h4('Illustration for Binomial Distribution')),
@@ -622,6 +634,14 @@ server <- function(input, output, session) {
     toggle('code_div_normal')
     output$code_normal <- renderText({
       paste0('rnorm(n = 100, mean = ', input$select_mean_normal, ', sd = ', input$select_sd_normal, ')')
+    })
+    
+  })
+  
+  observeEvent(input$show_code_bernoulli, {
+    toggle('code_div_bernoulli')
+    output$code_bernoulli <- renderText({
+      paste0('rbinom(n = 100, size = 1, porb = 0.5)')
     })
     
   })
