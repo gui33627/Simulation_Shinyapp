@@ -600,12 +600,8 @@ server <- function(input, output, session) {
       sd <- paste0('Sample Standard Deviation: ', round(sd(as.numeric(tmp$score)),1))
       ggplot() + geom_histogram(data = tmp, aes(x = score, y = ..density..), bins = 30, alpha = 0.5) + 
         geom_vline(xintercept = mean(as.numeric(tmp$score)), color = 'blue') +
-        annotate("text",x=input$select_mean_normal + 10,y=0.095,label= mean, fontface = "italic", size = 5) +
-        annotate("text",x=input$select_mean_normal + 10,y=0.085,label= sd, fontface = "italic", size = 5) +
-        labs(x = "Pre-test scores",
-             y = "Density") +
-        ggtitle("Simulated Pre-test Scores") +
-        theme(plot.title = element_text(hjust = 0.5))
+        annotate("text",x=-Inf,y=Inf,hjust = -0.15,vjust = 1.9,label= mean, fontface = "italic", size = 5) +
+        annotate("text",x=-Inf,y=Inf,hjust = -0.09,vjust = 3.7,label= sd, fontface = "italic", size = 5)
     })
   })
   
